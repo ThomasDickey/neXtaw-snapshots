@@ -31,9 +31,15 @@ in this Software without prior written authorization from the X Consortium.
 #include <wctype.h>
 #if !defined(__linux__)
 #include <widec.h>
+#ifdef HAVE_WCSLEN
 #define wcslen(c) wslen(c)
+#endif
+#ifdef HAVE_WSCPY
 #define wcscpy(d,s) wscpy(d,s)
+#endif
+#ifdef WSNCPY
 #define wcsncpy(d,s,l) wsncpy(d,s,l)
+#endif
 #endif 
 #endif
 
