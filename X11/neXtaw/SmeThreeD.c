@@ -64,7 +64,7 @@ static XtResource resources[] = {
     {XtNuserData, XtCUserData, XtRPointer, sizeof(XtPointer),
 	offset(sme_threeD.user_data), XtRPointer, (XtPointer) NULL},
     {XtNbeNiceToColormap, XtCBeNiceToColormap, XtRBoolean, sizeof(Boolean),
-	offset(sme_threeD.be_nice_to_cmap), XtRImmediate, (XtPointer) True},
+	offset(sme_threeD.be_nice_to_cmap), XtRImmediate, (XtPointer) False},
     {XtNshadowed, XtCShadowed, XtRBoolean, sizeof(Boolean),
 	offset(sme_threeD.shadowed), XtRImmediate, (XtPointer) False},
     {XtNborderWidth, XtCBorderWidth, XtRDimension, sizeof(Dimension),

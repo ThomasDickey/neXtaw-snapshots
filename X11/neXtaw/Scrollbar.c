@@ -72,6 +72,10 @@ static char defaultTranslations[] =
     "<Btn1Down>:   NotifyScroll()\n\
      <Btn2Down>:   MoveThumb() NotifyThumb() \n\
      <Btn3Down>:   NotifyScroll()\n\
+     <Btn4Down>:   ScrollOneLineUp()\n\
+     Shift<Btn4Down>: ScrollPageUp()\n\
+     <Btn5Down>:   ScrollOneLineDown()\n\
+     Shift<Btn5Down>: ScrollPageDown()\n\
      <Btn1Motion>: HandleThumb() \n\
      <Btn3Motion>: HandleThumb() \n\
      <Btn2Motion>: MoveThumb() NotifyThumb() \n\
@@ -134,6 +138,10 @@ static void HandleThumb();
 static void MoveThumb();
 static void NotifyThumb();
 static void NotifyScroll();
+static void ScrollOneLineUp();
+static void ScrollPageUp();
+static void ScrollOneLineDown();
+static void ScrollPageDown();
 static void EndScroll();
 
 static void PaintArrowButtons();
@@ -144,6 +152,10 @@ static XtActionsRec actions[] = {
     {"MoveThumb",	MoveThumb},
     {"NotifyThumb",	NotifyThumb},
     {"NotifyScroll",	NotifyScroll},
+    {"ScrollOneLineUp",	ScrollOneLineUp},
+    {"ScrollPageUp",	ScrollPageUp},
+    {"ScrollOneLineDown",	ScrollOneLineDown},
+    {"ScrollPageDown",	ScrollPageDown},
     {"EndScroll",	EndScroll}
 };
 
@@ -250,8 +262,8 @@ static void FillArea (sbw, top, bottom, fill)
     if (fill == 4) {
 	XFillRectangle(XtDisplay((Widget) sbw), XtWindow((Widget) sbw), 
 			sbw->scrollbar.bgc,
-			2, 2, (unsigned int) sbw->core.width - 4,
-		       (unsigned int) sbw->core.height - 4);
+			1, 1, (unsigned int) sbw->core.width - 1,
+		       (unsigned int) sbw->core.height - 1);
 	return;
     }
     if (bottom <= 0 || bottom <= top) 
@@ -260,21 +272,21 @@ static void FillArea (sbw, top, bottom, fill)
 	sw = 0;
 
     if (sbw->scrollbar.orientation == XtorientHorizontal) {
-	margin = MARGIN (sbw) * 2 - 4;
-	floor = sbw->scrollbar.length - 2;
+	margin = MARGIN (sbw) * 2 - 1;
+	floor = sbw->scrollbar.length - 1;
 	
 	lx = ((top < margin) ? margin : top);
-	ly = 2;
+	ly = 1;
 	lw = ((bottom > floor) ? floor - top : tlen);
 /* CHECKIT	lw = (((top + tlen) > floor) ? floor - top : tlen); */
-	lh = sbw->core.height - 4;
+	lh = sbw->core.height - 1;
     } else {
-	margin = 2;
-	floor = sbw->scrollbar.length - ((MARGIN (sbw) - 5)*2 + 2);
+	margin = 1;
+	floor = sbw->scrollbar.length - ((MARGIN (sbw) - 2)*2);
 
-	lx = 2;
+	lx = 1;
 	ly = ((top < margin) ? margin : top);
-	lw = sbw->core.width - 4;
+	lw = sbw->core.width - 1;
 /* CHECKIT	lh = (((top + tlen) > floor) ? floor - top : tlen); */
 	lh = ((bottom > floor) ? floor - top : tlen);
     }
@@ -403,12 +415,12 @@ static void PaintArrowButtons(sbw, event, tpush, bpush)
     Boolean tpush, bpush;
 {
     Dimension s                   = sbw->threeD.shadow_width;
-    Dimension bsize		  = MARGIN (sbw) - 4;
-    Position  floor               = sbw->scrollbar.length - 2*(bsize+1) - 2;
+    Dimension bsize		  = MARGIN (sbw) - 2;
+    Position  floor               = sbw->scrollbar.length - 2*bsize - 2;
     Display   *dpy		  = XtDisplay((Widget)sbw);
     Window    w			  = XtWindow((Widget)sbw);
     Dimension tpd, bpd;   /* "depth" of the push */
-    Dimension arrsize 		  = bsize - 2*s - 3;
+    Dimension arrsize 		  = bsize - 2*s - 2;
 
     if ((sbw->scrollbar.shown >= 1.0) && (!sbw->scrollbar.always_visible))
       return;
@@ -418,50 +430,50 @@ static void PaintArrowButtons(sbw, event, tpush, bpush)
     bpd = (bpush ? s/2 : 0);
     if (sbw->scrollbar.orientation == XtorientHorizontal) {
 	if (tpush>=0) {
-	    XClearArea(dpy, w, s + 2, s + 2, bsize + 2 - 2*s, 
-		       sbw->core.height - 2 - 2*s, False);
+	    XClearArea(dpy, w, s + 1, s + 1, bsize + 1 - 2*s, 
+		       sbw->core.height - 2*s, False);
 	    neXtawDrawShadowBox(
-				(Widget)sbw, (ThreeDWidget)sbw, 2, 2,
-				2 + bsize, sbw->core.height - 2, !tpush);
+				(Widget)sbw, (ThreeDWidget)sbw, 1, 1,
+				2 + bsize, sbw->core.height, !tpush);
 	    if ((bsize - 2 * s) >= MIN_WIDTH_TO_DRAW) {
-		DrawArrow(sbw, 3 + s + tpd, 3 + s + tpd, arrsize, arrsize,
+		DrawArrow(sbw, 2 + s + tpd, 2 + s + tpd, arrsize, arrsize,
 			  0, 1);
 	    }	    
 	}
 	if (bpush>=0) {
-	    XClearArea(dpy, w,   2 + bsize + 1 +s, 
-		       2 +s, 2 + bsize -2*s, 
-		       sbw->core.height - 2 -2*s, False);	
+	    XClearArea(dpy, w, bsize + 2 + s, 
+		       1 + s, 2 + bsize - 2*s, 
+		       sbw->core.height - 2*s, False);	
 	    neXtawDrawShadowBox(
-				(Widget)sbw, (ThreeDWidget)sbw, 2 + bsize + 1, 2,
-				2 + 2*bsize + 1, sbw->core.height - 2,!bpush);
+				(Widget)sbw, (ThreeDWidget)sbw, bsize + 2, 1,
+				2*bsize + 3, sbw->core.height,!bpush);
 	    if ((bsize - 2 * s) >= MIN_WIDTH_TO_DRAW) {	    
-		DrawArrow(sbw, 3 + bsize + s + 1 + bpd, 3 + s + bpd,
+		DrawArrow(sbw, 2 + bsize + s + 1 + bpd, 2 + s + bpd,
 			  arrsize, arrsize, 0, 0);
 	    }
 	}	    
     } else {
 	if (tpush>=0) {
-	    XClearArea(dpy, w, 2+s, floor + 1+s,
-		       sbw->core.width - 2-2*s,
-		       sbw->core.width - 2-2*s, False);
+	    XClearArea(dpy, w, 1+s, floor + s,
+		       sbw->core.width - 2*s,
+		       sbw->core.width - 2*s, False);
 	    neXtawDrawShadowBox(
-				(Widget)sbw, (ThreeDWidget)sbw, 2, floor + 1,
-				sbw->core.width - 2, floor + bsize + 1,!tpush);
+				(Widget)sbw, (ThreeDWidget)sbw, 1, floor,
+				sbw->core.width, floor + bsize + 1,!tpush);
 	    if ((bsize - 2 * s) >= MIN_WIDTH_TO_DRAW) {
-		DrawArrow(sbw, 3 + s + tpd, floor + 2 + s + tpd, arrsize,
+		DrawArrow(sbw, 2 + s + tpd, floor + s + tpd, arrsize,
 			  arrsize, 1, 1);
 	    }
 	}
 	if (bpush>=0) {
-	    XClearArea(dpy, w, 2+s, floor + bsize + 2+s,
-		       sbw->core.width - 2-2*s,
-		       sbw->core.width - 2-2*s, False);	
+	    XClearArea(dpy, w, 1+s, floor + bsize + 1+s,
+		       sbw->core.width - 2*s,
+		       sbw->core.width - 2*s, False);	
 	    neXtawDrawShadowBox(
-				(Widget)sbw, (ThreeDWidget)sbw, 2, floor + bsize + 2,
-				sbw->core.width - 2,floor + 2*(bsize+1),!bpush);
+				(Widget)sbw, (ThreeDWidget)sbw, 1, floor + bsize + 1,
+				sbw->core.width,floor + 2*(bsize+1),!bpush);
 	    if ((bsize - 2 * s) >= MIN_WIDTH_TO_DRAW) {	
-		DrawArrow(sbw, 3 + s + bpd, floor + 2 + bsize + 1 + s + bpd,
+		DrawArrow(sbw, 2 + s + bpd, floor + 2 + bsize + s + bpd,
 			  arrsize, arrsize, 1, 0);
 	    }	    
 	}	
@@ -480,19 +492,19 @@ static void PaintThumb (sbw, event)
     Position  oldtop              = sbw->scrollbar.topLoc;
     Position  oldbot              = oldtop + sbw->scrollbar.shownLength;
     Dimension bsize		  = (sbw->scrollbar.draw_arrows ? 
-				     	MARGIN (sbw) - 4
-				        : -1);
+				     	MARGIN (sbw) - 1
+				        : 0);
     Dimension start;
-    Dimension tzl                 = sbw->scrollbar.length - 2*(bsize+1)-2;
+    Dimension tzl                 = sbw->scrollbar.length - 2*bsize;
     Position newtop, newbot;
     Position  floor               = sbw->scrollbar.length;
 
     if (sbw->scrollbar.orientation == XtorientHorizontal) {
-	start = bsize * 2 + 2 + 2;
-	floor -= 2;
+	start = bsize * 2 + 1;
+	floor -= 1;
     } else {
-	start = 2;
-	floor -= (bsize * 2 + 2 + 2);
+	start = 1;
+	floor -= (bsize * 2);
     }    
 
     newtop = start + (int)(tzl * sbw->scrollbar.top);
@@ -504,7 +516,7 @@ static void PaintThumb (sbw, event)
                         2 * sbw->threeD.shadow_width;
 
     if ( newbot >= floor ) {
-	newtop = floor-(newbot-newtop)+2;
+	newtop = floor-(newbot-newtop)+1;
 	newbot = floor;
     }
     sbw->scrollbar.topLoc = newtop;
@@ -513,7 +525,7 @@ static void PaintThumb (sbw, event)
     if (XtIsRealized ((Widget) sbw)) {
 	XDrawRectangle(XtDisplay((Widget) sbw), XtWindow((Widget) sbw),
 		       sbw->threeD.bot_half_shadow_GC,
-		       0, 0, sbw->core.width-1, sbw->core.height-1);
+		       0, 0, sbw->core.width, sbw->core.height);
 	if ((sbw->scrollbar.shown >= 1.0) && (!sbw->scrollbar.always_visible)) {
 	    FillArea(sbw, 0, 0, 4);
 	    return;
@@ -544,8 +556,8 @@ static void PaintThumb (sbw, event)
 		     	(sbw->core.height-SB_BUMP_SIZE)/2);
 		}
 		neXtawDrawShadowBox(
-		  	(Widget)sbw, (ThreeDWidget)sbw, newtop, 2,
-		  	newbot, sbw->core.height - 2, TRUE);
+		  	(Widget)sbw, (ThreeDWidget)sbw, newtop, 1,
+		  	newbot, sbw->core.height, TRUE);
 	      }
 	  else 
 	      {
@@ -559,8 +571,8 @@ static void PaintThumb (sbw, event)
 		     	newtop+(newb-SB_BUMP_SIZE)/2);
 		}
 		neXtawDrawShadowBox(
-		  (Widget)sbw, (ThreeDWidget)sbw, 2, newtop,
-		  sbw->core.width - 2, newbot,
+		  (Widget)sbw, (ThreeDWidget)sbw, 1, newtop,
+		  sbw->core.width, newbot,
 		  TRUE);		  
 	      }
 	  }
@@ -1032,7 +1044,7 @@ static void NotifyScroll (w, event, params, num_params)
     int call_data;
     Position x, y;
     Dimension bsize = (sbw->scrollbar.draw_arrows
-		       ? (sbw->scrollbar.thickness - 2)
+		       ? (sbw->scrollbar.thickness)
 		       : 0);
     
     if (sbw->scrollbar.scroll_mode == 2  /* if scroll continuous */
@@ -1068,13 +1080,12 @@ static void NotifyScroll (w, event, params, num_params)
 	    sbw->scrollbar.scroll_mode = 3;
 	    if (sbw->scrollbar.draw_arrows)
 	      PaintArrowButtons(sbw, event, -1, TRUE);
-	} else if (PICKLENGTH (sbw, x, y) < sbw->scrollbar.topLoc + bsize*2) {
+	} else if (PICKLENGTH (sbw, x, y) < sbw->scrollbar.topLoc) {
 	    /* handle zone "above" the thumb */
 	    call_data = - sbw->scrollbar.length;
 	    XtCallCallbacks (w, XtNscrollProc, (XtPointer)(call_data));
 	} else if (PICKLENGTH (sbw, x, y) 
-		   > sbw->scrollbar.topLoc + sbw->scrollbar.shownLength 
-		   + bsize*2) {
+		   > sbw->scrollbar.topLoc + sbw->scrollbar.shownLength) {
 	    /* handle zone "below" the thumb */
 	    call_data = sbw->scrollbar.length;
 	    XtCallCallbacks (w, XtNscrollProc, (XtPointer)(call_data));
@@ -1124,6 +1135,94 @@ static void NotifyScroll (w, event, params, num_params)
     return;
 }
 
+static void ScrollOneLineUp (w, event, params, num_params)
+    Widget w;
+    XEvent *event;
+    String *params;
+    Cardinal *num_params;
+{
+    ScrollbarWidget sbw = (ScrollbarWidget) w;
+    int call_data;
+
+    if (sbw->scrollbar.scroll_mode == 2  /* if scroll continuous */
+	|| LookAhead (w, event))
+	return;
+
+    if (sbw->scrollbar.shown >= 1.0) {
+	return;
+    }
+    call_data = -MAX (A_FEW_PIXELS, sbw->scrollbar.length / 20);
+    XtCallCallbacks (w, XtNscrollProc, (XtPointer)(call_data));
+
+    return;
+}
+
+static void ScrollPageUp (w, event, params, num_params)
+    Widget w;
+    XEvent *event;
+    String *params;
+    Cardinal *num_params;
+{
+    ScrollbarWidget sbw = (ScrollbarWidget) w;
+    int call_data;
+
+    if (sbw->scrollbar.scroll_mode == 2  /* if scroll continuous */
+	|| LookAhead (w, event))
+	return;
+
+    if (sbw->scrollbar.shown >= 1.0) {
+	return;
+    }
+    call_data = - sbw->scrollbar.length;
+    XtCallCallbacks (w, XtNscrollProc, (XtPointer)(call_data));
+
+    return;
+}
+
+static void ScrollOneLineDown (w, event, params, num_params)
+    Widget w;
+    XEvent *event;
+    String *params;
+    Cardinal *num_params;
+{
+    ScrollbarWidget sbw = (ScrollbarWidget) w;
+    int call_data;
+
+    if (sbw->scrollbar.scroll_mode == 2  /* if scroll continuous */
+	|| LookAhead (w, event))
+	return;
+
+    if (sbw->scrollbar.shown >= 1.0) {
+	return;
+    }
+    call_data = MAX (A_FEW_PIXELS, sbw->scrollbar.length / 20);
+    XtCallCallbacks (w, XtNscrollProc, (XtPointer)(call_data));
+
+    return;
+}
+
+static void ScrollPageDown (w, event, params, num_params)
+    Widget w;
+    XEvent *event;
+    String *params;
+    Cardinal *num_params;
+{
+    ScrollbarWidget sbw = (ScrollbarWidget) w;
+    int call_data;
+
+    if (sbw->scrollbar.scroll_mode == 2  /* if scroll continuous */
+	|| LookAhead (w, event))
+	return;
+
+    if (sbw->scrollbar.shown >= 1.0) {
+	return;
+    }
+    call_data = sbw->scrollbar.length;
+    XtCallCallbacks (w, XtNscrollProc, (XtPointer)(call_data));
+
+    return;
+}
+
 /* ARGSUSED */
 static void EndScroll(w, event, params, num_params )
     Widget w;
@@ -1150,8 +1249,8 @@ static float FractionLoc (sbw, x, y)
     float   height, width;
 
     margin = MARGIN (sbw);
-    x -= margin;
-    y -= margin;
+    x -= margin*2;
+    y -= 1;
     height = sbw->core.height - 2 * margin;
     width = sbw->core.width - 2 * margin;
     result = PICKLENGTH (sbw, x / width, y / height);

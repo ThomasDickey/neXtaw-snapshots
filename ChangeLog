@@ -1,4 +1,13 @@
 
+030115	Patches by Alexey I. Froloff:
+	"NeXtish" scrollbar look (thumb and buttons are wider and
+	look more flat).
+	Fixed thumb positioning for Button2 scrolling.
+	Released 0.13.0.
+
+020828	Added scrollwheel support and a fix for horizontal scrollbars.
+	Changed default beNiceToColormap to False.
+
 020314	More fixes by Andreas Voegele: a patch to acinclude.m4
 	to add -DNARROWPROTO only for systems that need it.
 	Released 0.12.
