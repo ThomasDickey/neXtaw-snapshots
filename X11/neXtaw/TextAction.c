@@ -38,6 +38,7 @@ in this Software without prior written authorization from the X Consortium.
 #include <X11/Xmu/StdSel.h>		/* for XmuConvertStandardSelection */
 #include <X11/Xmu/Atoms.h>		/* for XA_COMPOUND_TEXT */
 #include "TextP.h"
+#include "AsciiSinkP.h"
 #include "MultiSrcP.h"
 #include "XawImP.h"
 #include <X11/Xfuncs.h>
@@ -1426,6 +1427,23 @@ Cardinal* n;
   EndAction( (TextWidget) w);
 }
 
+static void CaretHack(Widget w, XEvent *event, String *p, Cardinal *n)
+{
+	TextWidget tw = (TextWidget)w;
+	AsciiSinkObject sink = (AsciiSinkObject)tw->text.sink;
+	int x = sink->ascii_sink.cursor_x;
+	int y = sink->ascii_sink.cursor_y;
+	int width = tw->core.width;
+	int height = tw->core.height;
+printf("CaretHack(%s)\n", XtName(w));
+printf("\tcursor coords = (%d,%d)\n", x, y);
+printf("\twidget size = %d x %d\n", width, height);
+if (x > width) printf("Need to scroll\n");
+
+//	InsertCursor(w, sink->ascii_sink.cursor_x,
+//			sink->ascii_sink.cursor_y);
+}
+
 /*ARGSUSED*/
 static void
 TextFocusIn (w, event, p, n)
@@ -2252,6 +2270,7 @@ XtActionsRec _XawTextActionsTable[] = {
 /* Miscellaneous */
 
   {"redraw-display", 		RedrawDisplay},
+  {"caret-hack",		CaretHack},
   {"insert-file", 		_XawTextInsertFile},
   {"search",		        _XawTextSearch},
   {"insert-char", 		InsertChar},
