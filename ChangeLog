@@ -1,4 +1,8 @@
 
+020314	More fixes by Andreas Voegele: a patch to acinclude.m4
+	to add -DNARROWPROTO only for systems that need it.
+	Released 0.12.
+
 020126	Added -DNARROWPROTO and a bunch of Makefile fixes by
 	Andreas Voegele <voegelas@users.sourceforge.net>.
 	Released 0.11.

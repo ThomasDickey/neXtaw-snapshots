@@ -32,6 +32,12 @@ dnl Generate warnings
 if test "$GCC" = "yes"; then
         CFLAGS="-Wall $CFLAGS"
 fi
+
+dnl Set NARROWPROTO
+case "$host_os" in
+freebsd*|gnu*|irix5*|irix6*|linux-gnu*|netbsd*|openbsd*)
+        CFLAGS="-DNARROWPROTO=1 $CFLAGS"
+esac
 ])
 
 # Do all the work for Automake.  This macro actually does too much --

@@ -1413,7 +1413,7 @@ fi
 
 # Define the identity of the package.
 PACKAGE=neXtaw
-VERSION=0.11
+VERSION=0.12
 
 cat >>confdefs.h <<EOF
 #define PACKAGE "$PACKAGE"
@@ -8875,6 +8875,11 @@ if test "$GCC" = "yes"; then
         CFLAGS="-Wall $CFLAGS"
 fi
 
+case "$host_os" in
+freebsd*|gnu*|irix5*|irix6*|linux-gnu*|netbsd*|openbsd*)
+        CFLAGS="-DNARROWPROTO=1 $CFLAGS"
+esac
+
 ac_config_files="$ac_config_files Makefile doc/Makefile doc/app-defaults/Makefile X11/Makefile X11/neXtaw/Makefile programs/Makefile programs/neXtclock/Makefile"
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -8985,7 +8990,7 @@ rm -f confdef2opt.sed
 : ${CONFIG_STATUS=./config.status}
 ac_clean_files_save=$ac_clean_files
 ac_clean_files="$ac_clean_files $CONFIG_STATUS"
-{ echo "$as_me:8988: creating $CONFIG_STATUS" >&5
+{ echo "$as_me:8993: creating $CONFIG_STATUS" >&5
 echo "$as_me: creating $CONFIG_STATUS" >&6;}
 cat >$CONFIG_STATUS <<_ACEOF
 #! $SHELL
@@ -9156,7 +9161,7 @@ cat >>$CONFIG_STATUS <<\EOF
     echo "$ac_cs_version"; exit 0 ;;
   --he | --h)
     # Conflict between --help and --header
-    { { echo "$as_me:9159: error: ambiguous option: $1
+    { { echo "$as_me:9164: error: ambiguous option: $1
 Try \`$0 --help' for more information." >&5
 echo "$as_me: error: ambiguous option: $1
 Try \`$0 --help' for more information." >&2;}
@@ -9175,7 +9180,7 @@ Try \`$0 --help' for more information." >&2;}
     ac_need_defaults=false;;
 
   # This is an error.
-  -*) { { echo "$as_me:9178: error: unrecognized option: $1
+  -*) { { echo "$as_me:9183: error: unrecognized option: $1
 Try \`$0 --help' for more information." >&5
 echo "$as_me: error: unrecognized option: $1
 Try \`$0 --help' for more information." >&2;}
@@ -9228,7 +9233,7 @@ do
   "programs/Makefile" ) CONFIG_FILES="$CONFIG_FILES programs/Makefile" ;;
   "programs/neXtclock/Makefile" ) CONFIG_FILES="$CONFIG_FILES programs/neXtclock/Makefile" ;;
   "default-1" ) CONFIG_COMMANDS="$CONFIG_COMMANDS default-1" ;;
-  *) { { echo "$as_me:9231: error: invalid argument: $ac_config_target" >&5
+  *) { { echo "$as_me:9236: error: invalid argument: $ac_config_target" >&5
 echo "$as_me: error: invalid argument: $ac_config_target" >&2;}
    { (exit 1); exit 1; }; };;
   esac
@@ -9472,7 +9477,7 @@ done; }
   esac
 
   if test x"$ac_file" != x-; then
-    { echo "$as_me:9475: creating $ac_file" >&5
+    { echo "$as_me:9480: creating $ac_file" >&5
 echo "$as_me: creating $ac_file" >&6;}
     rm -f "$ac_file"
   fi
@@ -9490,7 +9495,7 @@ echo "$as_me: creating $ac_file" >&6;}
       -) echo $tmp/stdin ;;
       [\\/$]*)
          # Absolute (can't be DOS-style, as IFS=:)
-         test -f "$f" || { { echo "$as_me:9493: error: cannot find input file: $f" >&5
+         test -f "$f" || { { echo "$as_me:9498: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          echo $f;;
@@ -9503,7 +9508,7 @@ echo "$as_me: error: cannot find input file: $f" >&2;}
            echo $srcdir/$f
          else
            # /dev/null tree
-           { { echo "$as_me:9506: error: cannot find input file: $f" >&5
+           { { echo "$as_me:9511: error: cannot find input file: $f" >&5
 echo "$as_me: error: cannot find input file: $f" >&2;}
    { (exit 1); exit 1; }; }
          fi;;
