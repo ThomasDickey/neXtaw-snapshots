@@ -33,11 +33,7 @@
 # include <Xm/XmP.h>
 #endif
 
-#if defined(LAYOUT)
-# include "LayoutP.h"
-#else
-# include <X11/neXtaw/LayoutP.h>
-#endif
+#include "LayoutP.h"
 
 #include <ctype.h>
 #include <stdio.h>

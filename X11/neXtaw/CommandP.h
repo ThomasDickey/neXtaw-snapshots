@@ -59,8 +59,8 @@ SOFTWARE.
 #ifndef _XawCommandP_h
 #define _XawCommandP_h
 
-#include <X11/neXtaw/Command.h>
-#include <X11/neXtaw/LabelP.h>
+#include "Command.h"
+#include "LabelP.h"
 
 /***********************************************************************
  *

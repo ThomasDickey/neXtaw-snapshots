@@ -44,15 +44,15 @@ in this Software without prior written authorization from the X Consortium.
 #include <stdlib.h>
 #endif
 #include <X11/Xfuncs.h>
-#include <X11/neXtaw/XawInit.h>
-#include <X11/neXtaw/AsciiSrcP.h>
+#include "XawInit.h"
+#include "AsciiSrcP.h"
 #include <X11/Xmu/Misc.h>
 #include <X11/Xmu/CharSet.h>
-#include <X11/neXtaw/MultiSrcP.h> 
+#include "MultiSrcP.h"
 
 
 #if (defined(ASCII_STRING) || defined(ASCII_DISK))
-#  include <X11/neXtaw/AsciiText.h> /* for Widget Classes. */
+#  include "AsciiText.h" /* for Widget Classes. */
 #endif
 
 
@@ -1322,7 +1322,7 @@ XrmValuePtr	toVal;
 }
 
 #if (defined(ASCII_STRING) || defined(ASCII_DISK))
-#  include <X11/neXtaw/Cardinals.h>
+#  include "Cardinals.h"
 #endif
 
 #ifdef ASCII_STRING

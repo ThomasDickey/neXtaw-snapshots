@@ -46,7 +46,7 @@ in this Software without prior written authorization from the X Consortium.
 #ifndef _XawAsciiSrc_h
 #define _XawAsciiSrc_h
 
-#include <X11/neXtaw/TextSrc.h>
+#include "TextSrc.h"
 
 /* Resources:
 

@@ -79,13 +79,14 @@ SOFTWARE.
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 #include <X11/Xatom.h>
-#include <X11/neXtaw/XawInit.h>
-#include <X11/neXtaw/MultiSinkP.h>
-#include <X11/neXtaw/MultiSrcP.h>
-#include <X11/neXtaw/TextP.h>
+#include "XawInit.h"
+#include "MultiSinkP.h"
+#include "MultiSrcP.h"
+#include "TextP.h"
 #include "XawI18n.h"
 #include <stdio.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 #ifdef GETLASTPOS
 #undef GETLASTPOS		/* We will use our own GETLASTPOS. */

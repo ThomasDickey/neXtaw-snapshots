@@ -54,10 +54,10 @@ SOFTWARE.
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 
-#include <X11/neXtaw/XawInit.h>
+#include "XawInit.h"
 #include <X11/Xmu/Misc.h>
-#include <X11/neXtaw/Scrollbar.h>
-#include <X11/neXtaw/ViewportP.h>
+#include "Scrollbar.h"
+#include "ViewportP.h"
 
 static void ScrollUpDownProc(), ThumbProc();
 static Boolean GetGeometry();

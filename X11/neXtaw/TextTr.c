@@ -129,8 +129,8 @@ Ctrl<Key>backslash:	reconnect-im() \n\
 ";
 
 char *_XawDefaultTextTranslations4 = "\
-<EnterWindow>:	enter-window() \n\
-<LeaveWindow>:	leave-window() \n\
+<EnterWindow>:	FocusEnterWindow() enter-window() \n\
+<LeaveWindow>:	FocusLeaveWindow() leave-window() \n\
 <FocusIn>:	focus-in() \n\
 <FocusOut>:	focus-out() \n\
 <Btn1Down>:	select-start() \n\

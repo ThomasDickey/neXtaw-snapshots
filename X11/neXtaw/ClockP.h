@@ -59,9 +59,9 @@ SOFTWARE.
 #define _XawClockP_h
 
 #include <X11/Xos.h>		/* Needed for struct tm. */
-#include <X11/neXtaw/Clock.h>
-#include <X11/neXtaw/SimpleP.h>
-#include <X11/neXtaw/ThreeDP.h>	/* Casantos, Jul 4 1999 */
+#include "Clock.h"
+#include "SimpleP.h"
+#include "ThreeDP.h"	/* Casantos, Jul 4 1999 */
 
 #define SEG_BUFF_SIZE		128
 #define ASCII_TIME_BUFLEN	32	/* big enough for 26 plus slop */

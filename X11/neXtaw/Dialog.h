@@ -51,7 +51,7 @@ SOFTWARE.
 #ifndef _XawDialog_h
 #define _XawDialog_h
 
-#include <X11/neXtaw/Form.h>
+#include "Form.h"
 
 /***********************************************************************
  *

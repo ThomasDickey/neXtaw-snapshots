@@ -54,8 +54,8 @@ SOFTWARE.
  */
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
-#include <X11/neXtaw/XawInit.h>
-#include <X11/neXtaw/GripP.h>
+#include "XawInit.h"
+#include "GripP.h"
 
 static XtResource resources[] = {
    {XtNwidth, XtCWidth, XtRDimension, sizeof(Dimension),

@@ -26,11 +26,7 @@
 #ifndef _XawLayoutP_h
 #define _XawLayoutP_h
 
-#if defined(LAYOUT)
-# include "Layout.h"
-#else
-# include <X11/neXtaw/Layout.h>
-#endif
+#include "Layout.h"
 
 #include <X11/ConstrainP.h>
 

@@ -53,7 +53,7 @@ SOFTWARE.
 #ifndef _XawFormP_h
 #define _XawFormP_h
 
-#include <X11/neXtaw/Form.h>
+#include "Form.h"
 
 #define XtREdgeType "EdgeType"
 

@@ -1,4 +1,22 @@
 
+030902	Scrollbar: Made the bump on the thumb optional (resource
+	XtNdrawBump, default True).
+
+030901	ThreeD: Added XtNbevel resource to make the bevel "solid"
+	(Motif/Xaw3d-like) or "rounded" (neXtaw, default).
+	Added the same code to neXtawDrawShadowBox in Misc.c, which
+	is used by Scrollbar and SimpleMenu.
+	Added a 3D bevel to Text using a similar hack as in Xaw95.
+
+030831	Command, Repeater and Toggle: Draw a dotted rectangle around
+	the highlighted widget. Reduced the distance the text shifts
+	in a set widget to 1 pixel.
+
+030824	Added traversal code from Ed Falk's XawM. Note: KDE messes up
+	translations for the Command widget. That is a bug in KDE.
+
+030823	Released 0.14.1.
+
 030823	Patch from Alexey I. Froloff <raorn@altlinux.ru>:
 	This patch adds shadow width to SimpleMenu widget's height
 	(last Sme overlaps with bottom shadow) and fixes SmeBSB drawing

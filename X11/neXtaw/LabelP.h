@@ -65,8 +65,8 @@ SOFTWARE.
  *
  ***********************************************************************/
 
-#include <X11/neXtaw/Label.h>
-#include <X11/neXtaw/ThreeDP.h>
+#include "Label.h"
+#include "ThreeDP.h"
 
 /* New fields for the Label widget class record */
 

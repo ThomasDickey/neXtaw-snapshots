@@ -44,8 +44,9 @@ in this Software without prior written authorization from the X Consortium.
 
 #include <X11/Xmu/Drawing.h>
 
-#include <X11/neXtaw/XawInit.h>
-#include <X11/neXtaw/ListP.h>
+#include "XawInit.h"
+#include "ListP.h"
+#include "TraversalP.h"
 
 /* These added so widget knows whether its height, width are user selected.
 I also added the freedoms member of the list widget part. */
@@ -63,8 +64,12 @@ I also added the freedoms member of the list widget part. */
  */
 
 static char defaultTranslations[] =  
-  "<Btn1Down>:   Set()\n\
-   <Btn1Up>:     Notify()";
+  "<Btn1Down>:   	Set()			\n\
+   <Btn1Up>:     	Notify()		\n\
+   <EnterWindow>:	FocusEnterWindow()	\n\
+   <LeaveWindow>:	FocusLeaveWindow()	\n\
+   Shift<Key>Tab:	FocusPrevious()		\n\
+   <Key>Tab:		FocusNext()		";
 
 /****************************************************************
  *
@@ -155,7 +160,7 @@ ListClassRec listClassRec = {
     /* set_values_hook		*/	NULL,
     /* set_values_almost	*/	XtInheritSetValuesAlmost,
     /* get_values_hook		*/	NULL,
-    /* accept_focus	 	*/	NULL,
+    /* accept_focus	 	*/	XawAcceptFocus,
     /* version			*/	XtVersion,
     /* callback_private   	*/	NULL,
     /* tm_table		   	*/	defaultTranslations,

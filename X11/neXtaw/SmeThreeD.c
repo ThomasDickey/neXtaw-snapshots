@@ -31,8 +31,8 @@ SOFTWARE.
 #include <X11/Xlib.h>
 #include <X11/StringDefs.h>
 #include <X11/IntrinsicP.h>
-#include <X11/neXtaw/XawInit.h>
-#include <X11/neXtaw/SmeThreeDP.h>
+#include "XawInit.h"
+#include "SmeThreeDP.h"
 #include <X11/Xosdefs.h>
 
 /* Initialization of defaults */

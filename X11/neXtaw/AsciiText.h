@@ -82,9 +82,9 @@ SOFTWARE.
  *
  ****************************************************************/
 
-#include <X11/neXtaw/Text.h>		/* AsciiText is a subclass of Text */
-#include <X11/neXtaw/AsciiSrc.h>
-#include <X11/neXtaw/MultiSrc.h>
+#include "Text.h"		/* AsciiText is a subclass of Text */
+#include "AsciiSrc.h"
+#include "MultiSrc.h"
 
 /* Resources:
 

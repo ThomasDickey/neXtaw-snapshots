@@ -67,12 +67,12 @@ SOFTWARE.
 #include <X11/Xmu/Misc.h>
 #include <X11/Xmu/Converters.h>
 
-#include <X11/neXtaw/XawInit.h>
-#include <X11/neXtaw/Grip.h>
-#include <X11/neXtaw/PanedP.h>
+#include "XawInit.h"
+#include "Grip.h"
+#include "PanedP.h"
 
 /* I don't know why Paned.c calls _XawImCallVendorShellExtResize, but... */
-#include <X11/neXtaw/XawImP.h> 
+#include "XawImP.h"
 
 #include <ctype.h>
 

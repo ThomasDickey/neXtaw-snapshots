@@ -31,8 +31,9 @@ in this Software without prior written authorization from the X Consortium.
 
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>		/* for XtN and XtC defines */
-#include <X11/neXtaw/XawInit.h>		/* for XawInitializeWidgetSet() */
-#include <X11/neXtaw/RepeaterP.h>		/* us */
+#include "XawInit.h"			/* for XawInitializeWidgetSet() */
+#include "RepeaterP.h"			/* us */
+#include "TraversalP.h"
 
 static void tic();			/* clock timeout */
 
@@ -55,8 +56,22 @@ static void tic();			/* clock timeout */
  * Translations to give user interface of press-notify...-release_or_leave
  */
 static char defaultTranslations[] = 
-  "<EnterWindow>:     highlight() \n\
-   <LeaveWindow>:     unhighlight() \n\
+  "<EnterWindow>:	FocusEnterWindow()	\n\
+   <FocusIn>:		highlight() \n\
+   <LeaveWindow>:     	FocusLeaveWindow()	\n\
+   <FocusOut>:		unhighlight() \n\
+   <KeyDown>space:	set() start()		\n\
+   <KeyUp>space:	stop() unset()		\n\
+   Shift<Key>Tab:	FocusPrevious()		\n\
+   <Key>Tab:		FocusNext()		\n\
+   <Key>Home:		FocusHome()		\n\
+   <Key>End:		FocusEnd()		\n\
+   <Key>Up:		FocusPreviousGroup()	\n\
+   <Key>Down:		FocusNextGroup()	\n\
+   <Key>KP_Home:	FocusHome()		\n\
+   <Key>KP_End:		FocusEnd()		\n\
+   <Key>KP_Up:		FocusPreviousGroup()	\n\
+   <Key>KP_Down:	FocusNextGroup()	\n\
    <Btn1Down>:        set() start() \n\
    <Btn1Up>:          stop() unset() ";
 
@@ -130,7 +145,7 @@ RepeaterClassRec repeaterClassRec = {
     /* set_values_hook		*/	NULL,
     /* set_values_almost	*/	XtInheritSetValuesAlmost,
     /* get_values_hook		*/	NULL,
-    /* accept_focus		*/	NULL,
+    /* accept_focus		*/	XtInheritAcceptFocus,
     /* version			*/	XtVersion,
     /* callback_private		*/	NULL,
     /* tm_table			*/	defaultTranslations,

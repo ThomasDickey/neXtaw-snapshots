@@ -78,6 +78,7 @@ typedef struct {
     float         picked;       /* How much of the thumb is picked *
 				 * when scrolling starts */
     Boolean   	  draw_arrows;	/* whether we should draw the arrow buttons */
+    Boolean	  draw_bump;	/* whether we should draw the thumb bump */
     Boolean	  always_visible; /* arrows and slider must always be visible*/
      /* private */
     XtIntervalId  timer_id;     /* autorepeat timer; remove on destruction */

@@ -31,8 +31,8 @@ SOFTWARE.
 #include <X11/Xlib.h>
 #include <X11/StringDefs.h>
 #include <X11/IntrinsicP.h>
-#include <X11/neXtaw/XawInit.h>
-#include <X11/neXtaw/ThreeDP.h>
+#include "XawInit.h"
+#include "ThreeDP.h"
 #include <X11/Xosdefs.h>
 
 /* Initialization of defaults */
@@ -45,6 +45,8 @@ SOFTWARE.
 #define offset(field) XtOffsetOf(ThreeDRec, field)
 
 static XtRelief defRelief = XtReliefRaised;
+static XtBevel defBevel = XtBevelRounded;
+
 static XtResource resources[] = {
     {XtNshadowWidth, XtCShadowWidth, XtRDimension, sizeof(Dimension),
 	offset(threeD.shadow_width), XtRImmediate, (XtPointer) 2},
@@ -56,10 +58,17 @@ static XtResource resources[] = {
 	offset(threeD.top_shadow_pxmap), XtRImmediate, (XtPointer) NULL},
     {XtNbottomShadowPixmap, XtCBottomShadowPixmap, XtRPixmap, sizeof(Pixmap),
 	offset(threeD.bot_shadow_pxmap), XtRImmediate, (XtPointer) NULL},
+#if 0	/* top shadow is the same colour as the background */
     {XtNtopShadowContrast, XtCTopShadowContrast, XtRInt, sizeof(int),
 	offset(threeD.top_shadow_contrast), XtRImmediate, (XtPointer) 0},
     {XtNbottomShadowContrast, XtCBottomShadowContrast, XtRInt, sizeof(int),
 	offset(threeD.bot_shadow_contrast), XtRImmediate, (XtPointer) 50},
+#else	/* top shadow is slightly lighter than the background */
+    {XtNtopShadowContrast, XtCTopShadowContrast, XtRInt, sizeof(int),
+	offset(threeD.top_shadow_contrast), XtRImmediate, (XtPointer) 20},
+    {XtNbottomShadowContrast, XtCBottomShadowContrast, XtRInt, sizeof(int),
+	offset(threeD.bot_shadow_contrast), XtRImmediate, (XtPointer) 40},
+#endif
     {XtNuserData, XtCUserData, XtRPointer, sizeof(XtPointer),
 	offset(threeD.user_data), XtRPointer, (XtPointer) NULL},
     {XtNbeNiceToColormap, XtCBeNiceToColormap, XtRBoolean, sizeof(Boolean),
@@ -69,6 +78,8 @@ static XtResource resources[] = {
 	(XtPointer)0},
     {XtNrelief, XtCRelief, XtRRelief, sizeof(XtRelief),
 	offset(threeD.relief), XtRRelief, (XtPointer) &defRelief},
+    {XtNbevel, XtCBevel, XtRBevel, sizeof(XtBevel),
+	offset(threeD.bevel), XtRBevel, (XtPointer) &defBevel},
 };
 
 #undef offset
@@ -471,6 +482,8 @@ static void AllocBotShadowPixel (new)
 static XrmQuark	XtQReliefSimple, XtQReliefSunken, XtQReliefFlat,
 		XtQReliefRaised, XtQReliefGroove, XtQReliefRidge;
 
+static XrmQuark XtQBevelRounded, XtQBevelSolid;
+
 #define	done(address, type) \
 	{ toVal->size = sizeof(type); \
 	  toVal->addr = (XPointer) address; \
@@ -478,6 +491,9 @@ static XrmQuark	XtQReliefSimple, XtQReliefSunken, XtQReliefFlat,
 	}
 
 /* ARGSUSED */
+/* FIXME: This function looks broken. It returns e.g. XtQReliefSimple
+   when XtReliefSimple seems more reasonable.
+*/
 static void _CvtStringToRelief(args, num_args, fromVal, toVal)
     XrmValuePtr args;		/* unused */
     Cardinal    *num_args;      /* unused */
@@ -519,6 +535,28 @@ static void _CvtStringToRelief(args, num_args, fromVal, toVal)
     toVal->size = 0;
 }
 
+static void _CvtStringToBevel(XrmValuePtr args, Cardinal *num_args,
+		XrmValuePtr fromVal, XrmValuePtr toVal)
+{
+    static XtBevel bevel;
+    XrmQuark q;
+    char lowerName[1000];
+
+    XmuCopyISOLatin1Lowered (lowerName, (char*)fromVal->addr);
+    q = XrmStringToQuark(lowerName);
+    if (q == XtQBevelRounded) {
+	bevel = XtBevelRounded;
+	done(&bevel, XtBevel);
+    }
+    if (q == XtQBevelSolid) {
+	bevel = XtBevelSolid;
+	done(&bevel, XtBevel);
+    }
+    XtStringConversionWarning(fromVal->addr, "bevel");
+    toVal->addr = NULL;
+    toVal->size = 0;
+}
+
 static void ClassInitialize()
 {
     XawInitializeWidgetSet();
@@ -532,6 +570,12 @@ static void ClassInitialize()
 
     XtAddConverter( XtRString, XtRRelief, _CvtStringToRelief, 
 		    (XtConvertArgList)NULL, 0 );
+
+    XtQBevelRounded = XrmPermStringToQuark("rounded");
+    XtQBevelSolid = XrmPermStringToQuark("solid");
+
+    XtAddConverter(XtRString, XtRBevel, _CvtStringToBevel,
+		(XtConvertArgList)NULL, 0);
 }
 
 
@@ -750,13 +794,13 @@ Draw3DFrame (gw, event, region, style)
 	Window		win = XtWindow (gw);
 	GC		top, bot;
 
-	if (style==0) {
+	if (style==0) {		/* ridge */
 	    top = tdw->threeD.top_shadow_GC;
 	    bot = tdw->threeD.bot_half_shadow_GC;
-	} else if (style==1) {
+	} else if (style==1) {	/* groove */
 	    top = tdw->threeD.bot_half_shadow_GC;
 	    bot = tdw->threeD.top_shadow_GC;
-	} else {
+	} else {		/* flat */
 	    top = bot = tdw->threeD.bot_shadow_GC;
 	}
 
@@ -821,7 +865,7 @@ _Xaw3dDrawShadows (gw, event, region, out)
      *	no point to do anything if the shadow_width is 0 or the
      *	widget has not been realized.
      */ 
-    /* fprintf(stderr, "ThreeD: _Xaw3dDrawShadows (%s)\n", XtClass(gw)->core_class.class_name); */
+
     if((s > 0) && XtIsRealized (gw)){
 
 	Dimension	h = tdw->core.height;
@@ -845,6 +889,11 @@ _Xaw3dDrawShadows (gw, event, region, out)
 	    bot = tdw->threeD.top_shadow_GC;
 	    toph = tdw->threeD.bot_half_shadow_GC;
 	    both = tdw->threeD.top_half_shadow_GC;	    
+	}
+
+	if (tdw->threeD.bevel == XtBevelSolid) {
+		toph = top;
+		both = bot;
 	}
 
 	/* top-left shadow */

@@ -4,7 +4,7 @@
  * Copyright (c) 1996 Alfedo K. Kojima
  */
 
-#include <X11/neXtaw/Misc.h>
+#include "Misc.h"
 
 #ifdef XPM_TILE
 #include <X11/xpm.h>
@@ -50,6 +50,11 @@ neXtawDrawShadowBox (gw, tdw, x0, y0, x1, y1, out)
 	    bot = tdw->threeD.top_shadow_GC;
 	    toph = tdw->threeD.bot_half_shadow_GC;
 	    both = tdw->threeD.top_half_shadow_GC;	    
+	}
+
+	if (tdw->threeD.bevel == XtBevelSolid) {
+		toph = top;
+		both = bot;
 	}
 
 	/* top-left shadow */

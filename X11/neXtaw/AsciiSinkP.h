@@ -67,8 +67,8 @@ SOFTWARE.
  *
  ***********************************************************************/
 
-#include <X11/neXtaw/TextSinkP.h> 
-#include <X11/neXtaw/AsciiSink.h> 
+#include "TextSinkP.h"
+#include "AsciiSink.h"
 
 /************************************************************
  *

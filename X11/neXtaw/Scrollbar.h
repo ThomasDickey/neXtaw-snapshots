@@ -127,6 +127,9 @@ SOFTWARE.
 #define XtCDrawArrows "DrawArrows"
 #define XtNdrawArrows "drawArrows"
 
+#define XtNdrawBump "drawBump"
+#define XtCDrawBump "DrawBump"
+
 #define XtCAlwaysVisible "AlwaysVisible"
 #define XtNalwaysVisible "alwaysVisible"
 

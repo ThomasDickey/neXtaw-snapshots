@@ -55,7 +55,7 @@ SOFTWARE.
 #include <X11/Xlib.h>
 #include <X11/StringDefs.h>
 #include <X11/IntrinsicP.h>
-#include <X11/neXtaw/ClockP.h>		/* Casantos, Jul 4 1999 */
+#include "ClockP.h"		/* Casantos, Jul 4 1999 */
 #include <X11/Xosdefs.h>
 
 #if defined(__STDC__) && !defined(AIXV3) /* AIX is broken */

@@ -30,8 +30,9 @@ in this Software without prior written authorization from the X Consortium.
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>		/* for XtN and XtC defines */
 #include <X11/Xmu/CharSet.h>		/* for XmuCompareISOLatin1() */
-#include <X11/neXtaw/XawInit.h>		/* for XawInitializeWidgetSet */
-#include <X11/neXtaw/PannerP.h>		/* us */
+#include "XawInit.h"			/* for XawInitializeWidgetSet */
+#include "PannerP.h"			/* us */
+#include "TraversalP.h"
 #include <X11/Xos.h>
 #include <X11/Xmu/Misc.h>		/* for Min */
 #include <X11/Xmu/Drawing.h>
@@ -50,6 +51,10 @@ static char defaultTranslations[] =
    <Btn1Motion>:  move() \n\
    <Btn1Up>:      notify() stop() \n\
    <Btn2Down>:    abort() \n\
+   <EnterWindow>:	FocusEnterWindow()	\n\
+   <LeaveWindow>:	FocusLeaveWindow()	\n\
+   Shift<Key>Tab:	FocusPrevious()		\n\
+   <Key>Tab:		FocusNext()		\n\
    :<Key>KP_Enter: set(rubberband,toggle) \n\
    <Key>space:    page(+1p,+1p) \n\
    <Key>Delete:   page(-1p,-1p) \n\
@@ -163,7 +168,7 @@ PannerClassRec pannerClassRec = {
     /* set_values_hook		*/	NULL,
     /* set_values_almost	*/	SetValuesAlmost,
     /* get_values_hook		*/	NULL,
-    /* accept_focus		*/	NULL,
+    /* accept_focus		*/	XawAcceptFocus,
     /* version			*/	XtVersion,
     /* callback_private		*/	NULL,
     /* tm_table			*/	defaultTranslations,

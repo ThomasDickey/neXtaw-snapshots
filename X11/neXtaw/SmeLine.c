@@ -43,9 +43,9 @@ in this Software without prior written authorization from the X Consortium.
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 
-#include <X11/neXtaw/XawInit.h>
-#include <X11/neXtaw/SmeLineP.h>
-#include <X11/neXtaw/Cardinals.h>
+#include "XawInit.h"
+#include "SmeLineP.h"
+#include "Cardinals.h"
 
 #define offset(field) XtOffsetOf(SmeLineRec, sme_line.field)
 static XtResource resources[] = {

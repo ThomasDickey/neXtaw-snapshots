@@ -54,12 +54,12 @@ in this Software without prior written authorization from the X Consortium.
 #include <X11/StringDefs.h>
 #include <X11/Shell.h> 
 
-#include <X11/neXtaw/TextP.h>
-#include <X11/neXtaw/AsciiText.h>
-#include <X11/neXtaw/Cardinals.h>
-#include <X11/neXtaw/Command.h>
-#include <X11/neXtaw/Form.h>
-#include <X11/neXtaw/Toggle.h>
+#include "TextP.h"
+#include "AsciiText.h"
+#include "Cardinals.h"
+#include "Command.h"
+#include "Form.h"
+#include "Toggle.h"
 #include <X11/Xmu/CharSet.h>
 #include "XawI18n.h"
 #include <stdio.h>

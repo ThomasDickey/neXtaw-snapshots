@@ -43,8 +43,8 @@ in this Software without prior written authorization from the X Consortium.
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 #include <X11/Xutil.h>
-#include <X11/neXtaw/XawInit.h>
-#include <X11/neXtaw/TextSrcP.h>
+#include "XawInit.h"
+#include "TextSrcP.h"
 #include <X11/Xmu/Atoms.h>
 #include <X11/Xmu/CharSet.h>
 #include "XawI18n.h"

@@ -180,6 +180,8 @@ typedef struct _TextPart {
     /* resources */
 
     Widget              source, sink;
+    Widget		threeD;
+    Dimension		shadow_width;
     XawTextPosition	insertPos;
     XawTextSelection	s;
     XawTextSelectType	*sarray;	   /* Array to cycle for selections. */
