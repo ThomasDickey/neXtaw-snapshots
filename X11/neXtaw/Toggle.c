@@ -101,10 +101,11 @@ static XtResource resources[] = {
 
 
 static void Toggle(), Initialize(), Notify(), ToggleSet();
+static void ToggleHighlight(), ToggleUnhighlight();
 static void ToggleDestroy(), ClassInit();
 static Boolean SetValues();
 static void Redisplay(), Resize();
-static void DisplayCheckBox(), DisplayRadioButton();
+static void DisplayCheckBox(Widget), DisplayRadioButton(Widget);
 
 /* Functions for handling the Radio Group. */
 
@@ -117,6 +118,12 @@ static XtActionsRec actionsList[] =
   {"toggle",	        Toggle},
   {"notify",	        Notify},
   {"set",	        ToggleSet},
+  /* the next three are from XawM */
+#if 0
+  {"unset",		ToggleUnset},
+#endif
+  {"highlight",		ToggleHighlight},
+  {"unhighlight",	ToggleUnhighlight},
 };
 
 
@@ -196,11 +203,8 @@ WidgetClass toggleWidgetClass = (WidgetClass) &toggleClassRec;
 static XrmQuark	XtQToggleSimple, XtQToggleCheck, XtQToggleRadio;
 
 /* ARGSUSED */
-static void _CvtStringToToggleStyle(args, num_args, fromVal, toVal)
-    XrmValuePtr args;		/* unused */
-    Cardinal    *num_args;      /* unused */
-    XrmValuePtr fromVal;
-    XrmValuePtr toVal;
+static void _CvtStringToToggleStyle(XrmValuePtr args, Cardinal *num_args,
+	XrmValuePtr fromVal, XrmValuePtr toVal)
 {
     static XtToggleStyle toggleStyle;
     XrmQuark q;
@@ -227,7 +231,7 @@ static void _CvtStringToToggleStyle(args, num_args, fromVal, toVal)
 #undef done
 
 static void
-ClassInit()
+ClassInit(void)
 {
   XtActionList actions;
   Cardinal num_actions;
@@ -272,10 +276,8 @@ ClassInit()
 }
 
 /*ARGSUSED*/
-static void Initialize(request, new, args, num_args)
- Widget request, new;
- ArgList args;
- Cardinal *num_args;
+static void Initialize(Widget request, Widget new,
+	ArgList *args, Cardinal *num_args)
 {
     ToggleWidget tw = (ToggleWidget) new;
     ToggleWidget tw_req = (ToggleWidget) request;
@@ -317,9 +319,7 @@ static void Initialize(request, new, args, num_args)
 }
 
 static void
-DisplayRadioButton(w, toggled)
-Widget w;
-Boolean toggled;
+DisplayRadioButton(Widget w/*, Boolean toggled*/)
 {
     ToggleWidget tw = (ToggleWidget) w;
     Display *dpy=XtDisplay(w);
@@ -354,8 +354,7 @@ Boolean toggled;
 
 
 static void
-DisplayCheckBox(w)
-Widget w;
+DisplayCheckBox(Widget w)
 {
     ToggleWidget tw = (ToggleWidget) w;
     Display *dpy=XtDisplay(w);
@@ -389,7 +388,11 @@ Widget w;
     XDrawLine(dpy, win, dark2, x1+1, y2-1, x2-1, y2-1);
     XDrawLine(dpy, win, dark2, x2-1, y1+1, x2-1, y2-1);    
     if (tw->command.set) {
+#if 0	/* this can't work */
 	int y=(y2-y1)/2-s;
+#else	/* this can */
+#define y (y1+3)
+#endif
 #define x (x1+4)
 	XDrawLine(dpy, win, dark2, x+1, y+3, x+1, y+6);
 	XDrawLine(dpy, win, light, x, y+3, x, y+8);     
@@ -401,8 +404,7 @@ Widget w;
 }
 
 static void
-Resize(w)
-Widget w;
+Resize(Widget w)
 {
     ToggleWidget tw = (ToggleWidget) w;
     int tmp = 0;
@@ -425,10 +427,7 @@ Widget w;
 }
 
 static void
-Redisplay(w, event, region)
-Widget w;
-XEvent *event;
-Region region;
+Redisplay(Widget w, XEvent *event, Region region)
 {
     ToggleWidget tw = (ToggleWidget) w;
 
@@ -450,11 +449,7 @@ Region region;
 
 /* ARGSUSED */
 static void 
-ToggleSet(w,event,params,num_params)
-Widget w;
-XEvent *event;
-String *params;		/* unused */
-Cardinal *num_params;	/* unused */
+ToggleSet(Widget w,XEvent *event,String *params,Cardinal *num_params)
 {
     ToggleWidgetClass class = (ToggleWidgetClass) w->core.widget_class;
 
@@ -467,13 +462,58 @@ Cardinal *num_params;	/* unused */
     }    
 }
 
+static void
+ToggleHighlight(Widget w, XEvent *event,
+		String *params, Cardinal *num_params)
+{
+    ToggleWidget tw = (ToggleWidget)w;
+  if ( *num_params == (Cardinal) 0) 
+    tw->command.highlighted = HighlightWhenUnset;
+  else {
+    if ( *num_params != (Cardinal) 1) 
+      XtWarning("Too many parameters passed to highlight action table.");
+    switch (params[0][0]) {
+    case 'A':
+    case 'a':
+      tw->command.highlighted = HighlightAlways;
+      break;
+    default:
+      tw->command.highlighted = HighlightWhenUnset;
+      break;
+    }
+  }
+
+#if 0
+    if (((ToggleWidget)w)->toggle.toggle_style==XtToggleCheck) {
+	DisplayCheckBox(w);
+    } else if (((ToggleWidget)w)->toggle.toggle_style==XtToggleRadio) {
+    	DisplayRadioButton(w);
+    }    
+#else
+	Redisplay(w, event, NULL);
+#endif
+}
+
+static void
+ToggleUnhighlight(Widget w, XEvent *event,
+		String *params, Cardinal *num_params)
+{
+    ToggleWidget tw = (ToggleWidget)w;
+    tw->command.highlighted = HighlightNone;
+#if 0
+    if (((ToggleWidget)w)->toggle.toggle_style==XtToggleCheck) {
+	DisplayCheckBox(w);
+    } else if (((ToggleWidget)w)->toggle.toggle_style==XtToggleRadio) {
+    	DisplayRadioButton(w);
+    }    
+#else
+	Redisplay(w, event, NULL);
+#endif
+}
+
 /* ARGSUSED */
 static void 
-Toggle(w,event,params,num_params)
-Widget w;
-XEvent *event;
-String *params;		/* unused */
-Cardinal *num_params;	/* unused */
+Toggle(Widget w,XEvent *event,String *params,Cardinal *num_params)
 {
   ToggleWidget tw = (ToggleWidget)w;
   ToggleWidgetClass class = (ToggleWidgetClass) w->core.widget_class;
@@ -492,11 +532,7 @@ Cardinal *num_params;	/* unused */
 }
 
 /* ARGSUSED */
-static void Notify(w,event,params,num_params)
-Widget w;
-XEvent *event;
-String *params;		/* unused */
-Cardinal *num_params;	/* unused */
+static void Notify(Widget w,XEvent *event,String params,Cardinal *num_params)
 {
   ToggleWidget tw = (ToggleWidget) w;
   long antilint = tw->command.set;
@@ -512,10 +548,8 @@ Cardinal *num_params;	/* unused */
 
 /* ARGSUSED */
 static Boolean 
-SetValues (current, request, new, args, num_args)
-Widget current, request, new;
-ArgList args;
-Cardinal *num_args;
+SetValues (Widget current, Widget request, Widget new,
+	ArgList args, Cardinal *num_args)
 {
     ToggleWidget oldtw = (ToggleWidget) current;
     ToggleWidget tw = (ToggleWidget) new;
@@ -543,9 +577,7 @@ Cardinal *num_args;
 
 /* ARGSUSED */
 static void
-ToggleDestroy(w, junk, garbage)
-Widget w;
-XtPointer junk, garbage;
+ToggleDestroy(Widget w, XtPointer junk, XtPointer garbage)
 {
   RemoveFromRadioGroup(w);
 }
@@ -565,8 +597,7 @@ XtPointer junk, garbage;
  */
 
 static RadioGroup *
-GetRadioGroup(w)
-Widget w;
+GetRadioGroup(Widget w)
 {
   ToggleWidget tw = (ToggleWidget) w;
 
@@ -584,8 +615,7 @@ Widget w;
  */
 
 static void
-CreateRadioGroup(w1, w2)
-Widget w1, w2;
+CreateRadioGroup(Widget w1, Widget w2)
 {
   char error_buf[BUFSIZ];
   ToggleWidget tw1 = (ToggleWidget) w1;
@@ -608,9 +638,7 @@ Widget w1, w2;
  */
 
 static void
-AddToRadioGroup(group, w)
-RadioGroup * group;
-Widget w;
+AddToRadioGroup(RadioGroup *group, Widget w)
 {
   ToggleWidget tw = (ToggleWidget) w;
   RadioGroup * local;
@@ -637,8 +665,7 @@ Widget w;
  */
 
 static void
-TurnOffRadioSiblings(w)
-Widget w;
+TurnOffRadioSiblings(Widget w)
 {
   RadioGroup * group;
   ToggleWidgetClass class = (ToggleWidgetClass) w->core.widget_class;
@@ -661,7 +688,7 @@ Widget w;
 	    DisplayRadioButton((Widget)local_tog);
       }
 	
-      Notify( group->widget, (XEvent *)NULL, (String *)NULL, (Cardinal *)0);
+      Notify( group->widget, (XEvent *)NULL, (String)NULL, (Cardinal *)0);
     }
     group = group->next;
   }
@@ -674,8 +701,7 @@ Widget w;
  */
 
 static void
-RemoveFromRadioGroup(w)
-Widget w;
+RemoveFromRadioGroup(Widget w)
 {
   RadioGroup * group = GetRadioGroup(w);
   if (group != NULL) {
@@ -701,12 +727,7 @@ Widget w;
  */
 
 void
-#if NeedFunctionPrototypes
 XawToggleChangeRadioGroup(Widget w, Widget radio_group)
-#else
-XawToggleChangeRadioGroup(w, radio_group)
-Widget w, radio_group;
-#endif
 {
   ToggleWidget tw = (ToggleWidget) w;
   RadioGroup * group;
@@ -736,12 +757,7 @@ Widget w, radio_group;
  */
 
 XtPointer
-#if NeedFunctionPrototypes
 XawToggleGetCurrent(Widget w)
-#else
-XawToggleGetCurrent(w)
-Widget w;
-#endif
 {
   RadioGroup * group;
 
@@ -766,13 +782,7 @@ Widget w;
  */
 
 void
-#if NeedFunctionPrototypes
 XawToggleSetCurrent(Widget radio_group, XtPointer radio_data)
-#else
-XawToggleSetCurrent(radio_group, radio_data)
-Widget radio_group;
-XtPointer radio_data;
-#endif
 {
   RadioGroup * group;
   ToggleWidget local_tog; 
@@ -784,7 +794,7 @@ XtPointer radio_data;
     if ( (local_tog->toggle.radio_data == radio_data) )     
       if (!local_tog->command.set) {
 	ToggleSet((Widget) local_tog, (XEvent *)NULL, (String *)NULL, (Cardinal *)0);
-	Notify((Widget) local_tog, (XEvent *)NULL, (String *)NULL, (Cardinal *)0);
+	Notify((Widget) local_tog, (XEvent *)NULL, (String)NULL, (Cardinal *)0);
       }
     return;
   }
@@ -804,7 +814,7 @@ XtPointer radio_data;
     if ( (local_tog->toggle.radio_data == radio_data) ) {
       if (!local_tog->command.set) { /* if not already set. */
 	ToggleSet((Widget) local_tog, (XEvent *)NULL, (String *)NULL, (Cardinal *)0);
-	Notify((Widget) local_tog, (XEvent *)NULL, (String *)NULL, (Cardinal *)0);
+	Notify((Widget) local_tog, (XEvent *)NULL, (String)NULL, (Cardinal *)0);
       }
       return;			/* found it, done */
     }
@@ -819,12 +829,7 @@ XtPointer radio_data;
  */
 
 void
-#if NeedFunctionPrototypes
 XawToggleUnsetCurrent(Widget radio_group)
-#else
-XawToggleUnsetCurrent(radio_group)
-Widget radio_group;
-#endif
 {
   ToggleWidgetClass class;
   ToggleWidget local_tog = (ToggleWidget) radio_group;
@@ -834,7 +839,7 @@ Widget radio_group;
   if (local_tog->command.set) {
     class = (ToggleWidgetClass) local_tog->core.widget_class;
     class->toggle_class.Unset(radio_group, NULL, NULL, 0);
-    Notify(radio_group, (XEvent *)NULL, (String *)NULL, (Cardinal *)0);
+    Notify(radio_group, (XEvent *)NULL, (String)NULL, (Cardinal *)0);
   }
   if ( GetRadioGroup(radio_group) == NULL) return;
   TurnOffRadioSiblings(radio_group);

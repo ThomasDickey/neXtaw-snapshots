@@ -34,6 +34,7 @@ SOFTWARE.
 #include "XawInit.h"
 #include "ThreeDP.h"
 #include <X11/Xosdefs.h>
+#include <X11/Xmu/Xmu.h>
 
 /* Initialization of defaults */
 

@@ -2,7 +2,19 @@
 Immediate plans
 ---------------
 
+Only show the caret when the Text widget has focus.
+
+---
+
+Text again: fix the caret blinking code, which seems only slightly broken.
+
+---
+
 Make focus policy a resource.
+
+---
+
+Distinguish between pointer focus and keyboard focus.
 
 ---
 
@@ -15,9 +27,6 @@ Text: Scroll horizontally to keep the caret visible.
 
 ---
 
-Scrollbar: Allow different arrow styles and placement.
-
----
 
 
 Plans for the future

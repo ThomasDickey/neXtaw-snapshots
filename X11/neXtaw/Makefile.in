@@ -116,7 +116,7 @@ neXtawinclude_HEADERS = \
 	XawAlloc.h XawI18n.h XawImP.h XawInit.h XawVersion.h laygram.h
 
 
-libneXtaw_la_LDFLAGS = -version-info 15:0:15
+libneXtaw_la_LDFLAGS = -version-info 15:1:15
 
 INCLUDES = -DUSEGRAY -DNO_MENU_LINES \
 	-DNeedFunctionPrototypes -I$(top_srcdir)

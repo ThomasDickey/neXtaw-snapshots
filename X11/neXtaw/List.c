@@ -38,6 +38,7 @@ in this Software without prior written authorization from the X Consortium.
 
 #include <stdio.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>

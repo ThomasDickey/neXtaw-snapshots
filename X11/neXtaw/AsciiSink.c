@@ -731,7 +731,7 @@ void _Xaw_BlinkCursor(client_data, idp)
 	call_data=BLINK_ON;
 	interval = sink->ascii_sink.blink_interval;	
     } 
-#if 0    
+#if 0
     if (XtIsRealized(XtParent((Widget)sink))) {
 /*	if (!ctx->text.hasfocus) {
 	    printf("nofoc\n");

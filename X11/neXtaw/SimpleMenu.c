@@ -328,7 +328,7 @@ Region region;
     ThreeDWidget tdw = (ThreeDWidget)smw->simple_menu.threeD;
     Display *dpy = XtDisplay(w);
     Window win = XtWindow(w);
-    int x,y,xf, max_y;
+    int y, max_y;
     int new_y;
     int s = tdw->threeD.shadow_width;
     Boolean can_paint;

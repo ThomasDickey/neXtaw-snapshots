@@ -60,6 +60,7 @@ SOFTWARE.
 #include <X11/Xmu/Misc.h>
 #include "XawInit.h"
 #include "CommandP.h"
+#include "ToggleP.h"
 #include "TraversalP.h"
 #include <X11/Xmu/Converters.h>
 #include <X11/extensions/shape.h>
@@ -431,6 +432,7 @@ PaintCommandWidget(Widget w, XEvent *event, Region region, Boolean change)
   Boolean very_thick;
   GC norm_gc, rev_gc;
   Dimension	s = cbw->threeD.shadow_width;
+  Pixmap old_pixmap;
  
   very_thick = cbw->command.highlight_thickness >
                (Dimension)((Dimension) Min(cbw->core.width, cbw->core.height)/2);
@@ -448,7 +450,15 @@ PaintCommandWidget(Widget w, XEvent *event, Region region, Boolean change)
     XClearArea(XtDisplay(w), XtWindow(w), s, s, cbw->core.width - 2 * s, 
 	       cbw->core.height - 2 * s, False);        
     region=NULL;
-    if (cbw->label.pixmap == None) {
+
+    /* this ugly hack shifts the text one pixel if we are set */
+    /* but we don't want that for Toggle in radio or check style! */
+    old_pixmap = cbw->label.pixmap;
+    if (XtIsSubclass(w, toggleWidgetClass) &&
+		((ToggleWidget)w)->toggle.toggle_style != XtToggleSimple) {
+	cbw->label.pixmap = 1;	/* brr... */
+    }
+    if (cbw->label.pixmap == None ) {
 	if (cbw->command.set) {
 	    if (!cbw->command.was_set) {      
 		cbw->label.label_x+=1/*s*/;
@@ -461,6 +471,9 @@ PaintCommandWidget(Widget w, XEvent *event, Region region, Boolean change)
 	    cbw->command.was_set=False;
 	}
     }
+    cbw->label.pixmap = old_pixmap;
+
+  /* now draw the Label text and the 3d shadow */
   if (cbw->command.highlight_thickness <= 0) {
     (*SuperClass->core_class.expose) (w, event, region);
     (*cwclass->threeD_class.shadowdraw) (w, event, region, !cbw->command.set);
