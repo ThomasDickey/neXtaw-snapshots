@@ -127,7 +127,8 @@ libneXtaw_la_SOURCES = \
 	List.c MenuButton.c Misc.c MultiSink.c MultiSrc.c Paned.c \
 	Panner.c Porthole.c Repeater.c Scrollbar.c Simple.c SimpleMenu.c \
 	Sme.c SmeBSB.c SmeLine.c SmeThreeD.c StripChart.c Text.c \
-	TextAction.c TextPop.c TextSink.c TextSrc.c TextTr.c ThreeD.c \
+	TextAction.c TextPop.c TextSink.c TextSrc.c TextTr.c TextTrOld.c \
+	ThreeD.c \
 	Toggle.c Tree.c Vendor.c Viewport.c XawI18n.c XawIm.c XawInit.c \
 	sharedlib.c laygram.c laylex.c
 
@@ -150,7 +151,7 @@ neXtawinclude_HEADERS = \
 	XawAlloc.h XawI18n.h XawImP.h XawInit.h laygram.h
 
 
-libneXtaw_la_LDFLAGS = -version-info 13:0:13
+libneXtaw_la_LDFLAGS = -version-info 14:0:14
 
 INCLUDES = -DUSEGRAY -DNO_MENU_LINES \
 	-DNeedFunctionPrototypes -I$(top_srcdir)
@@ -172,8 +173,9 @@ am_libneXtaw_la_OBJECTS = AllWidgets.lo AsciiSink.lo AsciiSrc.lo \
 	Repeater.lo Scrollbar.lo Simple.lo SimpleMenu.lo Sme.lo \
 	SmeBSB.lo SmeLine.lo SmeThreeD.lo StripChart.lo Text.lo \
 	TextAction.lo TextPop.lo TextSink.lo TextSrc.lo TextTr.lo \
-	ThreeD.lo Toggle.lo Tree.lo Vendor.lo Viewport.lo XawI18n.lo \
-	XawIm.lo XawInit.lo sharedlib.lo laygram.lo laylex.lo
+	TextTrOld.lo ThreeD.lo Toggle.lo Tree.lo Vendor.lo Viewport.lo \
+	XawI18n.lo XawIm.lo XawInit.lo sharedlib.lo laygram.lo \
+	laylex.lo
 libneXtaw_la_OBJECTS = $(am_libneXtaw_la_OBJECTS)
 
 DEFAULT_INCLUDES =  -I. -I$(srcdir)
@@ -197,12 +199,13 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/StripChart.Plo ./$(DEPDIR)/Text.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/TextAction.Plo ./$(DEPDIR)/TextPop.Plo \
 @AMDEP_TRUE@	./$(DEPDIR)/TextSink.Plo ./$(DEPDIR)/TextSrc.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/TextTr.Plo ./$(DEPDIR)/ThreeD.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/Toggle.Plo ./$(DEPDIR)/Tree.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/Vendor.Plo ./$(DEPDIR)/Viewport.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/XawI18n.Plo ./$(DEPDIR)/XawIm.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/XawInit.Plo ./$(DEPDIR)/laygram.Plo \
-@AMDEP_TRUE@	./$(DEPDIR)/laylex.Plo ./$(DEPDIR)/sharedlib.Plo
+@AMDEP_TRUE@	./$(DEPDIR)/TextTr.Plo ./$(DEPDIR)/TextTrOld.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/ThreeD.Plo ./$(DEPDIR)/Toggle.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/Tree.Plo ./$(DEPDIR)/Vendor.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/Viewport.Plo ./$(DEPDIR)/XawI18n.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/XawIm.Plo ./$(DEPDIR)/XawInit.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/laygram.Plo ./$(DEPDIR)/laylex.Plo \
+@AMDEP_TRUE@	./$(DEPDIR)/sharedlib.Plo
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
@@ -297,6 +300,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TextSink.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TextSrc.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TextTr.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TextTrOld.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ThreeD.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Toggle.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Tree.Plo@am__quote@

@@ -6,7 +6,8 @@ libneXtaw_la_SOURCES = \
 	List.c MenuButton.c Misc.c MultiSink.c MultiSrc.c Paned.c \
 	Panner.c Porthole.c Repeater.c Scrollbar.c Simple.c SimpleMenu.c \
 	Sme.c SmeBSB.c SmeLine.c SmeThreeD.c StripChart.c Text.c \
-	TextAction.c TextPop.c TextSink.c TextSrc.c TextTr.c ThreeD.c \
+	TextAction.c TextPop.c TextSink.c TextSrc.c TextTr.c TextTrOld.c \
+	ThreeD.c \
 	Toggle.c Tree.c Vendor.c Viewport.c XawI18n.c XawIm.c XawInit.c \
 	sharedlib.c laygram.c laylex.c
 
@@ -27,7 +28,7 @@ neXtawinclude_HEADERS = \
 	Tree.h TreeP.h VendorEP.h Viewport.h ViewportP.h \
 	XawAlloc.h XawI18n.h XawImP.h XawInit.h laygram.h
 
-libneXtaw_la_LDFLAGS = -version-info 13:0:13
+libneXtaw_la_LDFLAGS = -version-info 14:0:14
 
 INCLUDES = -DUSEGRAY -DNO_MENU_LINES \
 	-DNeedFunctionPrototypes -I$(top_srcdir)

@@ -13,9 +13,15 @@
 
 AC_DEFUN(AC_CHECK_NEXTAW,
 [
+AC_ARG_ENABLE(obsolete_selections,
+	[  --enable-obsolete-selections    Use CUT_BUFFER stuff from X10],
+	[ if test "$withval" = yes; then
+		AC_DEFINE(OBSOLETE_SELECTIONS, 1, [#undef OBSOLETE_SELECTIONS])
+	fi ])
+
 dnl Check for wide chars
 AC_CHECK_HEADER(wctype.h, AC_DEFINE(HAS_WCTYPE_H))
-AC_CHECK_HEADER(widec.h, , AC_DEFINE(NO_WIDEC_H))
+AC_CHECK_HEADER(widec.h, AC_DEFINE(HAS_WIDEC_H))
 AC_CHECK_HEADER(wchar.h, AC_DEFINE(HAS_WCHAR_H))
 AC_CHECK_HEADER(X11/Xmu/Xmu.h, AC_DEFINE(HAS_XMU_H))
 AC_CHECK_FUNC(wcslen, , AC_DEFINE(USE_XWCHAR_STRING))

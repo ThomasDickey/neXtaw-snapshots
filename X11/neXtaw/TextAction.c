@@ -873,7 +873,11 @@ Boolean	kill;
   
   if (kill && from < to) {
     XawTextSelectionSalt    *salt;
+#ifdef OBSOLETE_SELECTIONS
     Atom selection = XInternAtom(XtDisplay(ctx), "SECONDARY", False);
+#else
+    Atom selection = XInternAtom(XtDisplay(ctx), "CLIPBOARD", False);
+#endif
 
     LoseSelection ((Widget) ctx, &selection);
     salt = (XawTextSelectionSalt *) XtMalloc (sizeof (XawTextSelectionSalt));

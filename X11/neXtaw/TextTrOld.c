@@ -43,13 +43,14 @@ The Japanese user typically hits their Kanji key when they want to do
 input.  This merely makes sure the input is connected. 
 */
 
-#ifndef OBSOLETE_SELECTIONS
-/* modern stuff with PRIMARY and CLIPBOARD, but no CUT_BUFFER0 */
+#ifdef OBSOLETE_SELECTIONS
+/* Traditional stuff with links to X10. Do not use */
+
 char *_XawDefaultTextTranslations1 =
 "\
 Ctrl<Key>A:	beginning-of-line() \n\
 Ctrl<Key>B:	backward-character() \n\
-Ctrl<Key>C:	kill-selection() insert-selection(CLIPBOARD, CLIPBOARD) \n\
+Ctrl<Key>C:	insert-selection(CUT_BUFFER0) \n\
 Ctrl<Key>D:	delete-next-character() \n\
 Ctrl<Key>E:	end-of-line() \n\
 Ctrl<Key>F:	forward-character() \n\
@@ -66,9 +67,8 @@ Ctrl<Key>R:	search(backward) \n\
 Ctrl<Key>S:	search(forward) \n\
 Ctrl<Key>T:     transpose-characters() \n\
 Ctrl<Key>U:	multiply(4) \n\
-Ctrl<Key>V:	insert-selection(CLIPBOARD, CLIPBOARD) \n\
+Ctrl<Key>V:	next-page() \n\
 Ctrl<Key>W:	kill-selection() \n\
-Ctrl<Key>X:	kill-selection() \n\
 Ctrl<Key>Y:	insert-selection(SECONDARY) \n\
 Ctrl<Key>Z:	scroll-one-line-up() \n\
 ";
@@ -97,18 +97,14 @@ Meta<Key>Z:	scroll-one-line-down() \n\
 ";
 
 char *_XawDefaultTextTranslations3 = "\
-:Ctrl<Key>Home:	beginning-of-file() \n\
-<Key>Home:	beginning-of-line() \n\
+<Key>Home:	beginning-of-file() \n\
 :<Key>KP_Home:	beginning-of-file() \n\
-:Ctrl<Key>End:	end-of-file() \n\
-<Key>End:	end-of-line() \n\
+<Key>End:	end-of-file() \n\
 :<Key>KP_End:	end-of-file() \n\
 <Key>Next:	next-page() \n\
 :<Key>KP_Next:	next-page() \n\
-<Key>Page_Down:	next-page() \n\
 <Key>Prior:	previous-page() \n\
 :<Key>KP_Prior: previous-page() \n\
-<Key>Page_Up:	previous-page() \n\
 <Key>Right:	forward-character() \n\
 :<Key>KP_Right: forward-character() \n\
 <Key>Left:	backward-character() \n\
