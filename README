@@ -1,7 +1,6 @@
-$Id: README,v 1.3 2000/05/16 05:00:04 casantos Exp $
 
 
-                               neXtaw 0.9
+                               neXtaw 0.10
                 Athena Widgets with N*XTSTEP appearance
                
                            Alfredo K. Kojima
@@ -10,6 +9,8 @@ $Id: README,v 1.3 2000/05/16 05:00:04 casantos Exp $
                         Carlos A. M. dos Santos
                         <casantos@inf.ufrgs.br>
 
+                            Ulric Eriksson
+                           <ulric@siag.nu>
 
 1. INTRODUCTION
 
@@ -30,6 +31,11 @@ You can make Athena based applications use it by the following ways:
    o  Relink the applications changing -lXaw to -lneXtaw (preferable, but
       not ever feasible).  So you can still have the old libXaw and use it
       with some app that doesn't work with neXtaw.
+
+   o  On Linux and Solaris, run the application with LD_PRELOAD set,
+      like this:
+
+	LD_PRELOAD=/usr/X11R6/lib/libneXtaw.so <program>
 
 Features:
         - N*XTSTEP look alike widgets.
@@ -189,12 +195,12 @@ send me a patch.
     * Read the FAQ
     * Read the sources
 
-As a desperate attitude :-), send e-mail to casantos@inf.ufrgs.br.  Include a
+As a desperate attitude :-), send e-mail to ulric@siag.nu.  Include a
 detailed description of the problems you are experiencing, the platform you're
 running on (machine, OS, X server vendor and version etc), the program name
 and version that have problems, the neXtaw version, the output of "xrdb
 -query" and a screen shot, if you think it'll help. Please ask for permission
-BEFORE send a screen shot!
+before you send a screen shot!
 
 
 
@@ -204,4 +210,14 @@ BEFORE send a screen shot!
 
 						 -- Luis Fernando Veríssimo
 
-        			-=-
+
+Note from current maintainer: according to Babelfish, the quote
+above means:
+
+	E crossbow, that wanted to say that it had hunger,
+	showed this with mimic engolindo the Senator
+	and its theories. Metaforicamente, is clearly.
+
+Clearly, indeed.
+
+Ulric Eriksson, ulric@siag.nu

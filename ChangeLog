@@ -1,0 +1,10 @@
+
+011213	Released 0.10.
+
+011212	Tested on Linux and Solaris.
+
+011211	Most (relevant) compiler warnings were fixed.
+
+011210	Converted to autoconf.
+	Directory structure was reorganised.
+
