@@ -1,4 +1,11 @@
 
+030823	Patch from Alexey I. Froloff <raorn@altlinux.ru>:
+	This patch adds shadow width to SimpleMenu widget's height
+	(last Sme overlaps with bottom shadow) and fixes SmeBSB drawing
+	code (different regions were highlighted in Redisplay and
+	FlipColors, "disabled" menu items were displayed as normal if
+	.international is set to True).
+
 030227	Updated selection code in Text widget. Removed support for
 	cut buffers. Added support for CLIPBOARD. Changed keybindings:
 	Ctrl-C = copy selection to clipboard

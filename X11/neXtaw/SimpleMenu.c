@@ -1056,11 +1056,7 @@ Dimension *width_ret, *height_ret;
 		(*entry)->rectangle.x = s;
 		height += (*entry)->rectangle.height;
 	    }
-#ifdef NO_MENU_LINES
-	    height += smw->simple_menu.bottom_margin;	    
-#else	    
 	    height += smw->simple_menu.bottom_margin+s;
-#endif	    
 	}
 	else {
 	    if ((smw->simple_menu.row_height != 0) && 

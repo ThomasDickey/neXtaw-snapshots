@@ -28,7 +28,7 @@ neXtawinclude_HEADERS = \
 	Tree.h TreeP.h VendorEP.h Viewport.h ViewportP.h \
 	XawAlloc.h XawI18n.h XawImP.h XawInit.h laygram.h
 
-libneXtaw_la_LDFLAGS = -version-info 14:0:14
+libneXtaw_la_LDFLAGS = -version-info 14:1:14
 
 INCLUDES = -DUSEGRAY -DNO_MENU_LINES \
 	-DNeedFunctionPrototypes -I$(top_srcdir)
