@@ -76,7 +76,6 @@ SOFTWARE.
  cursorName	     Cursor		String		NULL
  depth		     Depth		int		parent's depth
  destroyCallback     Callback		XtCallbackList	NULL
- drawBorder          DrawBorder		Boolean		True
  drawArrows	     DrawArrows         Boolean         True
  foreground	     Foreground		Pixel		XtDefaultForeground
  height		     Height		Dimension	length or thickness
@@ -124,9 +123,6 @@ SOFTWARE.
 #define XtNinitialDelay "initialDelay"
 #define XtNrepeatDelay "repeatDelay"
 #define XtCDelay "Delay"
-
-#define XtCDrawBorder "DrawBorder"
-#define XtNdrawBorder "drawBorder"
 
 #define XtCDrawArrows "DrawArrows"
 #define XtNdrawArrows "drawArrows"

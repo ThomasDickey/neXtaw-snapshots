@@ -77,8 +77,6 @@ typedef struct {
     Dimension	  min_thumb;	/* minium size for the thumb. */
     float         picked;       /* How much of the thumb is picked *
 				 * when scrolling starts */
-    Boolean	  draw_border;	/* Whether the border for the thumb's base
-				 * should be drawn or not */
     Boolean   	  draw_arrows;	/* whether we should draw the arrow buttons */
     Boolean	  always_visible; /* arrows and slider must always be visible*/
      /* private */

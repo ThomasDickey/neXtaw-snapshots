@@ -8,12 +8,12 @@
 XTerm.JoinSession:False
 
 *SimpleMenu*BackingStore: NotUseful
-*SimpleMenu*menuLabel.font: -adobe-helvetica-bold-r-normal--*-120-*-*-*-*-iso8859-*
+!*SimpleMenu*menuLabel.font: -adobe-helvetica-bold-r-normal--*-120-*-*-*-*-iso8859-*
 *SimpleMenu*menuLabel.vertSpace: 	100
 *SimpleMenu*HorizontalMargins: 16
 *SimpleMenu*Sme.height:	16
 
-*SimpleMenu*Cursor: left_ptr
+!*SimpleMenu*Cursor: right_ptr
 
 *mainMenu.Label:  Main Options
 *mainMenu*securekbd*Label:  Secure Keyboard
@@ -63,14 +63,14 @@ XTerm.JoinSession:False
 
 *fontMenu.Label:  VT Fonts
 *fontMenu*fontdefault*Label:	Default
-*VT100*font:		-b&h-lucidatypewriter-medium-r-normal-*-*-140-*-*-*-*-*-*
+*VT100*font:	-b&h-lucidatypewriter-medium-r-normal-*-*-140-*-*-*-*-*-*
 *fontMenu*font1*Label:	Unreadable
 *VT100*font1:	-b&h-lucidatypewriter-medium-r-normal-*-*-60-*-*-*-*-*-*
 *IconFont:		nil2
 *fontMenu*font2*Label:	Tiny
 *VT100*font2:	-b&h-lucidatypewriter-medium-r-normal-*-*-80-*-*-*-*-*-*
 *fontMenu*font3*Label:	Small
-*VT100*font3:	-b&h-lucidatypewriter-medium-r-normal-*-*-1r0-*-*-*-*-*-*
+*VT100*font3:	-b&h-lucidatypewriter-medium-r-normal-*-*-100-*-*-*-*-*-*
 *fontMenu*font4*Label:	Medium
 *VT100*font4:	-b&h-lucidatypewriter-medium-r-normal-*-*-120-*-*-*-*-*-*
 *fontMenu*font5*Label:	Large
@@ -147,68 +147,17 @@ XTerm.JoinSession:False
 	!Lock Ctrl		<Btn5Down>:	scroll-forw(1,halfpage) \n\
 	!Lock @Num_Lock Ctrl	<Btn5Down>:	scroll-forw(1,halfpage) \n\
 	! @Num_Lock Ctrl	<Btn5Down>:	scroll-forw(1,halfpage) \n\
-				<Btn5Down>:	scroll-forw(5,line) \n\
-	<Key>F1: string("\033[11~") \n\
-	<Key>F2: string("\033[12~") \n\
-	<Key>F3: string("\033[13~") \n\
-	<Key>F4: string("\033[14~") \n\
-	!Alt Shift Ctrl<Key>Insert: string("\033\033[2@") \n\
-	!Alt Shift<Key>Insert: string("\033\033[2$") \n\
-	!Alt Ctrl<Key>Insert: string("\033\033[2^") \n\
-	!Shift Ctrl<Key>Insert: string("\033[2@") \n\
-	!Alt<Key>Insert: string("\033\033[2~") \n\
-	!Shift<Key>Insert: insert-selection(PRIMARY, CUT_BUFFER0) \n\
-	!Ctrl<Key>Insert: string("\033[2^") \n\
-	<Key>Insert: string("\033[2~") \n\
-	!Alt Shift Ctrl<Key>Delete: string("\033\033[3@") \n\
-	!Alt Shift<Key>Delete: string("\033\033[3$") \n\
-	!Alt Ctrl<Key>Delete: string("\033\033[3^") \n\
-	!Shift Ctrl<Key>Delete: string("\033[3@") \n\
-	!Shift<Key>Delete: string("\033[3$") \n\
-	!Ctrl<Key>Delete: string("\033[3^") \n\
-	!Alt<Key>Delete: string("\033\033[3~") \n\
-	<Key>Delete: string("\033[3~") \n\
-	!Alt Shift Ctrl<Key>Home: string("\033\033[7@") \n\
-	!Alt Shift<Key>Home: string("\033\033[7$") \n\
-	!Alt Ctrl<Key>Home: string("\033\033[7^") \n\
-	!Shift Ctrl<Key>Home: string("\033[7@") \n\
-	!Shift<Key>Home: string("\033[7$") \n\
-	!Ctrl<Key>Home: string("\033[7^") \n\
-	!Alt<Key>Home: string("\033\033[7~") \n\
-	<Key>Home: string("\033[7~") \n\
-	!Alt Shift Ctrl<Key>End: string("\033\033[8@") \n\
-	!Alt Shift<Key>End: string("\033\033[8$") \n\
-	!Alt Ctrl<Key>End: string("\033\033[8^") \n\
-	!Shift Ctrl<Key>End: string("\033[8@") \n\
-	!Shift<Key>End: string("\033[8$") \n\
-	!Ctrl<Key>End: string("\033[8^") \n\
-	!Alt<Key>End: string("\033\033[8~") \n\
-	<Key>End: string("\033[8~") \n\
-	!Alt Shift Ctrl<Key>Prior: string("\033\033[5@") \n\
-	!Alt Shift<Key>Prior: string("\033\033[5$") \n\
-	!Alt Ctrl<Key>Prior: string("\033\033[5^") \n\
-	!Shift Ctrl<Key>Prior: string("\033[5@") \n\
-	!Shift<Key>Prior: scroll-back(1,halfpage) \n\
-	!Ctrl<Key>Prior: string("\033[5^") \n\
-	!Alt<Key>Prior: string("\033\033[5~") \n\
-	<Key>Prior: string("\033[5~") \n\
-	!Alt Shift Ctrl<Key>Next: string("\033\033[6@") \n\
-	!Alt Shift<Key>Next: string("\033\033[6$") \n\
-	!Alt Ctrl<Key>Next: string("\033\033[6^") \n\
-	!Shift Ctrl<Key>Next: string("\033[6@") \n\
-	!Shift<Key>Next: scroll-forw(1,halfpage) \n\
-	!Ctrl<Key>Next: string("\033[6^") \n\
-	!Alt<Key>Next: string("\033\033[6~") \n\
-	<Key>Next: string("\033[6~") \n\
-	!Ctrl<Key>Left: string("\033[d") \n\
-	!Ctrl<Key>Right: string("\033[c")
+				<Btn5Down>:	scroll-forw(5,line)
 
-*charClass:		33:48,35-38:48,43:48,45-47:48
-*pointerShape:		left_ptr
-XTerm*eightBitInput:	False
+*termName:		xterm-color
+*VT100*cursorBlink:	True
+*VT100*charClass:	33:48,35-38:48,43:48,45-47:48
+*VT100*pointerShape:	left_ptr
+*VT100*eightBitInput:	False
 
 ! For Xaw3d/neXtaw arrow scrollbar
-XTerm*vt100.scrollBar:			True
-XTerm*vt100*Scrollbar.thickness:	18
-XTerm*vt100*Scrollbar.alwaysVisible:	True
-XTerm*vt100*Scrollbar.awaitInput:	True
+!*VT100*rightScrollBar:		True
+*VT100*scrollBar:		True
+*VT100*Scrollbar.thickness:	18
+*VT100*Scrollbar.alwaysVisible:	True
+*VT100*Scrollbar.awaitInput:	True

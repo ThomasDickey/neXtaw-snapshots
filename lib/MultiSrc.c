@@ -735,6 +735,7 @@ SetValues(current, request, new, args, num_args)
   
   if ( string_set || (old_src->multi_src.type != src->multi_src.type) ) {
     RemoveOldStringOrFile(old_src, string_set);
+    src->multi_src.allocated_string = old_src->multi_src.allocated_string;
     file = InitStringOrFile(src, string_set);
 
     /* Load pieces does this logic for us, but it shouldn't.  Its messy.*/
@@ -1131,9 +1132,6 @@ InitStringOrFile(src, newString)
     case XawtextAppend:
     case XawtextEdit:
 	if (src->multi_src.string == NULL) {
-
-            if ( src->multi_src.allocated_string )
-                XtFree( src->multi_src.string );
             src->multi_src.allocated_string = False;
 	    src->multi_src.string = fileName;
 

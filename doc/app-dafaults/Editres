@@ -273,6 +273,6 @@ Editres.title:			X Resorce Editor
 *mainViewport.pane.Label.showGrip:			False
 *mainViewport.pane.Form.min:				66
 *mainViewport.pane.Form.max:				66
-*tree*TransientShell.translations: #override \
-<Map>:	get-values(1, $w, width) \
-	set-values(1, maxWidth, $w)
+!*tree*TransientShell.translations: #override \
+!<Map>:	get-values(1, $w, width) \
+!	set-values(1, maxWidth, $w)
