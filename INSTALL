@@ -26,6 +26,26 @@ Except on Solaris, where it is:
 In fact, X can be installed anywhere. If neither of the above applies
 to you, you'll have to figure it out yourself.
 
+
+About selections
+----------------
+There has historically been different interpretations of how X
+should handle cutting and pasting. Xaw with its ancient history
+has used selections PRIMARY, SECONDARY and the CUT_BUFFERs
+from X10. Nothing else does that these days. Instead PRIMARY is
+used for currently highlighted text and CLIPBOARD is used for the
+stuff being cut and pasted.
+
+NeXtaw as of 0.14.0 brings itself up to date by getting rid of
+CUT_BUFFERs (because they are evil) and SECONDARY (because its use
+is undefined) and adding CLIPBOARD instead. As a result, it is
+possible to cut and paste between applications using neXtaw
+and any modern X application such as Mozilla or Open Office.
+
+The configuration option --enable-obsolete-selections enables
+the obsolete selection code again, making the resulting library
+incompatible with current standards.
+
 ==================================================================
 
 

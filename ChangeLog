@@ -1,4 +1,20 @@
 
+030227	Updated selection code in Text widget. Removed support for
+	cut buffers. Added support for CLIPBOARD. Changed keybindings:
+	Ctrl-C = copy selection to clipboard
+	Ctrl-X = cut selection to clipboard
+	Ctrl-V = paste clipboard
+	Page_Up = page up
+	Page_Down = page down
+	Home = beginning of line
+	Ctrl-Home = beginning of file
+	End = end of line
+	Ctrl-End = end of file
+	New configuration option --enable-obsolete-selections reverts
+	to the old code.
+
+030204	Check for the existence of widec.h (c/o Matthias Buelow).
+
 030115	Patches by Alexey I. Froloff:
 	"NeXtish" scrollbar look (thumb and buttons are wider and
 	look more flat).

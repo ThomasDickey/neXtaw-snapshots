@@ -1,6 +1,6 @@
 
 
-                               neXtaw 0.10
+                             neXtaw 0.13.0
                 Athena Widgets with N*XTSTEP appearance
                
                            Alfredo K. Kojima
@@ -49,6 +49,7 @@ Features:
         - Better feel
         - Better internationalization support (character composition with
           dead-keys)
+        - Better interaction with CLIPBOARD selection
 
 Converted Widgets:
         - ThreeD (3d shadows)
@@ -138,9 +139,7 @@ Unpack the sources somewhere:
         gunzip -c neXtaw-<version>.tar.gz|tar xvf -
 	  cd neXtaw-<version>
 
-Modify lib/Imakefile as you wish (the defaults are prety reasonable) and run:
-	xmkmf
-	make Makefiles
+	./configure [options]
 	make
 
 To install both the library and the example programs, run:
@@ -148,6 +147,8 @@ To install both the library and the example programs, run:
 
 If you want to install only the library, cd to "lib" and run
 	make install
+
+See also INSTALL.
 
 4. CONFIGURATION
 

@@ -30,7 +30,9 @@ in this Software without prior written authorization from the X Consortium.
 #ifdef HAS_WCTYPE_H
 #include <wctype.h>
 #if !defined(__linux__)
+#ifdef HAVE_WIDEC_H
 #include <widec.h>
+#endif
 #ifdef HAVE_WCSLEN
 #define wcslen(c) wslen(c)
 #endif
