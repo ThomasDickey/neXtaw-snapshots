@@ -1,4 +1,4 @@
-/* $Id: neXtclock.c,v 1.1 2000/02/15 20:20:20 casantos Exp $ */
+/* $Id: neXtclock.c,v 1.2 2000/02/15 20:20:20 ulric Exp $ */
 
 /* $XConsortium: xclock.c /main/40 1996/02/02 14:27:04 kaleb $ */
 
@@ -32,6 +32,7 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from the X Consortium.
  */
 
+#include <stdio.h>
 #include <X11/Xatom.h>
 #include <X11/Intrinsic.h>
 #include <X11/StringDefs.h>
@@ -73,15 +74,15 @@ static Atom wm_delete_window;
 /*
  * Report the syntax for calling xclock.
  */
-Syntax(call)
+void Syntax(call)
 	char *call;
 {
-	(void) printf ("Usage: %s [-analog] [-bw <pixels>] [-digital]\n", call);
-	(void) printf ("       [-fg <color>] [-bg <color>] [-hd <color>]\n");
-	(void) printf ("       [-hl <color>] [-bd <color>]\n");
-	(void) printf ("       [-fn <font_name>] [-help] [-padding <pixels>]\n");
-	(void) printf ("       [-rv] [-update <seconds>] [-display displayname]\n");
-	(void) printf ("       [-geometry geom]\n\n");
+	printf ("Usage: %s [-analog] [-bw <pixels>] [-digital]\n", call);
+	printf ("       [-fg <color>] [-bg <color>] [-hd <color>]\n");
+	printf ("       [-hl <color>] [-bd <color>]\n");
+	printf ("       [-fn <font_name>] [-help] [-padding <pixels>]\n");
+	printf ("       [-rv] [-update <seconds>] [-display displayname]\n");
+	printf ("       [-geometry geom]\n\n");
 	exit(1);
 }
 
@@ -178,4 +179,5 @@ int main(argc, argv)
     (void) XSetWMProtocols (XtDisplay(toplevel), XtWindow(toplevel),
 			    &wm_delete_window, 1);
     XtAppMainLoop (app_con);
+    return 0;
 }

@@ -1,0 +1,457 @@
+# Makefile.in generated automatically by automake 1.4 from Makefile.am
+
+# Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
+# This Makefile.in is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+# even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+
+SHELL = @SHELL@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+sbindir = @sbindir@
+libexecdir = @libexecdir@
+datadir = @datadir@
+sysconfdir = @sysconfdir@
+sharedstatedir = @sharedstatedir@
+localstatedir = @localstatedir@
+libdir = @libdir@
+infodir = @infodir@
+mandir = @mandir@
+includedir = @includedir@
+oldincludedir = /usr/include
+
+DESTDIR =
+
+pkgdatadir = $(datadir)/@PACKAGE@
+pkglibdir = $(libdir)/@PACKAGE@
+pkgincludedir = $(includedir)/@PACKAGE@
+
+top_builddir = ../..
+
+ACLOCAL = @ACLOCAL@
+AUTOCONF = @AUTOCONF@
+AUTOMAKE = @AUTOMAKE@
+AUTOHEADER = @AUTOHEADER@
+
+INSTALL = @INSTALL@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@ $(AM_INSTALL_PROGRAM_FLAGS)
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+transform = @program_transform_name@
+
+NORMAL_INSTALL = :
+PRE_INSTALL = :
+POST_INSTALL = :
+NORMAL_UNINSTALL = :
+PRE_UNINSTALL = :
+POST_UNINSTALL = :
+host_alias = @host_alias@
+host_triplet = @host@
+AS = @AS@
+AWK = @AWK@
+CC = @CC@
+DLLTOOL = @DLLTOOL@
+LD = @LD@
+LIBTOOL = @LIBTOOL@
+LN_S = @LN_S@
+MAKEINFO = @MAKEINFO@
+NM = @NM@
+OBJDUMP = @OBJDUMP@
+PACKAGE = @PACKAGE@
+RANLIB = @RANLIB@
+VERSION = @VERSION@
+
+lib_LTLIBRARIES = libneXtaw.la
+
+libneXtaw_la_SOURCES =  	AllWidgets.c AsciiSink.c AsciiSrc.c AsciiText.c Box.c 	Clock.c Command.c Dialog.c Form.c Grip.c Label.c Layout.c 	List.c MenuButton.c Misc.c MultiSink.c MultiSrc.c Paned.c 	Panner.c Porthole.c Repeater.c Scrollbar.c Simple.c SimpleMenu.c 	Sme.c SmeBSB.c SmeLine.c SmeThreeD.c StripChart.c Text.c 	TextAction.c TextPop.c TextSink.c TextSrc.c TextTr.c ThreeD.c 	Toggle.c Tree.c Vendor.c Viewport.c XawI18n.c XawIm.c XawInit.c 	sharedlib.c laygram.c laylex.c
+
+
+neXtawincludedir = $(includedir)/X11/neXtaw
+neXtawinclude_HEADERS =  	AllWidgets.h AsciiSink.h AsciiSinkP.h AsciiSrc.h AsciiSrcP.h 	AsciiText.h AsciiTextP.h Box.h BoxP.h Cardinals.h Clock.h ClockP.h 	Command.h CommandP.h Dialog.h DialogP.h Form.h FormP.h 	Grip.h GripP.h Label.h LabelP.h Layout.h LayoutP.h List.h ListP.h 	MenuButtoP.h MenuButton.h Misc.h MultiSink.h 	MultiSinkP.h MultiSrc.h MultiSrcP.h Paned.h PanedP.h 	Panner.h PannerP.h Porthole.h PortholeP.h Repeater.h RepeaterP.h 	Reports.h Scrollbar.h ScrollbarP.h Simple.h 	SimpleMenP.h SimpleMenu.h SimpleP.h Sme.h SmeBSB.h SmeBSBP.h 	SmeLine.h SmeLineP.h SmeP.h SmeThreeD.h SmeThreeDP.h 	StripCharP.h StripChart.h Text.h TextP.h TextSink.h TextSinkP.h 	TextSrc.h TextSrcP.h ThreeD.h ThreeDP.h Toggle.h ToggleP.h 	Tree.h TreeP.h VendorEP.h Viewport.h ViewportP.h 	XawAlloc.h XawI18n.h XawImP.h XawInit.h laygram.h
+
+
+libneXtaw_la_LDFLAGS = -version-info 0:0:0
+
+INCLUDES = -DUSEGRAY -DNO_MENU_LINES -DNeedFunctionPrototypes -I../..
+
+EXTRA_DIST = Template.c Template.h TemplateP.h 	laygram.y laylex.l
+
+mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+CONFIG_CLEAN_FILES = 
+LTLIBRARIES =  $(lib_LTLIBRARIES)
+
+
+DEFS = @DEFS@ -I. -I$(srcdir) 
+CPPFLAGS = @CPPFLAGS@
+LDFLAGS = @LDFLAGS@
+LIBS = @LIBS@
+X_CFLAGS = @X_CFLAGS@
+X_LIBS = @X_LIBS@
+X_EXTRA_LIBS = @X_EXTRA_LIBS@
+X_PRE_LIBS = @X_PRE_LIBS@
+libneXtaw_la_LIBADD = 
+libneXtaw_la_OBJECTS =  AllWidgets.lo AsciiSink.lo AsciiSrc.lo \
+AsciiText.lo Box.lo Clock.lo Command.lo Dialog.lo Form.lo Grip.lo \
+Label.lo Layout.lo List.lo MenuButton.lo Misc.lo MultiSink.lo \
+MultiSrc.lo Paned.lo Panner.lo Porthole.lo Repeater.lo Scrollbar.lo \
+Simple.lo SimpleMenu.lo Sme.lo SmeBSB.lo SmeLine.lo SmeThreeD.lo \
+StripChart.lo Text.lo TextAction.lo TextPop.lo TextSink.lo TextSrc.lo \
+TextTr.lo ThreeD.lo Toggle.lo Tree.lo Vendor.lo Viewport.lo XawI18n.lo \
+XawIm.lo XawInit.lo sharedlib.lo laygram.lo laylex.lo
+CFLAGS = @CFLAGS@
+COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
+CCLD = $(CC)
+LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
+HEADERS =  $(neXtawinclude_HEADERS)
+
+DIST_COMMON =  Makefile.am Makefile.in
+
+
+DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
+
+TAR = tar
+GZIP_ENV = --best
+SOURCES = $(libneXtaw_la_SOURCES)
+OBJECTS = $(libneXtaw_la_OBJECTS)
+
+all: all-redirect
+.SUFFIXES:
+.SUFFIXES: .S .c .lo .o .s
+$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+	cd $(top_srcdir) && $(AUTOMAKE) --gnu --include-deps X11/neXtaw/Makefile
+
+Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
+	cd $(top_builddir) \
+	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+
+
+mostlyclean-libLTLIBRARIES:
+
+clean-libLTLIBRARIES:
+	-test -z "$(lib_LTLIBRARIES)" || rm -f $(lib_LTLIBRARIES)
+
+distclean-libLTLIBRARIES:
+
+maintainer-clean-libLTLIBRARIES:
+
+install-libLTLIBRARIES: $(lib_LTLIBRARIES)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(libdir)
+	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  if test -f $$p; then \
+	    echo "$(LIBTOOL)  --mode=install $(INSTALL) $$p $(DESTDIR)$(libdir)/$$p"; \
+	    $(LIBTOOL)  --mode=install $(INSTALL) $$p $(DESTDIR)$(libdir)/$$p; \
+	  else :; fi; \
+	done
+
+uninstall-libLTLIBRARIES:
+	@$(NORMAL_UNINSTALL)
+	list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+	  $(LIBTOOL)  --mode=uninstall rm -f $(DESTDIR)$(libdir)/$$p; \
+	done
+
+.c.o:
+	$(COMPILE) -c $<
+
+.s.o:
+	$(COMPILE) -c $<
+
+.S.o:
+	$(COMPILE) -c $<
+
+mostlyclean-compile:
+	-rm -f *.o core *.core
+
+clean-compile:
+
+distclean-compile:
+	-rm -f *.tab.c
+
+maintainer-clean-compile:
+
+.c.lo:
+	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
+
+.s.lo:
+	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
+
+.S.lo:
+	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
+
+mostlyclean-libtool:
+	-rm -f *.lo
+
+clean-libtool:
+	-rm -rf .libs _libs
+
+distclean-libtool:
+
+maintainer-clean-libtool:
+
+libneXtaw.la: $(libneXtaw_la_OBJECTS) $(libneXtaw_la_DEPENDENCIES)
+	$(LINK) -rpath $(libdir) $(libneXtaw_la_LDFLAGS) $(libneXtaw_la_OBJECTS) $(libneXtaw_la_LIBADD) $(LIBS)
+
+install-neXtawincludeHEADERS: $(neXtawinclude_HEADERS)
+	@$(NORMAL_INSTALL)
+	$(mkinstalldirs) $(DESTDIR)$(neXtawincludedir)
+	@list='$(neXtawinclude_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d= ; else d="$(srcdir)/"; fi; \
+	  echo " $(INSTALL_DATA) $$d$$p $(DESTDIR)$(neXtawincludedir)/$$p"; \
+	  $(INSTALL_DATA) $$d$$p $(DESTDIR)$(neXtawincludedir)/$$p; \
+	done
+
+uninstall-neXtawincludeHEADERS:
+	@$(NORMAL_UNINSTALL)
+	list='$(neXtawinclude_HEADERS)'; for p in $$list; do \
+	  rm -f $(DESTDIR)$(neXtawincludedir)/$$p; \
+	done
+
+tags: TAGS
+
+ID: $(HEADERS) $(SOURCES) $(LISP)
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	here=`pwd` && cd $(srcdir) \
+	  && mkid -f$$here/ID $$unique $(LISP)
+
+TAGS:  $(HEADERS) $(SOURCES)  $(TAGS_DEPENDENCIES) $(LISP)
+	tags=; \
+	here=`pwd`; \
+	list='$(SOURCES) $(HEADERS)'; \
+	unique=`for i in $$list; do echo $$i; done | \
+	  awk '    { files[$$0] = 1; } \
+	       END { for (i in files) print i; }'`; \
+	test -z "$(ETAGS_ARGS)$$unique$(LISP)$$tags" \
+	  || (cd $(srcdir) && etags $(ETAGS_ARGS) $$tags  $$unique $(LISP) -o $$here/TAGS)
+
+mostlyclean-tags:
+
+clean-tags:
+
+distclean-tags:
+	-rm -f TAGS ID
+
+maintainer-clean-tags:
+
+distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
+
+subdir = X11/neXtaw
+
+distdir: $(DISTFILES)
+	@for file in $(DISTFILES); do \
+	  d=$(srcdir); \
+	  if test -d $$d/$$file; then \
+	    cp -pr $$/$$file $(distdir)/$$file; \
+	  else \
+	    test -f $(distdir)/$$file \
+	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	    || cp -p $$d/$$file $(distdir)/$$file || :; \
+	  fi; \
+	done
+AllWidgets.lo AllWidgets.o : AllWidgets.c
+AsciiSink.lo AsciiSink.o : AsciiSink.c XawInit.h AsciiSinkP.h \
+	TextSinkP.h TextSink.h Text.h Simple.h TextSrc.h AsciiSrc.h \
+	AsciiSink.h TextP.h SimpleP.h TextSrcP.h AsciiSrcP.h
+AsciiSrc.lo AsciiSrc.o : AsciiSrc.c XawInit.h AsciiSrcP.h TextSrcP.h \
+	TextSrc.h Text.h Simple.h TextSink.h AsciiSrc.h AsciiSink.h \
+	TextP.h SimpleP.h MultiSrcP.h MultiSrc.h
+AsciiText.lo AsciiText.o : AsciiText.c XawInit.h Cardinals.h \
+	AsciiTextP.h TextP.h Text.h Simple.h TextSink.h TextSrc.h \
+	AsciiSrc.h AsciiSink.h SimpleP.h AsciiText.h MultiSrc.h \
+	MultiSinkP.h TextSinkP.h TextSrcP.h MultiSink.h XawImP.h
+Box.lo Box.o : Box.c XawInit.h BoxP.h Box.h
+Clock.lo Clock.o : Clock.c ClockP.h Clock.h SimpleP.h Simple.h ThreeDP.h \
+	ThreeD.h
+Command.lo Command.o : Command.c XawInit.h CommandP.h Command.h Label.h \
+	Simple.h LabelP.h ThreeDP.h ThreeD.h SimpleP.h
+Dialog.lo Dialog.o : Dialog.c XawInit.h AsciiText.h Text.h Simple.h \
+	TextSink.h TextSrc.h AsciiSrc.h AsciiSink.h MultiSrc.h \
+	Command.h Label.h DialogP.h Dialog.h Form.h FormP.h Cardinals.h
+Form.lo Form.o : Form.c XawInit.h FormP.h Form.h Misc.h ThreeDP.h \
+	ThreeD.h SimpleP.h Simple.h
+Grip.lo Grip.o : Grip.c XawInit.h GripP.h Grip.h Simple.h ThreeDP.h \
+	ThreeD.h SimpleP.h
+Label.lo Label.o : Label.c XawInit.h LabelP.h Label.h Simple.h ThreeDP.h \
+	ThreeD.h SimpleP.h Misc.h
+Layout.lo Layout.o : Layout.c LayoutP.h Layout.h
+List.lo List.o : List.c XawInit.h ListP.h SimpleP.h Simple.h List.h
+MenuButton.lo MenuButton.o : MenuButton.c XawInit.h MenuButtoP.h \
+	MenuButton.h Command.h Label.h Simple.h CommandP.h LabelP.h \
+	ThreeDP.h ThreeD.h SimpleP.h XawAlloc.h
+Misc.lo Misc.o : Misc.c Misc.h ThreeDP.h ThreeD.h SimpleP.h Simple.h
+MultiSink.lo MultiSink.o : MultiSink.c XawInit.h MultiSinkP.h \
+	TextSinkP.h TextSink.h Text.h Simple.h TextSrc.h AsciiSrc.h \
+	AsciiSink.h TextP.h SimpleP.h TextSrcP.h MultiSink.h \
+	MultiSrcP.h MultiSrc.h XawI18n.h
+MultiSrc.lo MultiSrc.o : MultiSrc.c XawInit.h MultiSrcP.h TextSrcP.h \
+	TextSrc.h Text.h Simple.h TextSink.h AsciiSrc.h AsciiSink.h \
+	TextP.h SimpleP.h MultiSrc.h XawImP.h XawI18n.h
+Paned.lo Paned.o : Paned.c XawInit.h Grip.h Simple.h PanedP.h Paned.h \
+	XawImP.h Text.h TextSink.h TextSrc.h AsciiSrc.h AsciiSink.h
+Panner.lo Panner.o : Panner.c XawInit.h PannerP.h Panner.h Reports.h \
+	SimpleP.h Simple.h
+Porthole.lo Porthole.o : Porthole.c XawInit.h PortholeP.h Porthole.h \
+	Reports.h
+Repeater.lo Repeater.o : Repeater.c XawInit.h RepeaterP.h CommandP.h \
+	Command.h Label.h Simple.h LabelP.h ThreeDP.h ThreeD.h \
+	SimpleP.h Repeater.h
+Scrollbar.lo Scrollbar.o : Scrollbar.c XawInit.h ScrollbarP.h \
+	Scrollbar.h ThreeDP.h ThreeD.h SimpleP.h Simple.h Misc.h
+Simple.lo Simple.o : Simple.c XawInit.h SimpleP.h Simple.h XawAlloc.h
+SimpleMenu.lo SimpleMenu.o : SimpleMenu.c XawInit.h SimpleMenP.h \
+	SimpleMenu.h SmeP.h Sme.h ThreeD.h SmeBSB.h Cardinals.h \
+	ThreeDP.h SimpleP.h Simple.h Misc.h XawAlloc.h
+Sme.lo Sme.o : Sme.c XawInit.h SmeP.h Sme.h Cardinals.h
+SmeBSB.lo SmeBSB.o : SmeBSB.c XawInit.h SimpleMenu.h SmeBSBP.h SmeP.h \
+	Sme.h SmeBSB.h Cardinals.h XawAlloc.h
+SmeLine.lo SmeLine.o : SmeLine.c XawInit.h SmeLineP.h SmeP.h Sme.h \
+	SmeLine.h Cardinals.h
+SmeThreeD.lo SmeThreeD.o : SmeThreeD.c XawInit.h SmeThreeDP.h \
+	SmeThreeD.h Sme.h SmeP.h
+StripChart.lo StripChart.o : StripChart.c XawInit.h StripCharP.h \
+	StripChart.h ThreeDP.h ThreeD.h SimpleP.h Simple.h
+Text.lo Text.o : Text.c XawI18n.h XawInit.h Cardinals.h Scrollbar.h \
+	TextP.h Text.h Simple.h TextSink.h TextSrc.h AsciiSrc.h \
+	AsciiSink.h SimpleP.h MultiSinkP.h TextSinkP.h TextSrcP.h \
+	MultiSink.h XawImP.h XawAlloc.h
+TextAction.lo TextAction.o : TextAction.c TextP.h Text.h Simple.h \
+	TextSink.h TextSrc.h AsciiSrc.h AsciiSink.h SimpleP.h \
+	MultiSrcP.h TextSrcP.h MultiSrc.h XawImP.h XawI18n.h
+TextPop.lo TextPop.o : TextPop.c TextP.h Text.h Simple.h TextSink.h \
+	TextSrc.h AsciiSrc.h AsciiSink.h SimpleP.h AsciiText.h \
+	MultiSrc.h Cardinals.h Command.h Label.h Form.h Toggle.h \
+	XawI18n.h XawAlloc.h
+TextSink.lo TextSink.o : TextSink.c XawInit.h TextSinkP.h TextSink.h \
+	Text.h Simple.h TextSrc.h AsciiSrc.h AsciiSink.h TextP.h \
+	SimpleP.h TextSrcP.h
+TextSrc.lo TextSrc.o : TextSrc.c XawInit.h TextSrcP.h TextSrc.h Text.h \
+	Simple.h TextSink.h AsciiSrc.h AsciiSink.h TextP.h SimpleP.h \
+	XawI18n.h
+TextTr.lo TextTr.o : TextTr.c
+ThreeD.lo ThreeD.o : ThreeD.c XawInit.h ThreeDP.h ThreeD.h SimpleP.h \
+	Simple.h
+Toggle.lo Toggle.o : Toggle.c XawInit.h ToggleP.h Toggle.h Command.h \
+	Label.h Simple.h CommandP.h LabelP.h ThreeDP.h ThreeD.h \
+	SimpleP.h
+Tree.lo Tree.o : Tree.c XawInit.h Cardinals.h TreeP.h Tree.h
+Vendor.lo Vendor.o : Vendor.c VendorEP.h XawImP.h Text.h Simple.h \
+	TextSink.h TextSrc.h AsciiSrc.h AsciiSink.h
+Viewport.lo Viewport.o : Viewport.c XawInit.h Scrollbar.h ViewportP.h \
+	Viewport.h Form.h Reports.h FormP.h
+XawI18n.lo XawI18n.o : XawI18n.c XawI18n.h
+XawIm.lo XawIm.o : XawIm.c TextP.h Text.h Simple.h TextSink.h TextSrc.h \
+	AsciiSrc.h AsciiSink.h SimpleP.h MultiSrc.h MultiSinkP.h \
+	TextSinkP.h TextSrcP.h MultiSink.h XawImP.h VendorEP.h \
+	XawI18n.h
+XawInit.lo XawInit.o : XawInit.c XawInit.h
+laygram.lo laygram.o : laygram.c LayoutP.h Layout.h
+laylex.lo laylex.o : laylex.c LayoutP.h Layout.h laygram.h
+sharedlib.lo sharedlib.o : sharedlib.c
+
+info-am:
+info: info-am
+dvi-am:
+dvi: dvi-am
+check-am: all-am
+check: check-am
+installcheck-am:
+installcheck: installcheck-am
+install-exec-am: install-libLTLIBRARIES
+install-exec: install-exec-am
+
+install-data-am: install-neXtawincludeHEADERS
+install-data: install-data-am
+
+install-am: all-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
+install: install-am
+uninstall-am: uninstall-libLTLIBRARIES uninstall-neXtawincludeHEADERS
+uninstall: uninstall-am
+all-am: Makefile $(LTLIBRARIES) $(HEADERS)
+all-redirect: all-am
+install-strip:
+	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
+installdirs:
+	$(mkinstalldirs)  $(DESTDIR)$(libdir) $(DESTDIR)$(neXtawincludedir)
+
+
+mostlyclean-generic:
+
+clean-generic:
+
+distclean-generic:
+	-rm -f Makefile $(CONFIG_CLEAN_FILES)
+	-rm -f config.cache config.log stamp-h stamp-h[0-9]*
+
+maintainer-clean-generic:
+mostlyclean-am:  mostlyclean-libLTLIBRARIES mostlyclean-compile \
+		mostlyclean-libtool mostlyclean-tags \
+		mostlyclean-generic
+
+mostlyclean: mostlyclean-am
+
+clean-am:  clean-libLTLIBRARIES clean-compile clean-libtool clean-tags \
+		clean-generic mostlyclean-am
+
+clean: clean-am
+
+distclean-am:  distclean-libLTLIBRARIES distclean-compile \
+		distclean-libtool distclean-tags distclean-generic \
+		clean-am
+	-rm -f libtool
+
+distclean: distclean-am
+
+maintainer-clean-am:  maintainer-clean-libLTLIBRARIES \
+		maintainer-clean-compile maintainer-clean-libtool \
+		maintainer-clean-tags maintainer-clean-generic \
+		distclean-am
+	@echo "This command is intended for maintainers to use;"
+	@echo "it deletes files that may require special tools to rebuild."
+
+maintainer-clean: maintainer-clean-am
+
+.PHONY: mostlyclean-libLTLIBRARIES distclean-libLTLIBRARIES \
+clean-libLTLIBRARIES maintainer-clean-libLTLIBRARIES \
+uninstall-libLTLIBRARIES install-libLTLIBRARIES mostlyclean-compile \
+distclean-compile clean-compile maintainer-clean-compile \
+mostlyclean-libtool distclean-libtool clean-libtool \
+maintainer-clean-libtool uninstall-neXtawincludeHEADERS \
+install-neXtawincludeHEADERS tags mostlyclean-tags distclean-tags \
+clean-tags maintainer-clean-tags distdir info-am info dvi-am dvi check \
+check-am installcheck-am installcheck install-exec-am install-exec \
+install-data-am install-data install-am install uninstall-am uninstall \
+all-redirect all-am all installdirs mostlyclean-generic \
+distclean-generic clean-generic maintainer-clean-generic clean \
+mostlyclean distclean maintainer-clean
+
+
+laygram.c : laygram.y
+	$(YACC) -d laygram.y
+	sed 's/yy/LayYY/g' y.tab.c > laygram.c
+	sed 's/yy/LayYY/g' y.tab.h > laygram.h
+	$(RM) y.tab.c y.tab.h
+
+laylex.c : laylex.l
+	$(LEX) laylex.l
+	sed 's/yy/LayYY/g' lex.yy.c > laylex.c
+	$(RM) lex.yy.c
+
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:
