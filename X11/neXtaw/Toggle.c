@@ -44,10 +44,11 @@ in this Software without prior written authorization from the X Consortium.
 
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
-#include <X11/neXtaw/XawInit.h>
+#include "XawInit.h"
 #include <X11/Xmu/Converters.h>
 #include <X11/Xmu/Misc.h>
-#include <X11/neXtaw/ToggleP.h>
+#include "ToggleP.h"
+#include "TraversalP.h"
 #ifdef HAS_XMU_H
 #include <X11/Xmu/Xmu.h>
 #endif
@@ -66,9 +67,22 @@ in this Software without prior written authorization from the X Consortium.
  */
 
 static char defaultTranslations[] =
-/*  "<EnterWindow>:	    highlight(Always)	\n\
-     <LeaveWindow>:	    unhighlight()	\n\ */
-     "<Btn1Down>,<Btn1Up>:   toggle() notify()";
+    "<EnterWindow>:	    FocusEnterWindow()	\n\
+     <FocusIn>:		    highlight(Always)	\n\
+     <LeaveWindow>:	    FocusLeaveWindow()	\n\
+     <FocusOut>:	    unhighlight()	\n\
+     <Btn1Down>,<Btn1Up>:   toggle() notify()	\n\
+     Shift<Key>Tab:	    FocusPrevious()	\n\
+     <Key>Tab:		    FocusNext()		\n\
+     <Key>Home:		    FocusHome()		\n\
+     <Key>End:		    FocusEnd()		\n\
+     <Key>Up:		    FocusPreviousGroup()	\n\
+     <Key>Down:		    FocusNextGroup()	\n\
+     <Key>KP_Home:	    FocusHome()		\n\
+     <Key>KP_End:	    FocusEnd()		\n\
+     <Key>KP_Up:	    FocusPreviousGroup()	\n\
+     <Key>KP_Down:	    FocusNextGroup()	\n\
+     <KeyDown>space,<KeyUp>space:	toggle() notify()";
 
 #define offset(field) XtOffsetOf(ToggleRec, field)
 
@@ -137,7 +151,7 @@ ToggleClassRec toggleClassRec = {
     NULL,				/* set_values_hook	  */
     XtInheritSetValuesAlmost,		/* set_values_almost	  */
     NULL,				/* get_values_hook	  */
-    NULL,				/* accept_focus		  */
+    XtInheritAcceptFocus,		/* accept_focus		  */
     XtVersion,				/* version		  */
     NULL,				/* callback_private	  */
     defaultTranslations,		/* tm_table		  */

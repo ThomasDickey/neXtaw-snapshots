@@ -62,6 +62,7 @@ SOFTWARE.
 #include <X11/Xutil.h>
 #include "XawI18n.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 #include <X11/Xmu/Atoms.h>
 #include <X11/Xmu/CharSet.h>
@@ -69,12 +70,15 @@ SOFTWARE.
 #include <X11/Xmu/StdSel.h>
 #include <X11/Xmu/Misc.h>
 
-#include <X11/neXtaw/XawInit.h>
-#include <X11/neXtaw/Cardinals.h>
-#include <X11/neXtaw/Scrollbar.h>
-#include <X11/neXtaw/TextP.h>
-#include <X11/neXtaw/MultiSinkP.h>
-#include <X11/neXtaw/XawImP.h>
+#include "XawInit.h"
+#include "Cardinals.h"
+#include "Scrollbar.h"
+#include "TextP.h"
+#include "MultiSinkP.h"
+#include "XawImP.h"
+#include "TraversalP.h"
+#include "ThreeDP.h"
+#include "Misc.h"
 
 #include <X11/Xfuncs.h>
 #include <ctype.h>		/* for isprint() */
@@ -536,6 +540,18 @@ Cardinal *num_args;		/* unused */
   ctx->text.single_char = FALSE;
   ctx->text.copy_area_offsets = NULL;
   ctx->text.salt2 = NULL;
+
+  /* Create dummy ThreeD widget for the bevel */
+  ctx->text.threeD = XtVaCreateWidget("threeD", threeDWidgetClass, new,
+		XtNx, 0, XtNy, 0, XtNwidth, 10, XtNheight, 10, (char*)0);
+  XtVaGetValues(ctx->text.threeD, XtNshadowWidth,
+		&ctx->text.shadow_width, (char *)0);
+  /* Adjust the margins */
+  ctx->text.r_margin.left += ctx->text.shadow_width;
+  ctx->text.r_margin.right += ctx->text.shadow_width;
+  ctx->text.r_margin.top += ctx->text.shadow_width;
+  ctx->text.r_margin.bottom += ctx->text.shadow_width;
+  ctx->text.margin = ctx->text.r_margin;
 
   if (ctx->core.height == DEFAULT_TEXT_HEIGHT) {
     ctx->core.height = VMargins(ctx);
@@ -1190,6 +1206,7 @@ _XawTextVScroll(ctx, n)
 TextWidget ctx;
 int n;			
 {
+  ThreeDWidget tdw = (ThreeDWidget)ctx->text.threeD;
   XawTextPosition top, target;
   int y;
   Arg list[1];
@@ -1265,6 +1282,7 @@ int n;
   }
   XtSetArg (list[0], XtNinsertPosition, ctx->text.lt.top+ctx->text.lt.lines);
   _XawImSetValues ((Widget) ctx, list, 1);
+neXtawDrawShadowBox((Widget)ctx, tdw, 0, 0, ctx->core.width, ctx->core.height, False);
 }
 
 /*ARGSUSED*/
@@ -1276,6 +1294,7 @@ XtPointer callData;		/* #pixels */
 {
   TextWidget ctx = (TextWidget) closure;
   Widget tw = (Widget) ctx;
+  ThreeDWidget tdw = (ThreeDWidget)ctx->text.threeD;
   Position old_left, pixels = (Position)(long) callData;
   XRectangle rect, t_rect;
   
@@ -1347,6 +1366,8 @@ XtPointer callData;		/* #pixels */
   }
   _XawTextExecuteUpdate(ctx);
   _XawTextSetScrollBars(ctx);
+
+  neXtawDrawShadowBox(w, tdw, 0, 0, ctx->core.width, ctx->core.height, False);
 }
 
 /*ARGSUSED*/
@@ -2073,6 +2094,7 @@ Widget w;
 XawTextPosition pos1, pos2;
 {
   TextWidget ctx = (TextWidget)w;
+  ThreeDWidget tdw = (ThreeDWidget)ctx->text.threeD;
   Position x, y;
   int height, line, i, lastPos = ctx->text.lastPos;
   XawTextPosition startPos, endPos;
@@ -2150,6 +2172,7 @@ XawTextPosition pos1, pos2;
       break;
   }
   ctx->text.single_char = FALSE;
+neXtawDrawShadowBox(w, tdw, 0, 0, ctx->core.width, ctx->core.height, False);
 }
 
 /*
@@ -2375,11 +2398,14 @@ ClearWindow (w)
 Widget w;
 {
   TextWidget ctx = (TextWidget) w;
+  ThreeDWidget tdw = (ThreeDWidget)ctx->text.threeD;
 
-  if (XtIsRealized(w))
+  if (XtIsRealized(w)) {
     SinkClearToBG(ctx->text.sink, 
 		  (Position) 0, (Position) 0, 
 		  w->core.width, w->core.height);
+neXtawDrawShadowBox(w, tdw, 0, 0, ctx->core.width, ctx->core.height, False);
+  }
 }
 
 /*	Function Name: _XawTextClearAndCenterDisplay
@@ -2640,6 +2666,7 @@ XEvent *event;
 Region region;			/* Unused. */
 {
     TextWidget ctx = (TextWidget) w;
+  ThreeDWidget tdw = (ThreeDWidget)ctx->text.threeD;
     XRectangle expose, cursor;
     Boolean need_to_draw;
     
@@ -2676,6 +2703,8 @@ Region region;			/* Unused. */
 	UpdateTextInRectangle(ctx, &cursor);
     }
     _XawTextExecuteUpdate(ctx);
+
+    neXtawDrawShadowBox(w, tdw, 0, 0, ctx->core.width, ctx->core.height, False);
 }
 
 /*
@@ -2907,7 +2936,7 @@ Cardinal *num_args;
   newtw->text.display_caret = display_caret;
 
   if (oldtw->text.r_margin.left != newtw->text.r_margin.left) {
-    newtw->text.margin.left = newtw->text.r_margin.left;
+    newtw->text.margin.left = newtw->text.r_margin.left+newtw->text.shadow_width;
     if (newtw->text.vbar != NULL)
       newtw->text.margin.left += newtw->text.vbar->core.width +
 	                         newtw->text.vbar->core.border_width;
@@ -2923,7 +2952,7 @@ Cardinal *num_args;
   }
 
   if (oldtw->text.r_margin.bottom != newtw->text.r_margin.bottom) {
-    newtw->text.margin.bottom = newtw->text.r_margin.bottom;
+    newtw->text.margin.bottom = newtw->text.r_margin.bottom+newtw->text.shadow_width;
     if (newtw->text.hbar != NULL)
       newtw->text.margin.bottom += newtw->text.hbar->core.height +
 	                           newtw->text.hbar->core.border_width;
@@ -3523,7 +3552,7 @@ TextClassRec textClassRec = {
     /* set_values_hook  */	NULL,
     /* set_values_almost*/	XtInheritSetValuesAlmost,
     /* get_values_hook  */	GetValuesHook,
-    /* accept_focus     */      NULL,
+    /* accept_focus     */      XawAcceptFocus,
     /* version          */	XtVersion,
     /* callback_private */      NULL,
     /* tm_table         */      NULL,    /* set in ClassInitialize */

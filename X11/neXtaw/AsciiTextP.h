@@ -76,10 +76,10 @@ SOFTWARE.
 #ifndef _AsciiTextP_h
 #define _AsciiTextP_h
 
-#include <X11/neXtaw/TextP.h>
-#include <X11/neXtaw/AsciiText.h>
-#include <X11/neXtaw/AsciiSrc.h>
-#include <X11/neXtaw/MultiSrc.h>
+#include "TextP.h"
+#include "AsciiText.h"
+#include "AsciiSrc.h"
+#include "MultiSrc.h"
 
 typedef struct {int empty;} AsciiClassPart;
 

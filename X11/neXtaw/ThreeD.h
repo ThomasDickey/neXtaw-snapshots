@@ -70,6 +70,8 @@ SOFTWARE.
 #define XtCBeNiceToColourmap "BeNiceToColormap"
 #define XtNuserData "userData"
 #define XtCUserData "UserData"
+#define XtNbevel "bevel"
+#define XtCBevel "Bevel"
 
 typedef enum {
     XtReliefNone,
@@ -80,6 +82,10 @@ typedef enum {
       XtReliefGroove 
 } XtRelief;
 
+typedef enum {
+	XtBevelRounded,
+	XtBevelSolid
+} XtBevel;
 
 typedef struct _ThreeDRec *ThreeDWidget;
 typedef struct _ThreeDClassRec *ThreeDWidgetClass;

@@ -61,9 +61,10 @@ SOFTWARE.
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 
-#include <X11/neXtaw/XawInit.h>
-#include <X11/neXtaw/ScrollbarP.h>
-#include <X11/neXtaw/Misc.h>
+#include "XawInit.h"
+#include "ScrollbarP.h"
+#include "TraversalP.h"
+#include "Misc.h"
 #include <X11/Xmu/Drawing.h>
 
 /* Private definitions. */
@@ -72,14 +73,34 @@ static char defaultTranslations[] =
     "<Btn1Down>:   NotifyScroll()\n\
      <Btn2Down>:   MoveThumb() NotifyThumb() \n\
      <Btn3Down>:   NotifyScroll()\n\
-     <Btn4Down>:   ScrollOneLineUp()\n\
-     Shift<Btn4Down>: ScrollPageUp()\n\
-     <Btn5Down>:   ScrollOneLineDown()\n\
-     Shift<Btn5Down>: ScrollPageDown()\n\
      <Btn1Motion>: HandleThumb() \n\
      <Btn3Motion>: HandleThumb() \n\
      <Btn2Motion>: MoveThumb() NotifyThumb() \n\
-     <BtnUp>:      EndScroll()";
+     <Btn4Down>:   ScrollOneLineUp()\n\
+     <Btn5Down>:   ScrollOneLineDown()\n\
+     Shift<Btn4Down>: ScrollPageUp()\n\
+     Shift<Btn5Down>: ScrollPageDown()\n\
+     <BtnUp>:      EndScroll()			\n\
+     <EnterWindow>:	FocusEnterWindow()	\n\
+     <LeaveWindow>:	FocusLeaveWindow()	\n\
+     Shift<Key>Tab:	FocusPrevious()		\n\
+     <Key>Tab:		FocusNext()		\n\
+     <KeyDown>Left:	NotifyScroll(BackwardArrow)	\n\
+     <KeyDown>Up:	NotifyScroll(BackwardArrow)	\n\
+     <KeyDown>Right:	NotifyScroll(ForwardArrow)	\n\
+     <KeyDown>Down:	NotifyScroll(ForwardArrow)	\n\
+     <KeyDown>Page_Up:	NotifyScroll(BackwardPage)	\n\
+     <KeyDown>Page_Down:	NotifyScroll(ForwardPage)	\n\
+     <KeyDown>Home:	NotifyScroll(Home)		\n\
+     <KeyDown>End:	NotifyScroll(End)		\n\
+     <KeyDown>KP_Left:	NotifyScroll(BackwardArrow)	\n\
+     <KeyDown>KP_Up:	NotifyScroll(BackwardArrow)	\n\
+     <KeyDown>KP_Right:	NotifyScroll(ForwardArrow)	\n\
+     <KeyDown>KP_Down:	NotifyScroll(ForwardArrow)	\n\
+     <KeyDown>KP_Page_Up:	NotifyScroll(BackwardPage)	\n\
+     <KeyDown>KP_Page_Down:	NotifyScroll(ForwardPage)	\n\
+     <KeyDown>KP_Home:		NotifyScroll(Home)		\n\
+     <KeyDown>KP_End:		NotifyScroll(End)		";
 
 static float floatZero = 0.0;
 
@@ -116,6 +137,8 @@ static XtResource resources[] = {
   /* AKK, 1996 */
   {XtNdrawArrows, XtCDrawArrows, XtRBoolean, sizeof(Boolean),
        Offset(draw_arrows), XtRImmediate, (XtPointer) TRUE},
+  {XtNdrawBump, XtCDrawBump, XtRBoolean, sizeof(Boolean),
+       Offset(draw_bump), XtRImmediate, (XtPointer) TRUE},
   {XtNalwaysVisible, XtCAlwaysVisible, XtRBoolean, sizeof(Boolean),
        Offset(always_visible), XtRImmediate, (XtPointer) False},
   /* Casantos, feb/2000 */
@@ -187,7 +210,7 @@ ScrollbarClassRec scrollbarClassRec = {
     /* set_values_hook  */	NULL,
     /* set_values_almost */	XtInheritSetValuesAlmost,
     /* get_values_hook  */	NULL,
-    /* accept_focus     */	NULL,
+    /* accept_focus     */	XawAcceptFocus,
     /* version          */	XtVersion,
     /* callback_private */	NULL,
     /* tm_table         */	defaultTranslations,
@@ -548,12 +571,14 @@ static void PaintThumb (sbw, event)
 	      {
 		if ((bsize - 2*s) >= SB_BUMP_SIZE) {
 		   int newb=newbot-newtop; 
-		 
-		    XCopyArea(XtDisplay((Widget)sbw), sbw->scrollbar.bump, 
+
+		    if (sbw->scrollbar.draw_bump) {
+		      XCopyArea(XtDisplay((Widget)sbw), sbw->scrollbar.bump, 
 			XtWindow((Widget)sbw),
                      	sbw->scrollbar.copygc, 0, 0, SB_BUMP_SIZE, SB_BUMP_SIZE,
 		     	newtop+(newb-SB_BUMP_SIZE)/2,
 		     	(sbw->core.height-SB_BUMP_SIZE)/2);
+		    }
 		}
 		neXtawDrawShadowBox(
 		  	(Widget)sbw, (ThreeDWidget)sbw, newtop, 1,
@@ -564,11 +589,13 @@ static void PaintThumb (sbw, event)
 		if ((bsize - 2 * s)>= SB_BUMP_SIZE) {
 		   int newb = newbot-newtop;
 
-		    XCopyArea(XtDisplay((Widget)sbw), sbw->scrollbar.bump,
+		    if (sbw->scrollbar.draw_bump) {
+		      XCopyArea(XtDisplay((Widget)sbw), sbw->scrollbar.bump,
                      	XtWindow((Widget)sbw),
                      	sbw->scrollbar.copygc, 0, 0, SB_BUMP_SIZE, 
 			SB_BUMP_SIZE, (sbw->core.width-SB_BUMP_SIZE)/2,
 		     	newtop+(newb-SB_BUMP_SIZE)/2);
+		    }
 		}
 		neXtawDrawShadowBox(
 		  (Widget)sbw, (ThreeDWidget)sbw, 1, newtop,

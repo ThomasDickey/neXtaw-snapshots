@@ -42,9 +42,9 @@ in this Software without prior written authorization from the X Consortium.
 #include <ctype.h>
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
-#include <X11/neXtaw/XawInit.h>
-#include <X11/neXtaw/TextSinkP.h>
-#include <X11/neXtaw/TextP.h>
+#include "XawInit.h"
+#include "TextSinkP.h"
+#include "TextP.h"
 
 /****************************************************************
  *
@@ -555,19 +555,12 @@ XawTextInsertState state;
 
 /* ARGSUSED */
 void
-#if NeedFunctionPrototypes
 XawTextSinkClearToBackground (Widget w,
 #if NeedWidePrototypes
 			      int x, int y, int width, int height)
 #else
 			      Position x, Position y, 
 			      Dimension width, Dimension height)
-#endif
-#else
-XawTextSinkClearToBackground (w, x, y, width, height)
-Widget w;
-Position x, y;
-Dimension width, height;
 #endif
 {
   TextSinkObjectClass class = (TextSinkObjectClass) w->core.widget_class;

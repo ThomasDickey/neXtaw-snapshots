@@ -30,6 +30,7 @@ in this Software without prior written authorization from the X Consortium.
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 #include "TemplateP.h"
+#include "TraversalP.h"
 
 static XtResource resources[] = {
 #define offset(field) XtOffsetOf(TemplateRec, template.field)
@@ -49,6 +50,20 @@ static XtActionsRec actions[] =
 
 static char translations[] =
 "<Key>:		template()	\n\
+ <EnterWindow>: FocusEnterWindow()      \n\
+ <LeaveWindow>: FocusLeaveWindow()      \n\
+ <FocusIn>:     highlight()             \n\
+ <FocusOut>:    reset()                 \n\
+ Shift<Key>Tab: FocusPrevious()         \n\
+ <Key>Tab:      FocusNext()             \n\
+ <Key>Home:     FocusHome()             \n\
+ <Key>End:      FocusEnd()              \n\
+ <Key>Up:       FocusPreviousGroup()    \n\
+ <Key>Down:     FocusNextGroup()        \n\
+ <Key>KP_Home:  FocusHome()             \n\
+ <Key>KP_End:   FocusEnd()              \n\
+ <Key>KP_Up:    FocusPreviousGroup()    \n\
+ <Key>KP_Down:  FocusNextGroup()        \n\
 ";
 
 TemplateClassRec templateClassRec = {
@@ -78,7 +93,7 @@ TemplateClassRec templateClassRec = {
     /* set_values_hook		*/	NULL,
     /* set_values_almost	*/	XtInheritSetValuesAlmost,
     /* get_values_hook		*/	NULL,
-    /* accept_focus		*/	NULL,
+    /* accept_focus		*/	XawAcceptFocus,
     /* version			*/	XtVersion,
     /* callback_private		*/	NULL,
     /* tm_table			*/	translations,

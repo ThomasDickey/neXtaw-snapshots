@@ -51,10 +51,10 @@ extern int abs();
 
 #include <X11/Xmu/Drawing.h>
 
-#include <X11/neXtaw/XawInit.h>
-#include <X11/neXtaw/SimpleMenu.h>
-#include <X11/neXtaw/SmeBSBP.h>
-#include <X11/neXtaw/Cardinals.h>
+#include "XawInit.h"
+#include "SimpleMenu.h"
+#include "SmeBSBP.h"
+#include "Cardinals.h"
 
 #include <stdio.h>
 

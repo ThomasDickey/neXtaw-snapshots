@@ -58,12 +58,12 @@ SOFTWARE.
 #include <X11/StringDefs.h>
 #include <X11/Xmu/Misc.h>
 
-#include <X11/neXtaw/XawInit.h>
-#include <X11/neXtaw/AsciiText.h>
-#include <X11/neXtaw/Command.h>	
-#include <X11/neXtaw/Label.h>
-#include <X11/neXtaw/DialogP.h>
-#include <X11/neXtaw/Cardinals.h>
+#include "XawInit.h"
+#include "AsciiText.h"
+#include "Command.h"
+#include "Label.h"
+#include "DialogP.h"
+#include "Cardinals.h"
 
 /*
  * After we have set the string in the value widget we set the

@@ -56,7 +56,7 @@ SOFTWARE.
 #ifndef _XawGrip_h
 #define _XawGrip_h
 
-#include <X11/neXtaw/Simple.h>
+#include "Simple.h"
 
 /***************************************************************************
  *

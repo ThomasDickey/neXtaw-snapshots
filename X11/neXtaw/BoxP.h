@@ -65,7 +65,7 @@ SOFTWARE.
  *
  ***********************************************************************/
 
-#include <X11/neXtaw/Box.h>
+#include "Box.h"
 #include <X11/Xmu/Converters.h>
 
 /* New fields for the Box widget class record */

@@ -57,7 +57,7 @@ SOFTWARE.
  *
  ***********************************************************************/
 
-#include <X11/neXtaw/Simple.h>
+#include "Simple.h"
 
 /* Resources:
 

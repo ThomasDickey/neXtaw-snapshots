@@ -57,10 +57,10 @@ SOFTWARE.
 #include	<X11/IntrinsicP.h>
 #include	<X11/StringDefs.h>
 #include	<X11/Xmu/Misc.h>
-#include	<X11/neXtaw/XawInit.h>
-#include	<X11/neXtaw/BoxP.h>
+#include	"XawInit.h"
+#include	"BoxP.h"
 #ifdef XPM_TILE
-#include 	<X11/neXtaw/Misc.h>
+#include 	"Misc.h"
 #endif
 
 /****************************************************************

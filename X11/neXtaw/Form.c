@@ -54,9 +54,9 @@ SOFTWARE.
 #include <X11/StringDefs.h>
 #include <X11/Xmu/Converters.h>
 #include <X11/Xmu/CharSet.h>
-#include <X11/neXtaw/XawInit.h>
-#include <X11/neXtaw/FormP.h>
-#include <X11/neXtaw/Misc.h>
+#include "XawInit.h"
+#include "FormP.h"
+#include "Misc.h"
 
 /* Private Definitions */
 

@@ -56,9 +56,9 @@ SOFTWARE.
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 #include <X11/Xos.h>
-#include <X11/neXtaw/XawInit.h>
-#include <X11/neXtaw/LabelP.h>
-#include <X11/neXtaw/Misc.h>
+#include "XawInit.h"
+#include "LabelP.h"
+#include "Misc.h"
 #include <X11/Xmu/Converters.h>
 #include <X11/Xmu/Drawing.h>
 #include <stdio.h>

@@ -35,6 +35,7 @@ SOFTWARE.
 #include <X11/neXtaw/SimpleP.h>
 
 #define XtRRelief "Relief"
+#define XtRBevel "Bevel"
 
 typedef struct {
     Dimension	shadow_width;
@@ -55,6 +56,7 @@ typedef struct {
     XtPointer	user_data;
     Boolean	be_nice_to_cmap;
     XtRelief   	relief;
+    XtBevel	bevel;
   } ThreeDPart;
 
 /* Full instance record declaration */

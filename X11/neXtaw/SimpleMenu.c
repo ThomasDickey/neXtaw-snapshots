@@ -44,12 +44,12 @@ in this Software without prior written authorization from the X Consortium.
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 
-#include <X11/neXtaw/XawInit.h>
-#include <X11/neXtaw/SimpleMenP.h>
-#include <X11/neXtaw/SmeBSB.h>
-#include <X11/neXtaw/Cardinals.h>
-#include <X11/neXtaw/ThreeDP.h>
-#include <X11/neXtaw/Misc.h>
+#include "XawInit.h"
+#include "SimpleMenP.h"
+#include "SmeBSB.h"
+#include "Cardinals.h"
+#include "ThreeDP.h"
+#include "Misc.h"
 
 #include <X11/Xmu/Initer.h>
 #include <X11/Xmu/CharSet.h>

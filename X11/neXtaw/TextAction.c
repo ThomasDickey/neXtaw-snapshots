@@ -37,9 +37,9 @@ in this Software without prior written authorization from the X Consortium.
 #include <X11/Xmu/Misc.h>
 #include <X11/Xmu/StdSel.h>		/* for XmuConvertStandardSelection */
 #include <X11/Xmu/Atoms.h>		/* for XA_COMPOUND_TEXT */
-#include <X11/neXtaw/TextP.h>
-#include <X11/neXtaw/MultiSrcP.h>
-#include <X11/neXtaw/XawImP.h>
+#include "TextP.h"
+#include "MultiSrcP.h"
+#include "XawImP.h"
 #include <X11/Xfuncs.h>
 #include "XawI18n.h"
 #include <stdio.h>

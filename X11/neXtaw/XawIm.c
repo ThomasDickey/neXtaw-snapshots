@@ -62,11 +62,11 @@ in this Software without prior written authorization from the X Consortium.
 #include <X11/Xos.h>
 #include <X11/Xfuncs.h>
 #include <X11/ShellP.h>
-#include <X11/neXtaw/TextP.h>
-#include <X11/neXtaw/MultiSrc.h>
-#include <X11/neXtaw/MultiSinkP.h>
-#include <X11/neXtaw/XawImP.h>
-#include <X11/neXtaw/VendorEP.h>
+#include "TextP.h"
+#include "MultiSrc.h"
+#include "MultiSinkP.h"
+#include "XawImP.h"
+#include "VendorEP.h"
 #include "XawI18n.h"
 #include <ctype.h>
 

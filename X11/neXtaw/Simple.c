@@ -53,8 +53,9 @@ SOFTWARE.
 #include <stdio.h>
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
-#include <X11/neXtaw/XawInit.h>
-#include <X11/neXtaw/SimpleP.h>
+#include "XawInit.h"
+#include "SimpleP.h"
+#include "TraversalP.h"
 #include <X11/Xmu/Drawing.h>
 
 #include "XawAlloc.h"
@@ -77,6 +78,20 @@ static XtResource resources[] = {
 #undef offset
 };
 
+static XtActionsRec	actionsList[] = {
+  {"FocusNext", XawFocusNextAction},
+  {"FocusPrevious", XawFocusPreviousAction},
+  {"FocusHome", XawFocusHomeAction},
+  {"FocusEnd", XawFocusEndAction},
+  {"FocusNextGroup", XawFocusNextGroupAction},
+  {"FocusPreviousGroup", XawFocusPreviousGroupAction},
+  {"FocusHomeGroup", XawFocusHomeGroupAction},
+  {"FocusEndGroup", XawFocusEndGroupAction},
+  {"FocusTake", XawFocusTakeAction},
+  {"FocusEnterWindow", XawFocusEnterWindowAction},
+  {"FocusLeaveWindow", XawFocusLeaveWindowAction}
+};
+
 static void ClassPartInitialize(), ClassInitialize(),Realize(),ConvertCursor();
 static Boolean SetValues(), ChangeSensitive();
 
@@ -91,8 +106,8 @@ SimpleClassRec simpleClassRec = {
     /* initialize		*/	NULL,
     /* initialize_hook		*/	NULL,
     /* realize			*/	Realize,
-    /* actions			*/	NULL,
-    /* num_actions		*/	0,
+    /* actions			*/	actionsList,
+    /* num_actions		*/	XtNumber(actionsList),
     /* resources		*/	resources,
     /* num_resources		*/	XtNumber(resources),
     /* xrm_class		*/	NULLQUARK,

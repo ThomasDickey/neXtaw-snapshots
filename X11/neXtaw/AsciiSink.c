@@ -57,10 +57,10 @@ SOFTWARE.
 #include <X11/Xatom.h>
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
-#include <X11/neXtaw/XawInit.h>
-#include <X11/neXtaw/AsciiSinkP.h>
-#include <X11/neXtaw/AsciiSrcP.h>	/* For source function defs. */
-#include <X11/neXtaw/TextP.h>	/* I also reach into the text widget. */
+#include "XawInit.h"
+#include "AsciiSinkP.h"
+#include "AsciiSrcP.h"	/* For source function defs. */
+#include "TextP.h"	/* I also reach into the text widget. */
 
 #ifdef GETLASTPOS
 #undef GETLASTPOS		/* We will use our own GETLASTPOS. */

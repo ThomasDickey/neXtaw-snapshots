@@ -56,8 +56,8 @@ in this Software without prior written authorization from the X Consortium.
 #include <X11/Xmu/Xmu.h>
 #endif
 
-#include <X11/neXtaw/XawInit.h>
-#include <X11/neXtaw/MenuButtoP.h>
+#include "XawInit.h"
+#include "MenuButtoP.h"
 
 #include "XawAlloc.h"
 

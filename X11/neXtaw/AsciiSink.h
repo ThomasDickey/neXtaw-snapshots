@@ -62,7 +62,7 @@ SOFTWARE.
  *
  ***********************************************************************/
 
-#include <X11/neXtaw/TextSink.h>
+#include "TextSink.h"
 
 /* Resources:
 

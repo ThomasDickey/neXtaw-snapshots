@@ -75,14 +75,14 @@ SOFTWARE.
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 
-#include <X11/neXtaw/XawInit.h>
-#include <X11/neXtaw/Cardinals.h>
-#include <X11/neXtaw/AsciiTextP.h>
-#include <X11/neXtaw/AsciiSrc.h>
-#include <X11/neXtaw/AsciiSink.h>
-#include <X11/neXtaw/MultiSrc.h>
-#include <X11/neXtaw/MultiSinkP.h>
-#include <X11/neXtaw/XawImP.h>
+#include "XawInit.h"
+#include "Cardinals.h"
+#include "AsciiTextP.h"
+#include "AsciiSrc.h"
+#include "AsciiSink.h"
+#include "MultiSrc.h"
+#include "MultiSinkP.h"
+#include "XawImP.h"
 
 #define TAB_COUNT 32
 

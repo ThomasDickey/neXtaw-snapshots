@@ -74,8 +74,8 @@ SOFTWARE.
 #ifndef _XawAsciiSrcP_h
 #define _XawAsciiSrcP_h
 
-#include <X11/neXtaw/TextSrcP.h>
-#include <X11/neXtaw/AsciiSrc.h>
+#include "TextSrcP.h"
+#include "AsciiSrc.h"
 
 /************************************************************
  *
