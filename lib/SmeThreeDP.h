@@ -30,11 +30,12 @@ SOFTWARE.
 #ifndef _XawSmeThreeDP_h
 #define _XawSmeThreeDP_h
 
-#include <X11/Xaw3d/SmeThreeD.h>
-#include <X11/Xaw3d/SmeP.h>
+#include <X11/neXtaw/SmeThreeD.h>
+#include <X11/neXtaw/SmeP.h>
 
 typedef struct {
     Dimension	    shadow_width;
+    Pixel	    top_half_shadow_pixel;
     Pixel	    top_shadow_pixel;
     Pixel	    bot_shadow_pixel;
     Pixmap	    top_shadow_pxmap;
@@ -43,6 +44,7 @@ typedef struct {
     int		    bot_shadow_contrast;
     GC		    top_shadow_GC;
     GC		    bot_shadow_GC;
+    GC		    top_half_shadow_GC;
     GC		    erase_GC;
     XtPointer	    user_data;
     Boolean	    be_nice_to_cmap;

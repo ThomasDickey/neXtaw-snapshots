@@ -1,4 +1,7 @@
 /* $XConsortium: TextAction.c,v 1.53 95/06/14 15:07:27 kaleb Exp $ */
+/* MODIFIED FOR N*XTSTEP LOOK	 				*/
+/* Modifications Copyright (c) 1996 by Alfredo Kojima		*/
+/* Modifications Copyright (c) 1999 by Carlos A M dos Santos	*/
 
 /*
 
@@ -33,9 +36,9 @@ in this Software without prior written authorization from the X Consortium.
 #include <X11/Xmu/Misc.h>
 #include <X11/Xmu/StdSel.h>		/* for XmuConvertStandardSelection */
 #include <X11/Xmu/Atoms.h>		/* for XA_COMPOUND_TEXT */
-#include <X11/Xaw3d/TextP.h>
-#include <X11/Xaw3d/MultiSrcP.h>
-#include <X11/Xaw3d/XawImP.h>
+#include <X11/neXtaw/TextP.h>
+#include <X11/neXtaw/MultiSrcP.h>
+#include <X11/neXtaw/XawImP.h>
 #include <X11/Xfuncs.h>
 #include "XawI18n.h"
 #include <stdio.h>
@@ -1482,7 +1485,7 @@ TextLeaveWindow( w, event, params, num_params )
   }
 }
 
-static XComposeStatus compose_status = {NULL, 0};
+static Status compose_status = 0;	/* Casantos, Jun 27 1999 */
 
 /*	Function Name: AutoFill
  *	Description: Breaks the line at the previous word boundry when
@@ -1547,9 +1550,11 @@ Cardinal* n;
 
   if (XtIsSubclass (ctx->text.source, (WidgetClass) multiSrcObjectClass))
     text.length = _XawImWcLookupString (w, &event->xkey,
-		(wchar_t*) strbuf, BUFSIZ, &keysym, (Status*) &compose_status);
+		(wchar_t*) strbuf, BUFSIZ, &keysym, &compose_status);
   else
-    text.length = XLookupString ((XKeyEvent*)event, strbuf, BUFSIZ, &keysym, &compose_status);
+    /* Casantos, Jun 27 1999 */
+    text.length = _XawImMbLookupString (w, &event->xkey,
+		strbuf, BUFSIZ, &keysym, &compose_status);
 
   if (text.length == 0)
       return;

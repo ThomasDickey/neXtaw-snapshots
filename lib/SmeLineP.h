@@ -41,8 +41,8 @@ in this Software without prior written authorization from the X Consortium.
  *
  ***********************************************************************/
 
-#include <X11/Xaw3d/SmeP.h>
-#include <X11/Xaw3d/SmeLine.h>
+#include <X11/neXtaw/SmeP.h>
+#include <X11/neXtaw/SmeLine.h>
 
 /************************************************************
  *

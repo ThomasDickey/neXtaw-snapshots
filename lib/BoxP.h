@@ -65,7 +65,7 @@ SOFTWARE.
  *
  ***********************************************************************/
 
-#include <X11/Xaw3d/Box.h>
+#include <X11/neXtaw/Box.h>
 #include <X11/Xmu/Converters.h>
 
 /* New fields for the Box widget class record */
@@ -90,6 +90,9 @@ typedef struct {
     Dimension	preferred_width, preferred_height;
     Dimension	last_query_width, last_query_height;
     XtGeometryMask last_query_mode;
+#ifdef XPM_TILE
+    Pixmap 	background_tile;	/* for background tiling */
+#endif    
 } BoxPart;
 
 

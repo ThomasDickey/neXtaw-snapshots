@@ -30,7 +30,7 @@ in this Software without prior written authorization from the X Consortium.
 #ifndef _XawRepeater_h
 #define _XawRepeater_h
 
-#include <X11/Xaw3d/Command.h>
+#include <X11/neXtaw/Command.h>
 
 /*****************************************************************************
  * 

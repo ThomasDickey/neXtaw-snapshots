@@ -2,6 +2,10 @@
  * $XConsortium: AsciiText.h,v 1.18 94/04/17 20:11:51 kaleb Exp $ 
  */
 
+/*
+ * MODIFIED FOR N*XTSTEP LOOK by Carlos A M dos Santos - 1999
+*/
+
 /***********************************************************
 
 Copyright (c) 1987, 1988, 1994  X Consortium
@@ -78,9 +82,9 @@ SOFTWARE.
  *
  ****************************************************************/
 
-#include <X11/Xaw3d/Text.h>		/* AsciiText is a subclass of Text */
-#include <X11/Xaw3d/AsciiSrc.h>
-#include <X11/Xaw3d/MultiSrc.h>
+#include <X11/neXtaw/Text.h>		/* AsciiText is a subclass of Text */
+#include <X11/neXtaw/AsciiSrc.h>
+#include <X11/neXtaw/MultiSrc.h>
 
 /* Resources:
 

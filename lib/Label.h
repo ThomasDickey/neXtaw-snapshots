@@ -57,7 +57,7 @@ SOFTWARE.
  *
  ***********************************************************************/
 
-#include <X11/Xaw3d/Simple.h>
+#include <X11/neXtaw/Simple.h>
 
 /* Resources:
 

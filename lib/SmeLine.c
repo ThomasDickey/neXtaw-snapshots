@@ -1,4 +1,6 @@
 /* $XConsortium: SmeLine.c,v 1.15 94/04/17 20:12:51 eswu Exp $ */
+/* MODIFIED FOR N*XTSTEP LOOK	 				*/
+/* Modifications Copyright (c) 1996 by Alfredo Kojima		*/
 
 /*
 Copyright (c) 1989  X Consortium
@@ -41,9 +43,9 @@ in this Software without prior written authorization from the X Consortium.
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 
-#include <X11/Xaw3d/XawInit.h>
-#include <X11/Xaw3d/SmeLineP.h>
-#include <X11/Xaw3d/Cardinals.h>
+#include <X11/neXtaw/XawInit.h>
+#include <X11/neXtaw/SmeLineP.h>
+#include <X11/neXtaw/Cardinals.h>
 
 #define offset(field) XtOffsetOf(SmeLineRec, sme_line.field)
 static XtResource resources[] = {
@@ -213,7 +215,8 @@ XEvent * event;
 Region region;
 {
     SmeLineObject entry = (SmeLineObject) w;
-    int y = entry->rectangle.y + 
+    int x = entry->rectangle.x;
+    int y = entry->rectangle.y +
 	    (int)(entry->rectangle.height - entry->sme_line.line_width) / 2;
 
     if (entry->sme_line.stipple != XtUnspecifiedPixmap) 
@@ -221,7 +224,7 @@ Region region;
 
     XFillRectangle(XtDisplayOfObject(w), XtWindowOfObject(w),
 		   entry->sme_line.gc, 
-		   0, y, (unsigned int) entry->rectangle.width, 
+		   x, y, (unsigned int) entry->rectangle.width, 
 		   (unsigned int) entry->sme_line.line_width );
 }
 

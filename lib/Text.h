@@ -1,5 +1,10 @@
 /* $XConsortium: Text.h,v 1.45 94/04/17 20:13:05 kaleb Exp $ */
 
+/*
+ * MODIFIED FOR N*XTSTEP LOOK by Carlos A M dos Santos - 1999
+ * <casantos@cpmet.ufpel.tche.br>
+*/
+
 /***********************************************************
 
 Copyright (c) 1987, 1988, 1994  X Consortium
@@ -51,7 +56,7 @@ SOFTWARE.
 #ifndef _XawText_h
 #define _XawText_h
 
-#include <X11/Xaw3d/Simple.h>
+#include <X11/neXtaw/Simple.h>
 
 /*
  Text widget
@@ -105,8 +110,8 @@ typedef struct {
     unsigned long format;
     } XawTextBlock, *XawTextBlockPtr; 
 
-#include <X11/Xaw3d/TextSink.h>
-#include <X11/Xaw3d/TextSrc.h>
+#include <X11/neXtaw/TextSink.h>
+#include <X11/neXtaw/TextSrc.h>
 
 #define XtEtextScrollNever "never"
 #define XtEtextScrollWhenNeeded "whenneeded"
@@ -303,8 +308,8 @@ _XFUNCPROTOEND
  * For R3 compatability only. 
  */
 
-#include <X11/Xaw3d/AsciiSrc.h>
-#include <X11/Xaw3d/AsciiSink.h>
+#include <X11/neXtaw/AsciiSrc.h>
+#include <X11/neXtaw/AsciiSink.h>
 
 #endif /* _XawText_h */
 /* DON'T ADD STUFF AFTER THIS #endif */

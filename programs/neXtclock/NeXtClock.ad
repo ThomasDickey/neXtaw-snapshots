@@ -1,0 +1,5 @@
+!NeXtClock.input:	false
+NeXtClock*translations:	#override\
+	<KeyPress>q:	quit()
+*Clock.background:	Gray70
+*Clock.shadowWidth:	2

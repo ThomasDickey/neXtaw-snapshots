@@ -1,5 +1,6 @@
 /* $XConsortium: SmeBSB.c,v 1.19 94/04/17 20:12:49 kaleb Exp $ */
-
+/* MODIFIED FOR N*XTSTEP LOOK	 				*/
+/* Modifications Copyright (c) 1996 by Alfredo Kojima		*/
 /*
 Copyright (c) 1989, 1994  X Consortium
 
@@ -25,6 +26,8 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from the X Consortium.
  */
 
+/* $XFree86: xc/lib/Xaw/SmeBSB.c,v 1.1.1.2.2.3 1998/05/20 05:06:18 dawes Exp $ */
+
 /*
  * SmeBSB.c - Source code file for BSB Menu Entry object.
  *
@@ -48,12 +51,14 @@ extern int abs();
 
 #include <X11/Xmu/Drawing.h>
 
-#include <X11/Xaw3d/XawInit.h>
-#include <X11/Xaw3d/SimpleMenu.h>
-#include <X11/Xaw3d/SmeBSBP.h>
-#include <X11/Xaw3d/Cardinals.h>
+#include <X11/neXtaw/XawInit.h>
+#include <X11/neXtaw/SimpleMenu.h>
+#include <X11/neXtaw/SmeBSBP.h>
+#include <X11/neXtaw/Cardinals.h>
 
 #include <stdio.h>
+
+#include "XawAlloc.h"
 
 #define ONE_HUNDRED 100
 
@@ -91,7 +96,7 @@ static void Redisplay(), Destroy(), Initialize(), FlipColors();
 static void ClassInitialize();
 static Boolean SetValues();
 static XtGeometryResult QueryGeometry();
-
+static void HiColor(), UnhiColor();
 /* 
  * Private Function Definitions.
  */
@@ -99,7 +104,7 @@ static XtGeometryResult QueryGeometry();
 static void GetDefaultSize(), DrawBitmaps(), GetBitmapInfo();
 static void CreateGCs(), DestroyGCs();
     
-#define superclass (&smeThreeDClassRec)
+#define superclass (&smeClassRec)
 SmeBSBClassRec smeBSBClassRec = {
   {
     /* superclass         */    (WidgetClass) superclass,
@@ -140,9 +145,6 @@ SmeBSBClassRec smeBSBClassRec = {
     /* unhighlight        */	FlipColors,
     /* notify             */	XtInheritNotify,		
     /* extension	  */	NULL
-  }, {
-    /* ThreeDClass Fields */
-    /* shadowdraw         */    XtInheritXawSme3dShadowDraw
   }, {
     /* BSBClass Fields */  
     /* extension	  */    NULL
@@ -237,8 +239,8 @@ Region region;
 {
     GC gc;
     SmeBSBObject entry = (SmeBSBObject) w;
-    Dimension s = entry->sme_threeD.shadow_width;
-    int	font_ascent = 0, font_descent = 0, y_loc;
+/*    Dimension s = entry->sme_threeD.shadow_width;*/
+    int	font_ascent = 0, font_descent = 0, y_loc, x_loc;
 
     int	fontset_ascent = 0, fontset_descent = 0;
     XFontSetExtents *ext = XExtentsOfFontSet(entry->sme_bsb.fontset);
@@ -253,14 +255,14 @@ Region region;
         font_descent = entry->sme_bsb.font->max_bounds.descent;
     }
     y_loc = entry->rectangle.y;
-
+    x_loc = entry->rectangle.x;
 
     if (XtIsSensitive(w) && XtIsSensitive( XtParent(w) ) ) {
 	if ( w == XawSimpleMenuGetActiveEntry(XtParent(w)) ) {
-	    XFillRectangle(XtDisplayOfObject(w), XtWindowOfObject(w), 
-			   entry->sme_bsb.norm_gc, s, y_loc + s,
-			   (unsigned int) entry->rectangle.width - 2 * s,
-			   (unsigned int) entry->rectangle.height - 2 * s);
+	    XFillRectangle(XtDisplayOfObject(w), XtWindowOfObject(w),
+			   entry->sme_bsb.norm_gc, x_loc, y_loc,
+			   (unsigned int) entry->rectangle.width,
+			   (unsigned int) entry->rectangle.height);
 	    gc = entry->sme_bsb.rev_gc;
 	}
 	else
@@ -270,10 +272,10 @@ Region region;
 	gc = entry->sme_bsb.norm_gray_gc;
     
     if (entry->sme_bsb.label != NULL) {
-	int x_loc = entry->sme_bsb.left_margin;
 	int len = strlen(entry->sme_bsb.label);
 	char * label = entry->sme_bsb.label;
-
+	
+	x_loc += entry->sme_bsb.left_margin;
 	switch(entry->sme_bsb.justify) {
 	    int width, t_width;
 
@@ -315,14 +317,14 @@ Region region;
 		  (fontset_ascent + fontset_descent)) / 2 + fontset_ascent;
 
             XmbDrawString(XtDisplayOfObject(w), XtWindowOfObject(w),
-                entry->sme_bsb.fontset, gc, x_loc + s, y_loc, label, len);
+                entry->sme_bsb.fontset, gc, x_loc, y_loc, label, len);
         }
         else {
             y_loc += ((int)entry->rectangle.height - 
 		  (font_ascent + font_descent)) / 2 + font_ascent;
 	
             XDrawString(XtDisplayOfObject(w), XtWindowOfObject(w), gc,
-		    x_loc + s, y_loc, label, len);
+		    x_loc, y_loc, label, len);
         }
     }
 
@@ -453,22 +455,32 @@ Widget w;
 {
     SmeBSBObject entry = (SmeBSBObject) w;
     SmeBSBObjectClass oclass = (SmeBSBObjectClass) XtClass (w);
-
+    int hs;
+    
+/*
     if (entry->sme_bsb.set_values_area_cleared) {
 	entry->sme_threeD.shadowed = False;
 	return;
     }
 
     if (entry->sme_threeD.shadow_width > 0) {
+	
 	entry->sme_threeD.shadowed ^= True;
 	(*oclass->sme_threeD_class.shadowdraw) (w);
+	
     } else
-    	XFillRectangle(XtDisplayOfObject(w), XtWindowOfObject(w),
-		   entry->sme_bsb.invert_gc, 
-		   0, (int) entry->rectangle.y,
-		   (unsigned int) entry->rectangle.width, 
-		   (unsigned int) entry->rectangle.height);
+ */
+    hs = (entry->rectangle.x>1?entry->rectangle.x/2 : entry->rectangle.x);
+    XFillRectangle(XtDisplayOfObject(w), XtWindowOfObject(w),
+		   entry->sme_bsb.invert_gc,
+		   (int) hs,
+		   (int) entry->rectangle.y+2,
+		   (unsigned int) (entry->rectangle.width+hs),
+		   (unsigned int) entry->rectangle.height-3);
 }
+
+
+
 
 /************************************************************
  *
@@ -499,11 +511,11 @@ Dimension * width, * height;
 	    *width = XmbTextEscapement(entry->sme_bsb.fontset, entry->sme_bsb.label,
 			    strlen(entry->sme_bsb.label));
         *width += entry->sme_bsb.left_margin + entry->sme_bsb.right_margin;
-        *width += (2 * entry->sme_threeD.shadow_width);
+/*        *width += (2 * entry->sme_threeD.shadow_width);*/
         *height = ext->max_ink_extent.height;
         *height = ((int)*height * ( ONE_HUNDRED + 
 			        entry->sme_bsb.vert_space )) / ONE_HUNDRED;
-        *height += (2 * entry->sme_threeD.shadow_width);
+/*        *height += (2 * entry->sme_threeD.shadow_width);*/
     }
     else {
         if (entry->sme_bsb.label == NULL) 
@@ -513,14 +525,14 @@ Dimension * width, * height;
 			    strlen(entry->sme_bsb.label));
 
         *width += entry->sme_bsb.left_margin + entry->sme_bsb.right_margin;
-        *width += (2 * entry->sme_threeD.shadow_width);
+  /*      *width += (2 * entry->sme_threeD.shadow_width);*/
     
         *height = (entry->sme_bsb.font->max_bounds.ascent +
 	       entry->sme_bsb.font->max_bounds.descent);
 
         *height = ((int)*height * ( ONE_HUNDRED + 
 			        entry->sme_bsb.vert_space )) / ONE_HUNDRED;
-        *height += (2 * entry->sme_threeD.shadow_width);
+/*        *height += (2 * entry->sme_threeD.shadow_width);*/
     }
 }
 
@@ -547,7 +559,7 @@ GC gc;
  */
 
   if (entry->sme_bsb.left_bitmap != None) {
-    x_loc = entry->sme_threeD.shadow_width +
+    x_loc = /*entry->sme_threeD.shadow_width +*/
 		(int)(entry->sme_bsb.left_margin -
 		      entry->sme_bsb.left_bitmap_width) / 2;
 
@@ -567,7 +579,7 @@ GC gc;
 
 
   if (entry->sme_bsb.right_bitmap != None) {
-    x_loc = entry->rectangle.width - entry->sme_threeD.shadow_width -
+    x_loc = entry->rectangle.width - /*entry->sme_threeD.shadow_width -*/
 		(int)(entry->sme_bsb.right_margin +
 		      entry->sme_bsb.right_bitmap_width) / 2;
 
@@ -601,22 +613,31 @@ Boolean is_left;
     int x, y;
     unsigned int width, height;
     char buf[BUFSIZ];
+    char *pbuf;
+    int len;
     
     if (is_left) {
 	if (entry->sme_bsb.left_bitmap != None) {
 	    if (!XGetGeometry(XtDisplayOfObject(w), 
 			      entry->sme_bsb.left_bitmap, &root, 
 			      &x, &y, &width, &height, &bw, &depth)) {
-		(void) sprintf(buf, "Xaw SmeBSB Object: %s %s \"%s\".", "Could not",
-			"get Left Bitmap geometry information for menu entry ",
-			XtName(w));
-		XtAppError(XtWidgetToApplicationContext(w), buf);
+		char *err1 = "Xaw SmeBSB Object: Could not get Left Bitmap geometry information for menu entry ";
+		len = strlen(err1) + strlen(XtName(w)) + 3 + 1;
+		pbuf = XtStackAlloc(len, buf);
+		if (pbuf == NULL) return;
+		sprintf(pbuf, "%s\"%s\".", err1, XtName(w));
+		XtAppError(XtWidgetToApplicationContext(w), pbuf);
+		XtStackFree(pbuf, buf);
 	    }
 	    if (depth != 1) {
-		(void) sprintf(buf, "Xaw SmeBSB Object: %s \"%s\"%s.", 
-			"Left Bitmap of entry ", 
-			XtName(w), " is not one bit deep.");
-		XtAppError(XtWidgetToApplicationContext(w), buf);
+		char *err1 = "Xaw SmeBSB Object: Left Bitmap of entry ";
+		char *err2 = " is not one bit deep.";
+		len = strlen(err1) + strlen(err2) + strlen(XtName(w)) + 2 + 1;
+		pbuf = XtStackAlloc(len, buf);
+		if (pbuf == NULL) return;
+		sprintf(pbuf, "%s\"%s\"%s", err1, XtName(w), err2);
+		XtAppError(XtWidgetToApplicationContext(w), pbuf);
+		XtStackFree(pbuf, buf);
 	    }
 	    entry->sme_bsb.left_bitmap_width = (Dimension) width; 
 	    entry->sme_bsb.left_bitmap_height = (Dimension) height;
@@ -626,16 +647,23 @@ Boolean is_left;
 	if (!XGetGeometry(XtDisplayOfObject(w),
 			  entry->sme_bsb.right_bitmap, &root,
 			  &x, &y, &width, &height, &bw, &depth)) {
-	    (void) sprintf(buf, "Xaw SmeBSB Object: %s %s \"%s\".", "Could not",
-		    "get Right Bitmap geometry information for menu entry ",
-		    XtName(w));
-	    XtAppError(XtWidgetToApplicationContext(w), buf);
+	    char *err1 = "Xaw SmeBSB Object: Could not get Right Bitmap geometry information for menu entry ";
+	    len = strlen(err1) + strlen(XtName(w)) + 3 + 1;
+	    pbuf = XtStackAlloc(len, buf);
+	    if (pbuf == NULL) return;
+	    sprintf(pbuf, "%s\"%s\".", err1, XtName(w));
+	    XtAppError(XtWidgetToApplicationContext(w), pbuf);
+	    XtStackFree(pbuf, buf);
 	}
 	if (depth != 1) {
-	    (void) sprintf(buf, "Xaw SmeBSB Object: %s \"%s\"%s.", 
-		    "Right Bitmap of entry ", XtName(w),
-		    " is not one bit deep.");
-	    XtAppError(XtWidgetToApplicationContext(w), buf);
+	    char *err1 = "Xaw SmeBSB Object: Right Bitmap of entry ";
+	    char *err2 = " is not one bit deep.";
+	    len = strlen(err1) + strlen(err2) + strlen(XtName(w)) + 2 + 1;
+	    pbuf = XtStackAlloc(len, buf);
+	    if (pbuf == NULL) return;
+	    sprintf(pbuf, "%s\"%s\"%s", err1, XtName(w), err2);
+	    XtAppError(XtWidgetToApplicationContext(w), pbuf);
+	    XtStackFree(pbuf, buf);
 	}
 	entry->sme_bsb.right_bitmap_width = (Dimension) width; 
 	entry->sme_bsb.right_bitmap_height = (Dimension) height;
@@ -655,7 +683,6 @@ Widget w;
     SmeBSBObject entry = (SmeBSBObject) w;    
     XGCValues values;
     XtGCMask mask, mask_i18n;
-    
     values.foreground = XtParent(w)->core.background_pixel;
     values.background = entry->sme_bsb.foreground;
     values.font = entry->sme_bsb.font->fid;
@@ -673,7 +700,7 @@ Widget w;
         entry->sme_bsb.norm_gc = XtAllocateGC(w, 0, mask_i18n, &values, GCFont, 0 );
     else
         entry->sme_bsb.norm_gc = XtGetGC(w, mask, &values);
-
+    
     values.fill_style = FillTiled;
     values.tile   = XmuCreateStippledPixmap(XtScreenOfObject(w), 
 					    entry->sme_bsb.foreground,
@@ -686,9 +713,9 @@ Widget w;
     else
         entry->sme_bsb.norm_gray_gc = XtGetGC(w, mask, &values);
 
-    values.foreground ^= values.background;
-    values.background = 0;
-    values.function = GXxor;
+    values.foreground ^= values.background|1;
+    values.background = 1;
+    values.function = GXxor; 
     mask = GCForeground | GCBackground | GCGraphicsExposures | GCFunction;
     entry->sme_bsb.invert_gc = XtGetGC(w, mask, &values);
 }

@@ -1,5 +1,6 @@
 /* $XConsortium: Sme.c,v 1.12 94/04/17 20:12:48 kaleb Exp $ */
-
+/* MODIFIED FOR N*XTSTEP LOOK	 				*/
+/* Modifications Copyright (c) 1996 by Alfredo Kojima		*/
 /*
 Copyright (c) 1989, 1994  X Consortium
 
@@ -39,9 +40,9 @@ in this Software without prior written authorization from the X Consortium.
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 
-#include <X11/Xaw3d/XawInit.h>
-#include <X11/Xaw3d/SmeP.h>
-#include <X11/Xaw3d/Cardinals.h>
+#include <X11/neXtaw/XawInit.h>
+#include <X11/neXtaw/SmeP.h>
+#include <X11/neXtaw/Cardinals.h>
 
 #define offset(field) XtOffsetOf(SmeRec, sme.field)
 static XtResource resources[] = {

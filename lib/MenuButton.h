@@ -1,6 +1,10 @@
 /*
  * $XConsortium: MenuButton.h,v 1.9 94/04/17 20:12:21 kaleb Exp $
- *
+ */
+/* MODIFIED FOR N*XTSTEP LOOK	 				*/
+/* Modifications Copyright (c) 1996, 1997 by Alfredo Kojima	*/
+
+/*
 Copyright (c) 1989, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -47,7 +51,7 @@ in this Software without prior written authorization from the X Consortium.
 #ifndef _XawMenuButton_h
 #define _XawMenuButton_h
 
-#include <X11/Xaw3d/Command.h>
+#include <X11/neXtaw/Command.h>
 
 /* Resources:
 
@@ -81,6 +85,15 @@ in this Software without prior written authorization from the X Consortium.
 
 #define XtNmenuName "menuName"
 #define XtCMenuName "MenuName"
+
+#define XtNmenuButtonStyle "menuButtonStyle"
+#define XtCMenuButtonStyle "MenuButtonStyle"
+
+typedef enum {
+    XtMenuButtonSimple,
+    XtMenuButtonAction,
+    XtMenuButtonSelect
+} XtMenuButtonStyle;
 
 extern WidgetClass     menuButtonWidgetClass;
 

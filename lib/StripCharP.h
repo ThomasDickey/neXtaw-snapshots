@@ -54,8 +54,8 @@ SOFTWARE.
 #ifndef _XawStripChartP_h
 #define _XawStripChartP_h
 
-#include <X11/Xaw3d/StripChart.h>
-#include <X11/Xaw3d/ThreeDP.h>
+#include <X11/neXtaw/StripChart.h>
+#include <X11/neXtaw/ThreeDP.h>
 
 #define NO_GCS 0
 #define FOREGROUND 1 << 0

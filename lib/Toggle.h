@@ -1,6 +1,9 @@
 /*
  * $XConsortium: Toggle.h,v 1.16 94/04/17 20:13:19 kaleb Exp $
- *
+ */
+/* MODIFIED FOR N*XTSTEP LOOK	 				*/
+/* Modifications Copyright (c) 1996 by Alfredo Kojima		*/
+/*
 Copyright (c) 1989, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -44,7 +47,7 @@ in this Software without prior written authorization from the X Consortium.
  *
  ***********************************************************************/
 
-#include <X11/Xaw3d/Command.h>
+#include <X11/neXtaw/Command.h>
 
 /* Resources:
 
@@ -85,16 +88,28 @@ in this Software without prior written authorization from the X Consortium.
 
 */
 
+
+/* toggle styles */
+typedef enum {
+    XtToggleSimple,
+    XtToggleCheck,
+    XtToggleRadio
+} XtToggleStyle;
+
 /*
  * These should be in StringDefs.h but aren't so we will define
  * them here if they are needed.
  */
 
-
 #define XtCWidget "Widget"
 #define XtCState "State"
 #define XtCRadioGroup "RadioGroup"
 #define XtCRadioData "RadioData"
+
+#ifndef XtNtoggleStyle
+#define XtNtoggleStyle "toggleStyle"
+#define XtCToggleStyle "ToggleStyle"
+#endif
 
 #ifndef _XtStringDefs_h_
 #define XtRWidget "Widget"

@@ -1,4 +1,5 @@
 /* $XConsortium: TextSink.c,v 1.19 94/04/17 20:13:11 kaleb Exp $ */
+
 /*
 
 Copyright (c) 1989, 1994  X Consortium
@@ -41,9 +42,9 @@ in this Software without prior written authorization from the X Consortium.
 #include <ctype.h>
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
-#include <X11/Xaw3d/XawInit.h>
-#include <X11/Xaw3d/TextSinkP.h>
-#include <X11/Xaw3d/TextP.h>
+#include <X11/neXtaw/XawInit.h>
+#include <X11/neXtaw/TextSinkP.h>
+#include <X11/neXtaw/TextP.h>
 
 /****************************************************************
  *

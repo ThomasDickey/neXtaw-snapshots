@@ -37,7 +37,7 @@ SOFTWARE.
  ***********************************************************************/
 
 #include <X11/Xmu/Converters.h>
-#include <X11/Xaw3d/Sme.h>
+#include <X11/neXtaw/Sme.h>
 
 /* Parameters:
 

@@ -1,6 +1,10 @@
 /* $XConsortium: AsciiText.c,v 1.47 95/06/06 20:50:30 kaleb Exp $ */
 
 /*
+ * MODIFIED FOR N*XTSTEP LOOK by Carlos A M dos Santos - 1999
+*/
+
+/*
 
 Copyright (c) 1987, 1988, 1994  X Consortium
 
@@ -71,14 +75,14 @@ SOFTWARE.
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 
-#include <X11/Xaw3d/XawInit.h>
-#include <X11/Xaw3d/Cardinals.h>
-#include <X11/Xaw3d/AsciiTextP.h>
-#include <X11/Xaw3d/AsciiSrc.h>
-#include <X11/Xaw3d/AsciiSink.h>
-#include <X11/Xaw3d/MultiSrc.h>
-#include <X11/Xaw3d/MultiSinkP.h>
-#include <X11/Xaw3d/XawImP.h>
+#include <X11/neXtaw/XawInit.h>
+#include <X11/neXtaw/Cardinals.h>
+#include <X11/neXtaw/AsciiTextP.h>
+#include <X11/neXtaw/AsciiSrc.h>
+#include <X11/neXtaw/AsciiSink.h>
+#include <X11/neXtaw/MultiSrc.h>
+#include <X11/neXtaw/MultiSinkP.h>
+#include <X11/neXtaw/XawImP.h>
 
 #define TAB_COUNT 32
 
@@ -178,15 +182,16 @@ Cardinal *num_args;
   XawTextDisableRedisplay(new);
   XawTextEnableRedisplay(new);
 
+  /* Connect input method -- Casantos, Jun 27 1999 */
 
-  /* If we are using a MultiSink we need to tell the input method stuff. */
+  _XawImRegister( new );
 
   if ( w->simple.international == True ) {
+    /* We will use a MultiSink */
     Arg list[4];
     Cardinal ac = 0;
 
     sink = (MultiSinkObject)w->text.sink;
-    _XawImRegister( new );
     XtSetArg (list[ac], XtNfontSet, sink->multi_sink.fontset); ac++;
     XtSetArg (list[ac], XtNinsertPosition, w->text.insertPos); ac++;
     XtSetArg (list[ac], XtNforeground, sink->text_sink.foreground); ac++;
@@ -201,7 +206,8 @@ Widget w;
 {
     /* Disconnect input method */
 
-    if ( ((AsciiWidget)w)->simple.international == True )
+    /* Casantos, Jun 27 1999 */
+    /* if ( ((AsciiWidget)w)->simple.international == True ) */
         _XawImUnregister( w );
 
     if (w == XtParent(((AsciiWidget)w)->text.source))

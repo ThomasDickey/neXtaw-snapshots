@@ -59,8 +59,8 @@ SOFTWARE.
 #ifndef _XawGripP_h
 #define _XawGripP_h
 
-#include <X11/Xaw3d/Grip.h>
-#include <X11/Xaw3d/ThreeDP.h>
+#include <X11/neXtaw/Grip.h>
+#include <X11/neXtaw/ThreeDP.h>
 
 /*****************************************************************************
  *

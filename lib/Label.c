@@ -56,13 +56,13 @@ SOFTWARE.
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 #include <X11/Xos.h>
-#include <X11/Xaw3d/XawInit.h>
-#include <X11/Xaw3d/LabelP.h>
+#include <X11/neXtaw/XawInit.h>
+#include <X11/neXtaw/LabelP.h>
+#include <X11/neXtaw/Misc.h>
 #include <X11/Xmu/Converters.h>
 #include <X11/Xmu/Drawing.h>
 #include <stdio.h>
 #include <ctype.h>
-
 /* needed for abs() */
 #ifndef X_NOT_STDC_ENV
 #include <stdlib.h>
@@ -114,13 +114,20 @@ static XtResource resources[] = {
 	offset(threeD.shadow_width), XtRImmediate, (XtPointer) 0},
     {XtNborderWidth, XtCBorderWidth, XtRDimension, sizeof(Dimension),
          XtOffsetOf(RectObjRec,rectangle.border_width), XtRImmediate,
-         (XtPointer)1}
+         (XtPointer)1},
+#ifdef XPM_TILE
+  {XtNbackgroundTile, XtCBackgroundTile, XtRTilePixmap, sizeof(Pixmap),
+     offset(label.background_tile), XtRImmediate, (XtPointer)None}
+#endif
 };
 #undef offset
 
 static void Initialize();
 static void Resize();
 static void Redisplay();
+#ifdef XPM_TILE
+static void Realize();
+#endif
 static Boolean SetValues();
 static void ClassInitialize();
 static void Destroy();
@@ -137,7 +144,11 @@ LabelClassRec labelClassRec = {
     /* class_inited       	*/	FALSE,
     /* initialize	  	*/	Initialize,
     /* initialize_hook		*/	NULL,
+#ifdef XPM_TILE
+    /* realize		  	*/	Realize,
+#else
     /* realize		  	*/	XtInheritRealize,
+#endif
     /* actions		  	*/	NULL,
     /* num_actions	  	*/	0,
     /* resources	  	*/	resources,
@@ -184,9 +195,23 @@ WidgetClass labelWidgetClass = (WidgetClass)&labelClassRec;
 
 static void ClassInitialize()
 {
+#ifdef XPM_TILE    
+    static XtConvertArgRec convertArg[] = {
+        {XtWidgetBaseOffset, (XtPointer) XtOffsetOf(WidgetRec, core.screen),
+	     sizeof(Screen *)},
+        {XtWidgetBaseOffset, (XtPointer) XtOffsetOf(WidgetRec, core.colormap),
+	     sizeof(Colormap)}
+    };
+#endif    
     XawInitializeWidgetSet();
     XtAddConverter( XtRString, XtRJustify, XmuCvtStringToJustify, 
 		    (XtConvertArgList)NULL, 0 );
+    
+#ifdef XPM_TILE
+    XtSetTypeConverter(XtRString, XtRTilePixmap, neXtawcvtStringToTilePixmap,
+		       convertArg, XtNumber(convertArg),
+		       XtCacheByDisplay, (XtDestructor)NULL);
+#endif
 }
 
 #ifndef WORD64
@@ -353,6 +378,24 @@ static void SetTextWidthAndHeight(lw)
 
     }
 }
+
+#ifdef XPM_TILE
+static void Realize(widget, value_mask, attributes)
+    Widget widget;
+    XtValueMask *value_mask;
+    XSetWindowAttributes *attributes;
+{
+    LabelWidget w = (LabelWidget) widget;
+
+    (*((WidgetClass)&threeDClassRec)->core_class.realize)(widget, value_mask, 
+							 attributes);
+    if (w->label.background_tile!=None) {
+	XSetWindowBackgroundPixmap(XtDisplay(widget), XtWindow(widget),
+				   w->label.background_tile);
+	XClearWindow(XtDisplay(widget), XtWindow(widget));
+    }
+}
+#endif
 
 static void GetnormalGC(lw)
     LabelWidget lw;

@@ -1,4 +1,7 @@
 /* $XConsortium: XawImP.h,v 1.4 95/06/06 20:50:30 kaleb Exp $ */
+/* MODIFIED FOR N*XTSTEP LOOK	 				*/
+/* Modifications Copyright (c) 1996 by Alfredo Kojima		*/
+/* Modifications Copyright (c) 1999 by Carlos A M dos Santos	*/
 
 /*
  * Copyright 1991 by OMRON Corporation
@@ -65,7 +68,7 @@ in this Software without prior written authorization from the X Consortium.
 #define XtNsharedIc		"sharedIc"
 #define XtCSharedIc		"SharedIc"
 
-#include <X11/Xaw3d/Text.h>
+#include <X11/neXtaw/Text.h>
 
 #define	CIICFocus	(1 << 0)
 #define	CIFontSet	(1 << 1)
@@ -177,27 +180,11 @@ void _XawImSetValues(
 #endif
 );
 
-/* DON'T USE THIS FUNCTION -- it's going away in the next release */
-void _XawImVASetValues( 
-#if NeedVarargsPrototypes
-    Widget,  /* w */
-    ... 
-#endif
-);
-
 void _XawImSetFocusValues( 
 #if NeedFunctionPrototypes
     Widget,  /* w */
     ArgList, /* args */
     Cardinal /* num_args */
-#endif
-);
-
-/* DON'T USE THIS FUNCTION -- it's going away in the next release */
-void _XawImVASetFocusValues( 
-#if NeedVarargsPrototypes
-    Widget,  /* w */
-    ... 
 #endif
 );
 
@@ -207,6 +194,20 @@ void _XawImUnsetFocus(
 #endif
 );
 
+#define XAW_IM_MBLOOKUPSTRING
+int
+_XawImMbLookupString(		/* Casantos, Jun 27 1999 */
+#if NeedFunctionPrototypes
+    Widget,		/* inwidg */
+    XKeyPressedEvent*,	/* event */
+    char*,		/* buffer_return */
+    int,		/* bytes_buffer */
+    KeySym*,		/* keysym_return */
+    Status *		/* status_return */
+#endif
+);
+
+#define XAW_IM_WCLOOKUPSTRING
 int  _XawImWcLookupString( 
 #if NeedFunctionPrototypes
     Widget,   /* w */

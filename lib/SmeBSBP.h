@@ -1,6 +1,10 @@
 /*
  * $XConsortium: SmeBSBP.h,v 1.8 94/04/17 21:44:11 rws Exp $
- *
+ */
+/* MODIFIED FOR N*XTSTEP LOOK	 				*/
+/* Modifications Copyright (c) 1996 by Alfredo Kojima		*/
+
+/*
 Copyright (c) 1989, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -40,9 +44,8 @@ in this Software without prior written authorization from the X Consortium.
  * Sme Object Private Data
  *
  ***********************************************************************/
-
-#include <X11/Xaw3d/SmeThreeDP.h>
-#include <X11/Xaw3d/SmeBSB.h>
+#include <X11/neXtaw/SmeP.h>
+#include <X11/neXtaw/SmeBSB.h>
 
 /************************************************************
  *
@@ -58,7 +61,6 @@ typedef struct _SmeBSBClassPart {
 typedef struct _SmeBSBClassRec {
     RectObjClassPart	rect_class;
     SmeClassPart	sme_class;
-    SmeThreeDClassPart	sme_threeD_class;
     SmeBSBClassPart	sme_bsb_class;
 } SmeBSBClassRec;
 
@@ -84,7 +86,6 @@ typedef struct {
     GC rev_gc;			/* reverse color gc. */
     GC norm_gray_gc;		/* Normal color (grayed out) gc. */
     GC invert_gc;		/* gc for flipping colors. */
-
     Dimension left_bitmap_width; /* size of each bitmap. */
     Dimension left_bitmap_height;
     Dimension right_bitmap_width;
@@ -102,7 +103,6 @@ typedef struct _SmeBSBRec {
     ObjectPart		object;
     RectObjPart		rectangle;
     SmePart		sme;
-    SmeThreeDPart	sme_threeD;
     SmeBSBPart		sme_bsb;
 } SmeBSBRec;
 

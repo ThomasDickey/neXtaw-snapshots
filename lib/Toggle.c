@@ -1,4 +1,6 @@
 /* $XConsortium: Toggle.c,v 1.28 94/04/17 20:13:17 kaleb Exp $ */
+/* MODIFIED FOR N*XTSTEP LOOK	 				*/
+/* Modifications Copyright (c) 1996,1997 by Alfredo Kojima	*/
 
 /*
 
@@ -42,10 +44,10 @@ in this Software without prior written authorization from the X Consortium.
 
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
-#include <X11/Xaw3d/XawInit.h>
+#include <X11/neXtaw/XawInit.h>
 #include <X11/Xmu/Converters.h>
 #include <X11/Xmu/Misc.h>
-#include <X11/Xaw3d/ToggleP.h>
+#include <X11/neXtaw/ToggleP.h>
 
 /****************************************************************
  *
@@ -61,9 +63,9 @@ in this Software without prior written authorization from the X Consortium.
  */
 
 static char defaultTranslations[] =
-    "<EnterWindow>:	    highlight(Always)	\n\
-     <LeaveWindow>:	    unhighlight()	\n\
-     <Btn1Down>,<Btn1Up>:   toggle() notify()";
+/*  "<EnterWindow>:	    highlight(Always)	\n\
+     <LeaveWindow>:	    unhighlight()	\n\ */
+     "<Btn1Down>,<Btn1Up>:   toggle() notify()";
 
 #define offset(field) XtOffsetOf(ToggleRec, field)
 
@@ -74,6 +76,8 @@ static XtResource resources[] = {
       offset(toggle.widget), XtRWidget, (XtPointer) NULL },
    {XtNradioData, XtCRadioData, XtRPointer, sizeof(XtPointer), 
       offset(toggle.radio_data), XtRPointer, (XtPointer) NULL },
+   {XtNtoggleStyle, XtCToggleStyle, XtRToggleStyle, sizeof(XtToggleStyle),
+      offset(toggle.toggle_style), XtRToggleStyle, (XtPointer)XtToggleSimple },
 };
 
 #undef offset
@@ -82,6 +86,8 @@ static XtResource resources[] = {
 static void Toggle(), Initialize(), Notify(), ToggleSet();
 static void ToggleDestroy(), ClassInit();
 static Boolean SetValues();
+static void Redisplay(), Resize();
+static void DisplayCheckBox(), DisplayRadioButton();
 
 /* Functions for handling the Radio Group. */
 
@@ -95,6 +101,9 @@ static XtActionsRec actionsList[] =
   {"notify",	        Notify},
   {"set",	        ToggleSet},
 };
+
+
+#define CHECKBOX_SPACE 12
 
 #define SuperClass ((CommandWidgetClass)&commandClassRec)
 
@@ -119,8 +128,8 @@ ToggleClassRec toggleClassRec = {
     TRUE,				/* compress_enterleave    */
     FALSE,				/* visible_interest	  */
     NULL,         			/* destroy		  */
-    XtInheritResize,			/* resize		  */
-    XtInheritExpose,			/* expose		  */
+    Resize,				/* resize		  */
+    Redisplay,				/* expose		  */
     SetValues,				/* set_values		  */
     NULL,				/* set_values_hook	  */
     XtInheritSetValuesAlmost,		/* set_values_almost	  */
@@ -160,6 +169,45 @@ WidgetClass toggleWidgetClass = (WidgetClass) &toggleClassRec;
  * Private Procedures
  *
  ****************************************************************/
+#define	done(address, type) \
+	{ toVal->size = sizeof(type); \
+	  toVal->addr = (XPointer) address; \
+	  return; \
+	}
+
+
+static XrmQuark	XtQToggleSimple, XtQToggleCheck, XtQToggleRadio;
+
+/* ARGSUSED */
+static void _CvtStringToToggleStyle(args, num_args, fromVal, toVal)
+    XrmValuePtr args;		/* unused */
+    Cardinal    *num_args;      /* unused */
+    XrmValuePtr fromVal;
+    XrmValuePtr toVal;
+{
+    static XtToggleStyle toggleStyle;
+    XrmQuark q;
+    char lowerName[1000];
+
+    XmuCopyISOLatin1Lowered (lowerName, (char*)fromVal->addr);
+    q = XrmStringToQuark(lowerName);
+    if (q == XtQToggleSimple) {
+	toggleStyle = XtToggleSimple;
+	done(&toggleStyle, XtToggleStyle);
+    }
+    if (q == XtQToggleCheck) {
+	toggleStyle = XtToggleCheck;
+	done(&toggleStyle, XtToggleStyle);
+    }
+    if (q == XtQToggleRadio) {
+	toggleStyle = XtToggleRadio;
+	done(&toggleStyle, XtToggleStyle);
+    }
+    XtStringConversionWarning(fromVal->addr, "toggleStyle");
+    toVal->addr = NULL;
+    toVal->size = 0;
+}
+#undef done
 
 static void
 ClassInit()
@@ -177,6 +225,12 @@ ClassInit()
   XtSetTypeConverter(XtRString, XtRWidget, XmuNewCvtStringToWidget,
 		     parentCvtArgs, XtNumber(parentCvtArgs), XtCacheNone,
 		     (XtDestructor)NULL);
+    
+  XtQToggleSimple  = XrmPermStringToQuark("simple");
+  XtQToggleCheck = XrmPermStringToQuark("check");
+  XtQToggleRadio = XrmPermStringToQuark("radio");
+  XtAddConverter( XtRString, XtRToggleStyle, _CvtStringToToggleStyle, 
+		 (XtConvertArgList)NULL, 0 );
 /* 
  * Find the set and unset actions in the command widget's action table. 
  */
@@ -210,7 +264,7 @@ static void Initialize(request, new, args, num_args)
     ToggleWidget tw_req = (ToggleWidget) request;
 
     tw->toggle.radio_group = NULL;
-
+    
     if (tw->toggle.radio_data == NULL) 
       tw->toggle.radio_data = (XtPointer) new->core.name;
 
@@ -233,9 +287,145 @@ static void Initialize(request, new, args, num_args)
  * the resource group, reguardless of what my ancestors did.
  */
 
-    if (tw_req->command.set)
+    if (tw_req->command.set) 
       ToggleSet(new, (XEvent *)NULL, (String *)NULL, (Cardinal *)0);
+
+    if (tw->toggle.toggle_style==XtToggleCheck
+	|| tw->toggle.toggle_style==XtToggleRadio) {
+	/* if we'll use an indicator */
+	tw->threeD.shadow_width = 0;
+	XtResizeWidget(new, tw->core.width + CHECKBOX_SPACE, tw->core.height,
+		       tw->core.border_width);
+    }
 }
+
+static void
+DisplayRadioButton(w, toggled)
+Widget w;
+Boolean toggled;
+{
+    ToggleWidget tw = (ToggleWidget) w;
+    Display *dpy=XtDisplay(w);
+    Window win=XtWindow(w);
+    GC light2 = tw->threeD.top_shadow_GC;
+    GC light = tw->threeD.top_half_shadow_GC;
+    GC dark2 = tw->threeD.bot_shadow_GC;      
+    GC dark = tw->threeD.bot_half_shadow_GC;
+    Dimension	s = tw->threeD.shadow_width;    
+    int x1, y1;
+
+    if (!XtIsRealized(w)) return;
+    x1 = s+1;
+    y1 = (tw->core.height-15)/2;
+    if (y1<0) 
+      y1=0;
+
+    /*
+     * These coords are based on trial and error
+     */
+#define rad 7
+    XDrawArc(dpy, win, dark, x1, y1, rad*2-1, rad*2-1, 60*64, 150*64);
+    XDrawArc(dpy, win, dark2, x1, y1, rad*2, rad*2, 55*64, 160*64);
+    XDrawArc(dpy, win, light, x1, y1, rad*2, rad*2, 35*64, -160*64);
+    XDrawArc(dpy, win, dark, x1+1, y1+1, rad*2-1, rad*2-1, 60*64, 150*64);
+    XDrawArc(dpy, win, light2, x1, y1, rad*2-1, rad*2-1, 30*64, -150*64);
+    if (tw->command.set) {
+	XFillArc(dpy, win, light, x1+3, y1+3, (rad-2)*2, (rad-2)*2, 0, 360*64);
+    }
+#undef rad
+}
+
+
+static void
+DisplayCheckBox(w)
+Widget w;
+{
+    ToggleWidget tw = (ToggleWidget) w;
+    Display *dpy=XtDisplay(w);
+    Window win=XtWindow(w);
+    GC light2 = tw->threeD.top_shadow_GC;
+    GC light = tw->threeD.top_half_shadow_GC;
+    GC dark2 = tw->threeD.bot_shadow_GC;      
+    GC dark = tw->threeD.bot_half_shadow_GC;
+    Dimension	s = tw->threeD.shadow_width;    
+    int x1, y1, x2, y2;
+
+    if (!XtIsRealized(w)) return;    
+    x1 = s+1;
+    x2 = s+15;
+    if (x2>tw->core.width) {
+	x2=tw->core.width-x1;
+    }
+    y1 = (tw->core.height-15)/2;
+    y2 = y1+15;
+    if (y1<0) {
+	y1=0;
+	y2=tw->core.height;
+    }
+    XDrawLine(dpy, win, light, x1, y1, x2, y1);
+    XDrawLine(dpy, win, light, x1, y1, x1, y2);
+    XDrawLine(dpy, win, dark, x1, y2, x2, y2);
+    XDrawLine(dpy, win, dark, x2, y1, x2, y2);
+    
+    XDrawLine(dpy, win, light2, x1+1, y1+1, x2-1, y1+1);
+    XDrawLine(dpy, win, light2, x1+1, y1+1, x1+1, y2-1); 
+    XDrawLine(dpy, win, dark2, x1+1, y2-1, x2-1, y2-1);
+    XDrawLine(dpy, win, dark2, x2-1, y1+1, x2-1, y2-1);    
+    if (tw->command.set) {
+	int y=(y2-y1)/2-s;
+#define x (x1+4)
+	XDrawLine(dpy, win, dark2, x+1, y+3, x+1, y+6);
+	XDrawLine(dpy, win, light, x, y+3, x, y+8);     
+	XDrawLine(dpy, win, light, x, y+8, x+8, y);
+	XDrawLine(dpy, win, dark2, x, y+9, x+8, y+1);
+	XDrawLine(dpy, win, dark, x+1, y+9, x+8, y+2);
+#undef x
+    }    
+}
+
+static void
+Resize(w)
+Widget w;
+{
+    ToggleWidget tw = (ToggleWidget) w;
+    int tmp;
+    Pixmap kludge;
+
+    /* AAAARGHHH!! */
+    if (tw->toggle.toggle_style==XtToggleCheck
+	|| tw->toggle.toggle_style==XtToggleRadio) {
+	tmp = tw->label.lbm_width;
+	kludge = tw->label.left_bitmap;
+	tw->label.lbm_width += CHECKBOX_SPACE;
+	tw->label.left_bitmap = 1;
+    }    
+    (*SuperClass->core_class.resize) (w);
+    if (tw->toggle.toggle_style==XtToggleCheck
+	|| tw->toggle.toggle_style==XtToggleRadio) {
+	tw->label.lbm_width = tmp;
+	tw->label.left_bitmap = kludge;
+    }    
+}
+
+static void
+Redisplay(w, event, region)
+Widget w;
+XEvent *event;
+Region region;
+{
+    ToggleWidget tw = (ToggleWidget) w;
+    ToggleWidgetClass twclass = (ToggleWidgetClass) XtClass (w);
+    Dimension	s = tw->threeD.shadow_width;
+
+    (*SuperClass->core_class.expose) (w, event, region);
+    if (tw->toggle.toggle_style==XtToggleCheck) {
+	DisplayCheckBox(w);
+    } else if (tw->toggle.toggle_style==XtToggleRadio) {
+	DisplayRadioButton(w);
+    }
+}
+
+
 
 /************************************************************
  *
@@ -255,6 +445,11 @@ Cardinal *num_params;	/* unused */
 
     TurnOffRadioSiblings(w);
     class->toggle_class.Set(w, event, NULL, 0);
+    if (((ToggleWidget)w)->toggle.toggle_style==XtToggleCheck) {
+	DisplayCheckBox(w);
+    } else if (((ToggleWidget)w)->toggle.toggle_style==XtToggleRadio) {
+    	DisplayRadioButton(w);
+    }    
 }
 
 /* ARGSUSED */
@@ -268,10 +463,17 @@ Cardinal *num_params;	/* unused */
   ToggleWidget tw = (ToggleWidget)w;
   ToggleWidgetClass class = (ToggleWidgetClass) w->core.widget_class;
 
-  if (tw->command.set) 
-    class->toggle_class.Unset(w, event, NULL, 0);
-  else 
-    ToggleSet(w, event, params, num_params);
+  if (tw->command.set) {
+      class->toggle_class.Unset(w, event, NULL, 0);
+      if (tw->toggle.toggle_style==XtToggleCheck) {
+	  DisplayCheckBox(w);
+      } else if (tw->toggle.toggle_style==XtToggleRadio) {
+	  DisplayRadioButton(w);
+      }      
+  } else {
+      ToggleSet(w, event, params, num_params);
+  }    
+    
 }
 
 /* ARGSUSED */
@@ -379,7 +581,6 @@ Widget w1, w2;
 	    "to create a new toggle group, when one already exists.");
     XtWarning(error_buf);
   }
-
   AddToRadioGroup( (RadioGroup *)NULL, w1 );
   AddToRadioGroup( GetRadioGroup(w1), w2 );
 }
@@ -402,7 +603,6 @@ Widget w;
   local = (RadioGroup *) XtMalloc( sizeof(RadioGroup) );
   local->widget = w;
   tw->toggle.radio_group = local;
-
   if (group == NULL) {		/* Creating new group. */
     group = local;
     group->next = NULL;
@@ -439,6 +639,13 @@ Widget w;
     ToggleWidget local_tog = (ToggleWidget) group->widget;
     if ( local_tog->command.set ) {
       class->toggle_class.Unset(group->widget, NULL, NULL, 0);
+	
+      if (local_tog->toggle.toggle_style==XtToggleCheck) {
+	    DisplayCheckBox((Widget)local_tog);
+      } else if (local_tog->toggle.toggle_style==XtToggleRadio) {
+	    DisplayRadioButton((Widget)local_tog);
+      }
+	
       Notify( group->widget, (XEvent *)NULL, (String *)NULL, (Cardinal *)0);
     }
     group = group->next;

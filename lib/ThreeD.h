@@ -52,6 +52,8 @@ SOFTWARE.
 
 */
 
+#define XtNrelief "relief"
+#define XtCRelief "Relief"
 #define XtNshadowWidth "shadowWidth"
 #define XtCShadowWidth "ShadowWidth"
 #define XtNtopShadowPixel "topShadowPixel"
@@ -68,6 +70,16 @@ SOFTWARE.
 #define XtCBeNiceToColourmap "BeNiceToColormap"
 #define XtNuserData "userData"
 #define XtCUserData "UserData"
+
+typedef enum {
+    XtReliefNone,
+      XtReliefFlat,
+      XtReliefRaised,
+      XtReliefSunken,
+      XtReliefRidge, 
+      XtReliefGroove 
+} XtRelief;
+
 
 typedef struct _ThreeDRec *ThreeDWidget;
 typedef struct _ThreeDClassRec *ThreeDWidgetClass;

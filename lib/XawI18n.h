@@ -29,10 +29,12 @@ in this Software without prior written authorization from the X Consortium.
 
 #ifdef HAS_WCTYPE_H
 #include <wctype.h>
+#if !defined(__linux__)
 #include <widec.h>
 #define wcslen(c) wslen(c)
 #define wcscpy(d,s) wscpy(d,s)
 #define wcsncpy(d,s,l) wsncpy(d,s,l)
+#endif 
 #endif
 
 #ifdef HAS_WCHAR_H

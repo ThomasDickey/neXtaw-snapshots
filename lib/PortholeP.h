@@ -30,7 +30,7 @@ in this Software without prior written authorization from the X Consortium.
 #ifndef _XawPortholeP_h
 #define _XawPortholeP_h
 
-#include <X11/Xaw3d/Porthole.h>
+#include <X11/neXtaw/Porthole.h>
 
 typedef struct {			/* new fields in widget class */
     int dummy;

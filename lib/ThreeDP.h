@@ -1,7 +1,8 @@
 /*
 * $KK: ThreeDP.h,v 0.3 92/11/04 xx:xx:xx keithley Exp $
 */
-
+/* REMODIFIED FOR N*XTSTEP LOOK	 				*/
+/* Modifications Copyright (c) 1996 by Alfredo Kojima		*/
 /***********************************************************
 Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts,
 and the Massachusetts Institute of Technology, Cambridge, Massachusetts.
@@ -30,21 +31,30 @@ SOFTWARE.
 #ifndef _ThreeDP_h
 #define _ThreeDP_h
 
-#include <X11/Xaw3d/ThreeD.h>
-#include <X11/Xaw3d/SimpleP.h>
+#include <X11/neXtaw/ThreeD.h>
+#include <X11/neXtaw/SimpleP.h>
+
+#define XtRRelief "Relief"
 
 typedef struct {
     Dimension	shadow_width;
     Pixel	top_shadow_pixel;
     Pixel	bot_shadow_pixel;
+    Pixel	top_half_shadow_pixel;
+    Pixel	bot_half_shadow_pixel;
     Pixmap	top_shadow_pxmap;
     Pixmap	bot_shadow_pxmap;
+    Pixmap	top_half_shadow_pxmap;
+    Pixmap	bot_half_shadow_pxmap;    
     int		top_shadow_contrast;
     int		bot_shadow_contrast;
     GC		top_shadow_GC;
     GC		bot_shadow_GC;
+    GC		top_half_shadow_GC;
+    GC		bot_half_shadow_GC;    
     XtPointer	user_data;
     Boolean	be_nice_to_cmap;
+    XtRelief   	relief;
   } ThreeDPart;
 
 /* Full instance record declaration */
@@ -69,6 +79,5 @@ typedef struct _ThreeDClassRec {
 
 /* Class pointer. */
 extern ThreeDClassRec threeDClassRec;
-
 
 #endif /* _ThreeDP_h */

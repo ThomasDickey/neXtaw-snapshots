@@ -25,6 +25,9 @@ used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from the X Consortium.
  *
  */
+/* MODIFIED FOR N*XTSTEP LOOK	 				*/
+/* Modifications Copyright (c) 1996 by Alfredo Kojima		*/
+/***********************************************************/
 
 /*
  * SimpleMenuP.h - Private Header file for SimpleMenu widget.
@@ -39,8 +42,10 @@ in this Software without prior written authorization from the X Consortium.
 #ifndef _SimpleMenuP_h
 #define _SimpleMenuP_h
 
-#include <X11/Xaw3d/SimpleMenu.h>
-#include <X11/Xaw3d/SmeP.h>
+#include <X11/neXtaw/SimpleMenu.h>
+#include <X11/neXtaw/SmeP.h>
+#include <X11/neXtaw/ThreeD.h>
+
 #include <X11/ShellP.h>
 
 typedef struct {
@@ -77,7 +82,6 @@ typedef struct _SimpleMenuPart {
   int          backing_store;	/* What type of backing store to use. */
 
   /* private state */
-
   Boolean recursive_set_values;	/* contain a possible infinite loop. */
 
   Boolean menu_width;		/* If true then force width to remain 
@@ -86,6 +90,13 @@ typedef struct _SimpleMenuPart {
 
   SmeObject entry_set;		/* The entry that is currently set or
 				   highlighted. */
+  Widget threeD;		/* 3d drawing stuff */
+  Boolean too_tall;		/* menu doesn't fit on screen */
+  SmeObject *first_entry;	/* the first entry */
+  SmeObject *current_first;	/* the first entry displayed */    
+  Dimension last_y; 
+  Dimension first_y;
+  Boolean didnt_fit;  		/* if some entry didn't fit in the menu */
 } SimpleMenuPart;
 
 typedef struct _SimpleMenuRec {

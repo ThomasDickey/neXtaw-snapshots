@@ -54,8 +54,8 @@ SOFTWARE.
 #ifndef _DialogP_h
 #define _DialogP_h
 
-#include <X11/Xaw3d/Dialog.h>
-#include <X11/Xaw3d/FormP.h>
+#include <X11/neXtaw/Dialog.h>
+#include <X11/neXtaw/FormP.h>
 
 typedef struct {int empty;} DialogClassPart;
 

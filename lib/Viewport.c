@@ -1,4 +1,6 @@
 /* $XConsortium: Viewport.c,v 1.71 94/04/17 20:13:26 kaleb Exp $ */
+/* MODIFIED FOR N*XTSTEP LOOK	 				*/
+/* Modifications Copyright (c) 1996 by Alfredo Kojima		*/
 
 /***********************************************************
 
@@ -47,14 +49,15 @@ ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
 SOFTWARE.
 
 ******************************************************************/
+/* $XFree86: xc/lib/Xaw/Viewport.c,v 1.1.1.1.12.2 1998/10/04 15:22:52 hohndel Exp $ */
 
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 
-#include <X11/Xaw3d/XawInit.h>
+#include <X11/neXtaw/XawInit.h>
 #include <X11/Xmu/Misc.h>
-#include <X11/Xaw3d/Scrollbar.h>
-#include <X11/Xaw3d/ViewportP.h>
+#include <X11/neXtaw/Scrollbar.h>
+#include <X11/neXtaw/ViewportP.h>
 
 static void ScrollUpDownProc(), ThumbProc();
 static Boolean GetGeometry();
@@ -771,7 +774,7 @@ static void ScrollUpDownProc(widget, closure, call_data)
 {
     ViewportWidget w = (ViewportWidget)closure;
     Widget child = w->viewport.child;
-    int pix = (int)call_data;
+    int pix = (int)(long)call_data;
     Position x, y;
 
     if (child == NULL) return;	/* no child to scroll. */
