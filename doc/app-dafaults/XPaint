@@ -1,4 +1,4 @@
-!$Id: XPaint,v 1.1 2000/02/15 20:20:22 casantos Exp $
+!$Id: XPaint,v 1.2 2000/05/16 05:00:09 casantos Exp $
 
 
 XPaint*paint.undoSize:		1
@@ -12,9 +12,7 @@ XPaint*paint.undoSize:		1
 
 ! Resources to be used with neXtaw
 *filebrowser*Form*Toggle*ToggleStyle: radio
-!*Label*Background: rgb:a6/b6/cf
-!*Command*Background: rgb:a6/b6/cf
-!*filebrowser*form*Toggle*Background: rgb:a6/b6/cf
+*filebrowser*Form*Toggle.borderWidth: 0
 
 Canvas*fatbits.title:			Fat Bits
 Canvas*fatbits.iconName:		Fat Bits
@@ -64,25 +62,26 @@ Canvas*pattern*viewport*Scrollbar.thickness: 14
 !
 ! The top level operation/toolbox menu
 !
-XPaint.width:			300
-XPaint.height:			380
+XPaint*toolbox.width:			300
+XPaint*toolbox.height:			424
+XPaint*toolbox.menu.vertDistance:	0
 XPaint*toolbox*file.label:		File
-XPaint*toolbox*file*new.label:			New Canvas
-XPaint*toolbox*file*new-size.label:		New With Size...
-XPaint*toolbox*file*open.label:			Open...
-XPaint*toolbox*file*load-clip.label:		Load Clipboard...
-XPaint*toolbox*file*about.label:		About...
-XPaint*toolbox*file*quit.label:			Quit
+XPaint*toolbox*file*new.label:		New Canvas
+XPaint*toolbox*file*new-size.label:	New With Size...
+XPaint*toolbox*file*open.label:		Open...
+XPaint*toolbox*file*load-clip.label:	Load Clipboard...
+XPaint*toolbox*file*about.label:	About...
+XPaint*toolbox*file*quit.label:		Quit
 XPaint*toolbox*line.label:		Line
-XPaint*toolbox*line*select.label:		Select...
+XPaint*toolbox*line*select.label:	Select...
 XPaint*toolbox*other.label:		Brush
-XPaint*toolbox*other*brushSelect.label:		Select Brush Style
-XPaint*toolbox*other*sprayEdit.label:		Edit Spray Pattern
+XPaint*toolbox*other*brushSelect.label:	Select Brush Style
+XPaint*toolbox*other*sprayEdit.label:	Edit Spray Pattern
 XPaint*toolbox*font.label:		Font
-XPaint*toolbox*font*select.label:		Browser...
+XPaint*toolbox*font*select.label:	Browser...
 XPaint*toolbox*help.label:		Help
-XPaint*toolbox*help*about.label:		About...
-XPaint*toolbox*help*help.label:			Help...
+XPaint*toolbox*help*about.label:	About...
+XPaint*toolbox*help*help.label:		Help...
 
 !
 !Operation popup menus

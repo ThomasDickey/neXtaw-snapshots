@@ -39,6 +39,12 @@
 
 *allowShellResize:	true
 
+! For neXtaw
+*ownButton.toggleStyle:	check
+*ownButton.borderWidth:	0
+*MenuButton.justify:	left
+*MenuButton.menuButtonStyle: select
+
 *commandBox.ShowGrip:	false
 *commandBox*top:	chainTop
 *commandBox*bottom:	chainTop
@@ -110,6 +116,7 @@
 
 *fontName*skipAdjust:	true
 
+*sampleText*background: AntiqueWhite
 *sampleText*Label: \
 Processing fonts...
 

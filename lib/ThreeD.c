@@ -629,7 +629,7 @@ static void Redisplay (w, event, region)
 	Draw3DFrame(w, event, region, 2);
 	break;	
      default:
-	
+	;	/* to make ANSI C happy :-) */
     }    
 }
 

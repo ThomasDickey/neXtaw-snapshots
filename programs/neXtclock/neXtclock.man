@@ -1,4 +1,4 @@
-.\" $Id: neXtclock.man,v 1.1 2000/02/22 00:55:40 casantos Exp $
+.\" $Id: neXtclock.man,v 1.2 2000/05/16 05:00:13 casantos Exp $
 .\" 
 .\" $XConsortium: xclock.man /main/27 1996/12/09 17:08:23 kaleb $
 .\" Copyright (c) 1988, 1994  X Consortium
@@ -38,9 +38,9 @@ neXtclock \- analog / digital clock for neXtaw
 .SH DESCRIPTION
 The
 .I neXtclock 
-is a 3D-looking version of the original
-.I xclock
-program. It displays the time in analog or digital form.  The time is
+program is a 3D-looking version of the original
+.IR xclock .
+It displays the time in analog or digital form.  The time is
 continuously updated at a frequency which may be specified by the user.
 .SH OPTIONS
 .I neXtclock
@@ -168,6 +168,6 @@ Tony Della Fera (MIT-Athena, DEC)
 Dave Mankins (MIT-Athena, BBN)
 .br
 Ed Moy (UC Berkeley)
-.br
-Small modifications for neXtaw by Carlos A. M. dos Santos.
+.PP
+Modified for neXtaw by Carlos A. M. dos Santos.
 

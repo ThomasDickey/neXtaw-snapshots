@@ -1,7 +1,21 @@
-$Id: CHANGES,v 1.2 2000/02/20 01:31:32 casantos Exp $
+$Id: CHANGES,v 1.3 2000/05/16 05:00:05 casantos Exp $
 
-Changelog for neXtaw version 0.8
+Changelog for neXtaw version 0.9
 ================================
+
+Changes since version 0.8:
+- Scrollbal does not have the drawBorder resource anymore. It was not useful
+  except for xterm (and not very much).
+- A patch from Kevin Ryde fixed a bug in the Scrollbar widget that could lead
+  to a BadPixmap protocol error when such a widget was destroyed.
+- Small patch from Stasinos Konstantopoulos to compile with native HP-UX
+  compiler.
+- Fixed a bug in the MultiSrc widget after a report from Kevin Ryde. An
+  asciiText widget created with XtNinternational True attempts to free the
+  string passed to it in an XtSetValues XtNstring (on the second and
+  subsequent such calls). This was already fixed in XFree86 3.3.5 Xaw but not
+  in Xaw3d 1.5.  It seems that some fixes in Xaw were not propagated to Xaw3d
+  and the other replacement libraries.
 
 Changes since version 0.7:
 - Do not include widec.h in XawI18n.h for Linux (this file does not exist in
