@@ -42,7 +42,7 @@ in this Software without prior written authorization from the X Consortium.
 #ifndef _SmeLine_h
 #define _SmeLine_h
 
-#include <X11/Xaw3d/Sme.h>
+#include <X11/neXtaw/Sme.h>
 #include <X11/Xmu/Converters.h>
 
 /****************************************************************

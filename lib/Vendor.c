@@ -69,8 +69,8 @@ SOFTWARE.
 
 /* The following two headers are for the input method. */
 
-#include <X11/Xaw3d/VendorEP.h>
-#include <X11/Xaw3d/XawImP.h>
+#include <X11/neXtaw/VendorEP.h>
+#include <X11/neXtaw/XawImP.h>
 
 
 static XtResource resources[] = {

@@ -51,8 +51,8 @@ SOFTWARE.
 #ifndef _XawViewport_h
 #define _XawViewport_h
 
-#include <X11/Xaw3d/Form.h>
-#include <X11/Xaw3d/Reports.h>
+#include <X11/neXtaw/Form.h>
+#include <X11/neXtaw/Reports.h>
 
 /* Resources:
 

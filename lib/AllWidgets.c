@@ -1,6 +1,10 @@
 /* $XConsortium: AllWidgets.c,v 1.8 94/04/17 20:11:39 kaleb Exp $ */
 
 /*
+ * MODIFIED FOR N*XTSTEP LOOK by Carlos A M dos Santos - 1999
+*/
+
+/*
 
 Copyright (c) 1991, 1994  X Consortium
 
@@ -35,6 +39,7 @@ extern WidgetClass asciiSinkObjectClass;
 extern WidgetClass asciiSrcObjectClass;
 extern WidgetClass asciiTextWidgetClass;
 extern WidgetClass boxWidgetClass;
+extern WidgetClass clockWidgetClass;		/* Casantos, Jun 30 1999 */
 extern WidgetClass commandWidgetClass;
 extern WidgetClass compositeWidgetClass;
 extern WidgetClass constraintWidgetClass;
@@ -80,6 +85,7 @@ XmuWidgetNode XawWidgetArray[] = {
 { "asciiSrc", &asciiSrcObjectClass },
 { "asciiText", &asciiTextWidgetClass },
 { "box", &boxWidgetClass },
+{ "clock", &clockWidgetClass },
 { "command", &commandWidgetClass },
 { "composite", &compositeWidgetClass },
 { "constraint", &constraintWidgetClass },

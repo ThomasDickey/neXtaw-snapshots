@@ -1,4 +1,7 @@
 /* $XConsortium: MultiSinkP.h,v 1.2 94/04/17 20:12:24 kaleb Exp $ */
+/* MODIFIED FOR N*XTSTEP LOOK	 				*/
+/* Modifications Copyright (c) 1996 by Alfredo Kojima		*/
+/* Modifications Copyright (c) 1999 by Carlos A M dos Santos	*/
 
 /*
  * Copyright 1991 by OMRON Corporation
@@ -87,8 +90,8 @@ SOFTWARE.
  *
  ***********************************************************************/
 
-#include <X11/Xaw3d/TextSinkP.h> 
-#include <X11/Xaw3d/MultiSink.h> 
+#include <X11/neXtaw/TextSinkP.h> 
+#include <X11/neXtaw/MultiSink.h> 
 
 /************************************************************
  *
@@ -115,11 +118,14 @@ typedef struct {
     /* public resources */
     Boolean echo;
     Boolean display_nonprinting;
+    unsigned long blink_interval;
 
     /* private state */
+    XtIntervalId  timer_id;	/* for cursor blinker */
     GC normgc, invgc, xorgc;
     Pixmap insertCursorOn;
-    XawTextInsertState laststate;
+    XawTextInsertState laststate, lastlaststate;
+    Boolean	blinking;
     short cursor_x, cursor_y;	/* Cursor Location. */
     XFontSet fontset; /* font set to draw */
 } MultiSinkPart;
@@ -149,7 +155,14 @@ extern void _XawMultiSinkPosToXY(
     Widget			/* w */,
     XawTextPosition		/* pos */,
     Position *			/* x */,
-    Position *			/*y */
+    Position *			/* y */
+#endif
+);
+
+extern void _Xaw_BlinkCursor(	/* Casantos, Jun 27 1999 */
+#if NeedFunctionPrototypes
+    XtPointer			/* client_data */,
+    XtIntervalId *		/* idp */
 #endif
 );
 

@@ -65,8 +65,8 @@ SOFTWARE.
  *
  ***********************************************************************/
 
-#include <X11/Xaw3d/Label.h>
-#include <X11/Xaw3d/ThreeDP.h>
+#include <X11/neXtaw/Label.h>
+#include <X11/neXtaw/ThreeDP.h>
 
 /* New fields for the Label widget class record */
 
@@ -96,7 +96,9 @@ typedef struct {
     Boolean	resize;
     unsigned char encoding;
     Pixmap	left_bitmap;
-
+#ifdef XPM_TILE
+    Pixmap 	background_tile;	/* for background tiling */
+#endif
     /* private state */
     GC		normal_GC;
     GC          gray_GC;

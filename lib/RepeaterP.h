@@ -30,8 +30,8 @@ in this Software without prior written authorization from the X Consortium.
 #ifndef _XawRepeaterP_h
 #define _XawRepeaterP_h
 
-#include <X11/Xaw3d/CommandP.h>
-#include <X11/Xaw3d/Repeater.h>
+#include <X11/neXtaw/CommandP.h>
+#include <X11/neXtaw/Repeater.h>
 
 typedef struct {			/* new fields in widget class */
     int dummy;

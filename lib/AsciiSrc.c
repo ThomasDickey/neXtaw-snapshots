@@ -27,6 +27,8 @@ in this Software without prior written authorization from the X Consortium.
 
 */
 
+/* $XFree86: xc/lib/Xaw/AsciiSrc.c,v 1.1.1.2.4.2 1998/05/16 09:05:19 dawes Exp $ */
+
 /*
  * AsciiSrc.c - AsciiSrc object. (For use with the text widget).
  *
@@ -42,15 +44,15 @@ in this Software without prior written authorization from the X Consortium.
 #include <stdlib.h>
 #endif
 #include <X11/Xfuncs.h>
-#include <X11/Xaw3d/XawInit.h>
-#include <X11/Xaw3d/AsciiSrcP.h>
+#include <X11/neXtaw/XawInit.h>
+#include <X11/neXtaw/AsciiSrcP.h>
 #include <X11/Xmu/Misc.h>
 #include <X11/Xmu/CharSet.h>
-#include <X11/Xaw3d/MultiSrcP.h> 
+#include <X11/neXtaw/MultiSrcP.h> 
 
 
 #if (defined(ASCII_STRING) || defined(ASCII_DISK))
-#  include <X11/Xaw3d/AsciiText.h> /* for Widget Classes. */
+#  include <X11/neXtaw/AsciiText.h> /* for Widget Classes. */
 #endif
 
 
@@ -1320,7 +1322,7 @@ XrmValuePtr	toVal;
 }
 
 #if (defined(ASCII_STRING) || defined(ASCII_DISK))
-#  include <X11/Xaw3d/Cardinals.h>
+#  include <X11/neXtaw/Cardinals.h>
 #endif
 
 #ifdef ASCII_STRING

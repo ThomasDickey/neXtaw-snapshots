@@ -59,8 +59,8 @@ SOFTWARE.
 #ifndef _XawCommandP_h
 #define _XawCommandP_h
 
-#include <X11/Xaw3d/Command.h>
-#include <X11/Xaw3d/LabelP.h>
+#include <X11/neXtaw/Command.h>
+#include <X11/neXtaw/LabelP.h>
 
 /***********************************************************************
  *
@@ -119,6 +119,7 @@ typedef struct {
     GC          	inverse_GC;
     Boolean     	set;
     XtCommandHighlight	highlighted;
+    Boolean		was_set;
     /* more resources */
     int			shape_style;    
     Dimension		corner_round;

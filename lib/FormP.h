@@ -53,7 +53,7 @@ SOFTWARE.
 #ifndef _XawFormP_h
 #define _XawFormP_h
 
-#include <X11/Xaw3d/Form.h>
+#include <X11/neXtaw/Form.h>
 
 #define XtREdgeType "EdgeType"
 
@@ -95,6 +95,9 @@ typedef struct _FormPart {
     Boolean	resize_in_layout;   /* should layout() do geom request?  */
     Dimension	preferred_width, preferred_height; /* cached from layout */
     Boolean     resize_is_no_op;    /* Causes resize to take not action. */
+#ifdef XPM_TILE
+    Pixmap	background_tile;
+#endif
 } FormPart;
 
 typedef struct _FormRec {

@@ -1,5 +1,9 @@
 /* $XConsortium: MenuButtoP.h,v 1.8 94/04/17 20:12:18 converse Exp $
- *
+ */
+/* MODIFIED FOR N*XTSTEP LOOK	 				*/
+/* Modifications Copyright (c) 1996, 1997 by Alfredo Kojima	*/
+
+/*
 Copyright (c) 1989  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -46,8 +50,10 @@ in this Software without prior written authorization from the X Consortium.
 #ifndef _XawMenuButtonP_h
 #define _XawMenuButtonP_h
 
-#include <X11/Xaw3d/MenuButton.h>
-#include <X11/Xaw3d/CommandP.h>
+#include <X11/neXtaw/MenuButton.h>
+#include <X11/neXtaw/CommandP.h>
+
+#define XtRMenuButtonStyle "MenuButtonStyle"
 
 /************************************
  *
@@ -84,7 +90,7 @@ extern MenuButtonClassRec menuButtonClassRec;
 typedef struct {
   /* resources */
   String menu_name;
-
+  XtMenuButtonStyle menubutton_style;  
 } MenuButtonPart;
 
    /* Full widget declaration */

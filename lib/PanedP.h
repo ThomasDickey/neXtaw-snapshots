@@ -64,7 +64,7 @@ SOFTWARE.
 #ifndef _XawPanedP_h
 #define _XawPanedP_h
 
-#include <X11/Xaw3d/Paned.h>
+#include <X11/neXtaw/Paned.h>
 
 /*********************************************************************
  *

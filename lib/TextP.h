@@ -2,6 +2,10 @@
 * $XConsortium: TextP.h,v 1.54 95/06/14 15:07:27 kaleb Exp $
 */
 
+/*
+ * MODIFIED FOR N*XTSTEP LOOK by Carlos A M dos Santos - 1999
+ * <casantos@cpmet.ufpel.tche.br>
+*/
 
 /***********************************************************
 
@@ -54,8 +58,8 @@ SOFTWARE.
 #ifndef _XawTextP_h
 #define _XawTextP_h
 
-#include <X11/Xaw3d/Text.h>
-#include <X11/Xaw3d/SimpleP.h>
+#include <X11/neXtaw/Text.h>
+#include <X11/neXtaw/SimpleP.h>
 
 /****************************************************************
  *

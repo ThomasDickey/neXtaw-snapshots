@@ -30,7 +30,7 @@ in this Software without prior written authorization from the X Consortium.
 #ifndef _XawPorthole_h
 #define _XawPorthole_h
 
-#include <X11/Xaw3d/Reports.h>
+#include <X11/neXtaw/Reports.h>
 
 /*****************************************************************************
  * 

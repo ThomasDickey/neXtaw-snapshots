@@ -76,8 +76,11 @@ SOFTWARE.
  cursorName	     Cursor		String		NULL
  depth		     Depth		int		parent's depth
  destroyCallback     Callback		XtCallbackList	NULL
+ drawBorder          DrawBorder		Boolean		True
+ drawArrows	     DrawArrows         Boolean         True
  foreground	     Foreground		Pixel		XtDefaultForeground
  height		     Height		Dimension	length or thickness
+ initialDelay        Delay		int		300 milliseconds
  insensitiveBorder   Insensitive	Pixmap		GreyPixmap
  jumpProc	     Callback		XtCallbackList	NULL
  length		     Length		Dimension	1
@@ -86,6 +89,7 @@ SOFTWARE.
  orientation	     Orientation	XtOrientation	XtorientVertical
  pointerColor	     Foreground		Pixel		XtDefaultForeground
  pointerColorBackground Background	Pixel		XtDefaultBackground
+ repeatDelay         Delay		int		150 milliseconds
  screen		     Screen		Screen		parent's screen
  scrollDCursor	     Cursor		Cursor		XC_sb_down_arrow
  scrollHCursor	     Cursor		Cursor		XC_sb_h_double_arrow
@@ -116,6 +120,19 @@ SOFTWARE.
 #define XtCShown "Shown"
 #define XtCTopOfThumb "TopOfThumb"
 #define XtCPickTop "PickTop"
+
+#define XtNinitialDelay "initialDelay"
+#define XtNrepeatDelay "repeatDelay"
+#define XtCDelay "Delay"
+
+#define XtCDrawBorder "DrawBorder"
+#define XtNdrawBorder "drawBorder"
+
+#define XtCDrawArrows "DrawArrows"
+#define XtNdrawArrows "drawArrows"
+
+#define XtCAlwaysVisible "AlwaysVisible"
+#define XtNalwaysVisible "alwaysVisible"
 
 #define XtNminimumThumb "minimumThumb"
 #define XtNtopOfThumb "topOfThumb"

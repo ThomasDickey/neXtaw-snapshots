@@ -1,4 +1,7 @@
 /* $XConsortium: MultiSink.h,v 1.2 94/04/17 20:12:23 kaleb Exp $ */
+/* MODIFIED FOR N*XTSTEP LOOK	 				*/
+/* Modifications Copyright (c) 1996 by Alfredo Kojima		*/
+/* Modifications Copyright (c) 1999 by Carlos A M dos Santos	*/
 
 /*
  * Copyright 1991 by OMRON Corporation
@@ -81,7 +84,7 @@ SOFTWARE.
  *
  ***********************************************************************/
 
-#include <X11/Xaw3d/TextSink.h>
+#include <X11/neXtaw/TextSink.h>
 
 /* Resources:
 
@@ -97,6 +100,8 @@ SOFTWARE.
 
 #define XtNdisplayNonprinting "displayNonprinting"
 #define XtNecho "echo"
+#define XtNblinkInterval "blinkInterval"	/* Casantos, Jun 27 1999 */
+#define XtCBlinkInterval "BlinkInterval"
 
 #ifndef XtNfontSet		/*Sheeran, Omron KK, 93/03/04*/
 #define XtNfontSet		"fontSet"

@@ -1,7 +1,9 @@
 /*
 * $XConsortium: AsciiSinkP.h,v 1.4 94/04/17 20:11:44 kaleb Exp $
 */
-
+/* MODIFIED FOR N*XTSTEP LOOK	 				*/
+/* Modifications Copyright (c) 1996 by Alfredo Kojima		*/
+/* Modifications Copyright (c) 1999 by Carlos A M dos Santos	*/
 
 /***********************************************************
 
@@ -65,8 +67,8 @@ SOFTWARE.
  *
  ***********************************************************************/
 
-#include <X11/Xaw3d/TextSinkP.h> 
-#include <X11/Xaw3d/AsciiSink.h> 
+#include <X11/neXtaw/TextSinkP.h> 
+#include <X11/neXtaw/AsciiSink.h> 
 
 /************************************************************
  *
@@ -94,11 +96,13 @@ typedef struct {
     XFontStruct *font;          /* Font to draw in. */
     Boolean echo;
     Boolean display_nonprinting;
-
+    unsigned long blink_interval;
     /* private state */
+    XtIntervalId  timer_id;	/* for cursor blinker */
     GC normgc, invgc, xorgc;
     Pixmap insertCursorOn;
-    XawTextInsertState laststate;
+    XawTextInsertState laststate, lastlaststate;
+    Boolean	blinking;
     short cursor_x, cursor_y;	/* Cursor Location. */
 } AsciiSinkPart;
 
@@ -113,6 +117,21 @@ typedef struct _AsciiSinkRec {
     TextSinkPart	text_sink;
     AsciiSinkPart	ascii_sink;
 } AsciiSinkRec;
+
+
+/********************************************
+ *
+ * Semi-private functions
+ * for use by other Xaw modules only
+ *
+ *******************************************/
+
+extern void _Xaw_BlinkCursor(	/* Casantos, Jun 27 1999 */
+#if NeedFunctionPrototypes
+    XtPointer			/* client_data */,
+    XtIntervalId *		/* idp */
+#endif
+);
 
 #endif /* _XawAsciiSinkP_h */
 

@@ -1,4 +1,6 @@
 /* $XConsortium: ToggleP.h,v 1.9 94/04/17 20:13:19 converse Exp $ */
+/* MODIFIED FOR N*XTSTEP LOOK	 				*/
+/* Modifications Copyright (c) 1996 by Alfredo Kojima		*/
 
 /*
 
@@ -41,9 +43,10 @@ in this Software without prior written authorization from the X Consortium.
 #ifndef _XawToggleP_h
 #define _XawToggleP_h
 
-#include <X11/Xaw3d/Toggle.h>
-#include <X11/Xaw3d/CommandP.h>
+#include <X11/neXtaw/Toggle.h>
+#include <X11/neXtaw/CommandP.h>
 
+#define XtRToggleStyle "ToggleStyle"
 /***********************************************************************
  *
  * Toggle Widget Private Data
@@ -93,7 +96,8 @@ typedef struct {
     /* resources */
     Widget      widget;
     XtPointer   radio_data;
-
+    XtToggleStyle toggle_style; 
+    
     /* private data */
     RadioGroup * radio_group;
 } TogglePart;

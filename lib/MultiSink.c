@@ -1,4 +1,8 @@
 /* $XConsortium: MultiSink.c,v 1.6 95/01/23 18:34:46 kaleb Exp $ */
+/* MODIFIED FOR N*XTSTEP LOOK	 				*/
+/* Modifications Copyright (c) 1996 by Alfredo Kojima		*/
+/* Modifications Copyright (c) 1999 by Carlos A M dos Santos	*/
+/****************************************************************/
 
 /*
  * Copyright 1991 by OMRON Corporation
@@ -75,10 +79,10 @@ SOFTWARE.
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 #include <X11/Xatom.h>
-#include <X11/Xaw3d/XawInit.h>
-#include <X11/Xaw3d/MultiSinkP.h>
-#include <X11/Xaw3d/MultiSrcP.h>
-#include <X11/Xaw3d/TextP.h>
+#include <X11/neXtaw/XawInit.h>
+#include <X11/neXtaw/MultiSinkP.h>
+#include <X11/neXtaw/MultiSrcP.h>
+#include <X11/neXtaw/TextP.h>
 #include "XawI18n.h"
 #include <stdio.h>
 #include <ctype.h>
@@ -104,6 +108,8 @@ static XtResource resources[] = {
 	offset(fontset), XtRString, XtDefaultFontSet},
     {XtNecho, XtCOutput, XtRBoolean, sizeof(Boolean),
 	offset(echo), XtRImmediate, (XtPointer) True},
+    {XtNblinkInterval, XtCBlinkInterval, XtRDimension, sizeof(unsigned long),
+	offset(blink_interval), XtRImmediate, (XtPointer)600},
     {XtNdisplayNonprinting, XtCOutput, XtRBoolean, sizeof(Boolean),
 	offset(display_nonprinting), XtRImmediate, (XtPointer) True},
 };
@@ -340,17 +346,7 @@ DisplayText(w, x, y, pos1, pos2, highlight)
         (void) PaintText(w, gc, x, y, buf, j);
 }
 
-#define insertCursor_width 6
-#define insertCursor_height 3
-static char insertCursor_bits[] = {0x0c, 0x1e, 0x33};
-
-static Pixmap
-CreateInsertCursor(s)
-    Screen *s;
-{
-    return (XCreateBitmapFromData (DisplayOfScreen(s), RootWindowOfScreen(s),
-		  insertCursor_bits, insertCursor_width, insertCursor_height));
-}
+#define insertCursor_width 5
 
 /*	Function Name: GetCursorBounds
  *	Description: Returns the size and location of the cursor.
@@ -365,37 +361,42 @@ GetCursorBounds(w, rect)
     XRectangle * rect;
 {
     MultiSinkObject sink = (MultiSinkObject) w;
+    XFontSetExtents *ext = XExtentsOfFontSet(sink->multi_sink.fontset);
 
     rect->width = (unsigned short) insertCursor_width;
+    /*
     rect->height = (unsigned short) insertCursor_height;
+    */
+    rect->height = ext->max_logical_extent.height;
     rect->x = sink->multi_sink.cursor_x - (short) (rect->width / 2);
     rect->y = sink->multi_sink.cursor_y - (short) rect->height;
 }
 
-/*
- * The following procedure manages the "insert" cursor.
- */
-
 static void
 InsertCursor (w, x, y, state)
-    Widget w;
-    Position x, y;
-    XawTextInsertState state;
+Widget w;
+Position x, y;
+XawTextInsertState state;
 {
     MultiSinkObject sink = (MultiSinkObject) w;
     Widget text_widget = XtParent(w);
+    XFontSetExtents *ext = XExtentsOfFontSet(sink->multi_sink.fontset);
     XRectangle rect;
 
     sink->multi_sink.cursor_x = x;
     sink->multi_sink.cursor_y = y;
-
-    GetCursorBounds(w, &rect);
-    if (state != sink->multi_sink.laststate && XtIsRealized(text_widget)) 
-        XCopyPlane(XtDisplay(text_widget),
-		   sink->multi_sink.insertCursorOn,
-		   XtWindow(text_widget), sink->multi_sink.xorgc,
-		   0, 0, (unsigned int) rect.width, (unsigned int) rect.height,
-		   (int) rect.x, (int) rect.y, 1);
+    
+    rect.width = (unsigned short) insertCursor_width;
+    rect.height = (unsigned short)ext->max_logical_extent.height;
+    
+    rect.x = x - (short) (rect.width / 2);
+    rect.y = y - (short) rect.height;
+    
+    if (state != sink->multi_sink.laststate && XtIsRealized(text_widget)) {
+	XDrawLine(XtDisplay(text_widget), XtWindow(text_widget), 
+		  sink->multi_sink.xorgc, rect.x+rect.width/2,
+		  rect.y,rect.x+rect.width/2,rect.y+rect.height-1);
+    }
     sink->multi_sink.laststate = state;
 }
 
@@ -565,9 +566,20 @@ Initialize(request, new, args, num_args)
 
     GetGC(sink);
     
-    sink->multi_sink.insertCursorOn= CreateInsertCursor(XtScreenOfObject(new));
+    sink->multi_sink.insertCursorOn= None;
     sink->multi_sink.laststate = XawisOff;
+    sink->multi_sink.lastlaststate = XawisOff;
+    sink->multi_sink.blinking = False;    
     sink->multi_sink.cursor_x = sink->multi_sink.cursor_y = 0;
+	
+    if (sink->multi_sink.blink_interval<=0) 
+      sink->multi_sink.timer_id = (XtIntervalId)0;
+    else 
+      sink->multi_sink.timer_id =
+      XtAppAddTimeOut(XtWidgetToApplicationContext((Widget)sink),
+		      (unsigned long) sink->multi_sink.blink_interval,
+		      _Xaw_BlinkCursor,
+		      (XtPointer)((Widget)sink));
 }
 
 /*	Function Name: Destroy
@@ -583,11 +595,13 @@ Destroy(w)
 {
    MultiSinkObject sink = (MultiSinkObject) w;
 
+   if(sink->multi_sink.timer_id != (XtIntervalId) 0)
+	XtRemoveTimeOut (sink->multi_sink.timer_id);
    XtReleaseGC(w, sink->multi_sink.normgc);
    XtReleaseGC(w, sink->multi_sink.invgc);
    XtReleaseGC(w, sink->multi_sink.xorgc);
-
-   XFreePixmap(XtDisplayOfObject(w), sink->multi_sink.insertCursorOn);
+   if (sink->multi_sink.insertCursorOn!=None)
+      XFreePixmap(XtDisplayOfObject(w), sink->multi_sink.insertCursorOn);
 }
 
 /*	Function Name: SetValues

@@ -1,4 +1,6 @@
 /* $XConsortium: TextSrc.c,v 1.15 94/04/17 20:13:14 kaleb Exp $ */
+/* MODIFIED FOR N*XTSTEP LOOK	 				*/
+/* Modifications Copyright (c) 1996 by Alfredo Kojima		*/
 /*
 
 Copyright (c) 1989, 1994  X Consortium
@@ -26,6 +28,8 @@ in this Software without prior written authorization from the X Consortium.
 
 */
 
+/* $XFree86: xc/lib/Xaw/TextSrc.c,v 1.1.1.1.12.2 1998/05/16 09:05:22 dawes Exp $ */
+
 /*
  * Author:  Chris Peterson, MIT X Consortium.
  * Much code taken from X11R3 String and Disk Sources.
@@ -39,8 +43,8 @@ in this Software without prior written authorization from the X Consortium.
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 #include <X11/Xutil.h>
-#include <X11/Xaw3d/XawInit.h>
-#include <X11/Xaw3d/TextSrcP.h>
+#include <X11/neXtaw/XawInit.h>
+#include <X11/neXtaw/TextSrcP.h>
 #include <X11/Xmu/Atoms.h>
 #include <X11/Xmu/CharSet.h>
 #include "XawI18n.h"
@@ -299,6 +303,9 @@ Atom selection;
 }
 
 
+#define done(address, type) \
+        { toVal->size = sizeof(type); toVal->addr = (XPointer) address; }
+
 /* ARGSUSED */
 static void 
 CvtStringToEditMode(args, num_args, fromVal, toVal)
@@ -310,7 +317,7 @@ XrmValuePtr	toVal;
   static XawTextEditType editType;
   static  XrmQuark  QRead, QAppend, QEdit;
   XrmQuark    q;
-  char        lowerName[40];
+  char        lowerName[BUFSIZ];
   static Boolean inited = FALSE;
     
   if ( !inited ) {
@@ -320,24 +327,22 @@ XrmValuePtr	toVal;
     inited = TRUE;
   }
 
-  if (strlen ((char*) fromVal->addr) < sizeof lowerName) {
-    XmuCopyISOLatin1Lowered (lowerName, (char *)fromVal->addr);
-    q = XrmStringToQuark(lowerName);
-
-    if      (q == QRead)   editType = XawtextRead;
-    else if (q == QAppend) editType = XawtextAppend;
-    else if (q == QEdit)   editType = XawtextEdit;
-    else {
-      toVal->size = 0;
-      toVal->addr = NULL;
-      return;
-    }
-    toVal->size = sizeof editType;
-    toVal->addr = (XPointer) &editType;
+  if (strlen((char *)fromVal->addr) >= sizeof(lowerName)) {
+    XtStringConversionWarning((char *) fromVal->addr, XtREditMode);
     return;
   }
-  toVal->size = 0;
-  toVal->addr = NULL;
+  XmuCopyISOLatin1Lowered (lowerName, (char *)fromVal->addr);
+  q = XrmStringToQuark(lowerName);
+
+  if       (q == QRead)          editType = XawtextRead;
+  else if (q == QAppend)         editType = XawtextAppend;
+  else if (q == QEdit)           editType = XawtextEdit;
+  else {
+    XtStringConversionWarning((char *) fromVal->addr, XtREditMode);
+    return;
+  }
+  done(&editType, XawTextEditType);
+  return;
 }
 
 
@@ -664,7 +669,7 @@ int		*len_in_out;
     }
     wstr = wlist[0];
     *len_in_out = wcslen(wstr);
-    XFree((char**)wlist); /* this is evil */
+    XtFree((XtPointer)wlist);
     return(wstr);
   }
 }

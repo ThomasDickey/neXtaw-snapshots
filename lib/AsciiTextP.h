@@ -2,6 +2,10 @@
  * $XConsortium: AsciiTextP.h,v 1.17 94/04/17 20:11:52 kaleb Exp $ 
  */
 
+/*
+ * MODIFIED FOR N*XTSTEP LOOK by Carlos A M dos Santos - 1999
+*/
+
 /***********************************************************
 
 Copyright (c) 1987, 1988, 1994  X Consortium
@@ -72,10 +76,10 @@ SOFTWARE.
 #ifndef _AsciiTextP_h
 #define _AsciiTextP_h
 
-#include <X11/Xaw3d/TextP.h>
-#include <X11/Xaw3d/AsciiText.h>
-#include <X11/Xaw3d/AsciiSrc.h>
-#include <X11/Xaw3d/MultiSrc.h>
+#include <X11/neXtaw/TextP.h>
+#include <X11/neXtaw/AsciiText.h>
+#include <X11/neXtaw/AsciiSrc.h>
+#include <X11/neXtaw/MultiSrc.h>
 
 typedef struct {int empty;} AsciiClassPart;
 

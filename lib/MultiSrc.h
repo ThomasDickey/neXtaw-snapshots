@@ -60,7 +60,7 @@ in this Software without prior written authorization from the X Consortium.
 #ifndef _XawMultiSrc_h
 #define _XawMultiSrc_h
 
-#include <X11/Xaw3d/TextSrc.h>
+#include <X11/neXtaw/TextSrc.h>
 /*Xfuncproto.h included by Intrinsic.h*/
 
 /* Resources:

@@ -2,7 +2,6 @@
 * $XConsortium: TextSinkP.h,v 1.6 94/04/17 20:13:13 kaleb Exp $
 */
 
-
 /***********************************************************
 
 Copyright (c) 1987, 1988, 1994  X Consortium
@@ -65,9 +64,9 @@ SOFTWARE.
  *
  ***********************************************************************/
 
-#include <X11/Xaw3d/TextSink.h>
-#include <X11/Xaw3d/TextP.h>	/* This source works with the Text widget. */
-#include <X11/Xaw3d/TextSrcP.h>	/* This source works with the Text Source. */
+#include <X11/neXtaw/TextSink.h>
+#include <X11/neXtaw/TextP.h>	/* This source works with the Text widget. */
+#include <X11/neXtaw/TextSrcP.h>/* This source works with the Text Source. */
 
 /************************************************************
  *

@@ -1,4 +1,8 @@
 /* $XConsortium: AsciiSink.c,v 1.62 94/04/17 20:11:41 kaleb Exp $ */
+/* MODIFIED FOR N*XTSTEP LOOK	 				*/
+/* Modifications Copyright (c) 1996 by Alfredo Kojima		*/
+/* Modifications Copyright (c) 1999 by Carlos A M dos Santos	*/
+/****************************************************************/
 
 /***********************************************************
 
@@ -53,10 +57,10 @@ SOFTWARE.
 #include <X11/Xatom.h>
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
-#include <X11/Xaw3d/XawInit.h>
-#include <X11/Xaw3d/AsciiSinkP.h>
-#include <X11/Xaw3d/AsciiSrcP.h>	/* For source function defs. */
-#include <X11/Xaw3d/TextP.h>	/* I also reach into the text widget. */
+#include <X11/neXtaw/XawInit.h>
+#include <X11/neXtaw/AsciiSinkP.h>
+#include <X11/neXtaw/AsciiSrcP.h>	/* For source function defs. */
+#include <X11/neXtaw/TextP.h>	/* I also reach into the text widget. */
 
 #ifdef GETLASTPOS
 #undef GETLASTPOS		/* We will use our own GETLASTPOS. */
@@ -79,6 +83,8 @@ static XtResource resources[] = {
 	offset(font), XtRString, XtDefaultFont},
     {XtNecho, XtCOutput, XtRBoolean, sizeof(Boolean),
 	offset(echo), XtRImmediate, (XtPointer) True},
+    {XtNblinkInterval, XtCBlinkInterval, XtRDimension, sizeof(unsigned long),
+	offset(blink_interval), XtRImmediate, (XtPointer)600},
     {XtNdisplayNonprinting, XtCOutput, XtRBoolean, sizeof(Boolean),
 	offset(display_nonprinting), XtRImmediate, (XtPointer) True},
 };
@@ -231,7 +237,7 @@ int len;
 	width = ctx->text.margin.right;
 	XFillRectangle(XtDisplay((Widget) ctx), XtWindow( (Widget) ctx),
 		       sink->ascii_sink.normgc, (int) x,
-		       (int) y - sink->ascii_sink.font->ascent, 
+		       (int) y - sink->ascii_sink.font->ascent,
 		       (unsigned int) width,
 		       (unsigned int) (sink->ascii_sink.font->ascent +
 				       sink->ascii_sink.font->descent));
@@ -310,17 +316,8 @@ XawTextPosition pos1, pos2;
         (void) PaintText(w, gc, x, y, buf, j);
 }
 
-#define insertCursor_width 6
-#define insertCursor_height 3
-static char insertCursor_bits[] = {0x0c, 0x1e, 0x33};
 
-static Pixmap
-CreateInsertCursor(s)
-Screen *s;
-{
-    return (XCreateBitmapFromData (DisplayOfScreen(s), RootWindowOfScreen(s),
-		  insertCursor_bits, insertCursor_width, insertCursor_height));
-}
+#define insertCursor_width 5
 
 /*	Function Name: GetCursorBounds
  *	Description: Returns the size and location of the cursor.
@@ -337,7 +334,8 @@ XRectangle * rect;
     AsciiSinkObject sink = (AsciiSinkObject) w;
 
     rect->width = (unsigned short) insertCursor_width;
-    rect->height = (unsigned short) insertCursor_height;
+    rect->height = sink->ascii_sink.font->ascent
+      + sink->ascii_sink.font->descent;
     rect->x = sink->ascii_sink.cursor_x - (short) (rect->width / 2);
     rect->y = sink->ascii_sink.cursor_y - (short) rect->height;
 }
@@ -358,16 +356,22 @@ XawTextInsertState state;
 
     sink->ascii_sink.cursor_x = x;
     sink->ascii_sink.cursor_y = y;
-
-    GetCursorBounds(w, &rect);
-    if (state != sink->ascii_sink.laststate && XtIsRealized(text_widget)) 
-        XCopyPlane(XtDisplay(text_widget),
-		   sink->ascii_sink.insertCursorOn,
-		   XtWindow(text_widget), sink->ascii_sink.xorgc,
-		   0, 0, (unsigned int) rect.width, (unsigned int) rect.height,
-		   (int) rect.x, (int) rect.y, 1);
+    
+    rect.width = (unsigned short) insertCursor_width;
+    rect.height = sink->ascii_sink.font->ascent 
+      + sink->ascii_sink.font->descent;
+    
+    rect.x = x - (short) (rect.width / 2);
+    rect.y = y - (short) rect.height;
+    
+    if (state != sink->ascii_sink.laststate && XtIsRealized(text_widget)) {
+	XDrawLine(XtDisplay(text_widget), XtWindow(text_widget), 
+		  sink->ascii_sink.xorgc, rect.x+rect.width/2,
+		  rect.y,rect.x+rect.width/2,rect.y+rect.height-1);
+    }
     sink->ascii_sink.laststate = state;
 }
+
 
 /*
  * Given two positions, find the distance between them.
@@ -493,7 +497,6 @@ AsciiSinkObject sink;
 
     values.font = sink->ascii_sink.font->fid;
     values.graphics_exposures = (Bool) FALSE;
-    
     values.foreground = sink->text_sink.foreground;
     values.background = sink->text_sink.background;
     sink->ascii_sink.normgc = XtGetGC((Widget)sink, valuemask, &values);
@@ -506,7 +509,9 @@ AsciiSinkObject sink;
     values.background = (unsigned long) 0L;	/* (pix ^ 0) = pix */
     values.foreground = (sink->text_sink.background ^ 
 			 sink->text_sink.foreground);
-    valuemask = GCGraphicsExposures | GCFunction | GCForeground | GCBackground;
+    values.line_width = 2;
+    valuemask = GCGraphicsExposures | GCFunction | GCForeground | GCBackground
+      		| GCLineWidth;
     
     sink->ascii_sink.xorgc = XtGetGC((Widget)sink, valuemask, &values);
 }
@@ -530,12 +535,23 @@ ArgList args;
 Cardinal *num_args;
 {
     AsciiSinkObject sink = (AsciiSinkObject) new;
+    TextWidget ctx = (TextWidget) XtParent(new);
 
     GetGC(sink);
-    
-    sink->ascii_sink.insertCursorOn= CreateInsertCursor(XtScreenOfObject(new));
+    sink->ascii_sink.insertCursorOn= None;
     sink->ascii_sink.laststate = XawisOff;
+    sink->ascii_sink.lastlaststate = XawisOff;
+    sink->ascii_sink.blinking = False;    
     sink->ascii_sink.cursor_x = sink->ascii_sink.cursor_y = 0;
+	
+    if (sink->ascii_sink.blink_interval<=0) 
+      sink->ascii_sink.timer_id = (XtIntervalId)0;
+    else 
+      sink->ascii_sink.timer_id =
+      XtAppAddTimeOut(XtWidgetToApplicationContext((Widget)sink),
+		      (unsigned long) sink->ascii_sink.blink_interval,
+		      _Xaw_BlinkCursor,
+		      (XtPointer)((Widget)sink));    
 }
 
 /*	Function Name: Destroy
@@ -550,11 +566,14 @@ Destroy(w)
 Widget w;
 {
    AsciiSinkObject sink = (AsciiSinkObject) w;
-
+    
+   if(sink->ascii_sink.timer_id != (XtIntervalId) 0)
+	XtRemoveTimeOut (sink->ascii_sink.timer_id);
    XtReleaseGC(w, sink->ascii_sink.normgc);
    XtReleaseGC(w, sink->ascii_sink.invgc);
    XtReleaseGC(w, sink->ascii_sink.xorgc);
-   XFreePixmap(XtDisplayOfObject(w), sink->ascii_sink.insertCursorOn);
+   if (sink->ascii_sink.insertCursorOn!=None)
+      XFreePixmap(XtDisplayOfObject(w), sink->ascii_sink.insertCursorOn);
 }
 
 /*	Function Name: SetValues
@@ -690,4 +709,61 @@ short *tabs;
       _XawTextBuildLineTable(ctx, ctx->text.lt.top, TRUE);
   }
 #endif
+}
+
+/* blink cursor */
+void _Xaw_BlinkCursor(client_data, idp)
+    XtPointer client_data;
+    XtIntervalId *idp;
+{
+#define BLINK_ON 1
+#define BLINK_OFF 0
+    AsciiSinkObject sink = (AsciiSinkObject) client_data;
+    TextWidget ctx = (TextWidget) XtParent((Widget)client_data);
+    int call_data;
+    unsigned long interval;
+
+    /* fprintf(stderr, "_Xaw_BlinkCursor\n"); */
+    if (call_data == BLINK_ON) {
+	call_data = BLINK_OFF;
+	interval = sink->ascii_sink.blink_interval/2;
+    } else {
+	call_data=BLINK_ON;
+	interval = sink->ascii_sink.blink_interval;	
+    } 
+#if 0    
+    if (XtIsRealized(XtParent((Widget)sink))) {
+/*	if (!ctx->text.hasfocus) {
+	    printf("nofoc\n");
+	    if (!sink->ascii_sink.lastlaststate) {
+		InsertCursor ((Widget)sink, sink->ascii_sink.cursor_x,
+				sink->ascii_sink.cursor_y);
+	    }
+	} else*/ {
+	    printf("bli %i\n",sink->ascii_sink.laststate);
+	    if (!sink->ascii_sink.laststate) {
+		if (!sink->ascii_sink.blinking) {
+		    sink->ascii_sink.blinking=True;
+		    sink->ascii_sink.lastlaststate=XawisOn;		    
+		}
+		printf("%i\n",sink->ascii_sink.lastlaststate);
+		sink->ascii_sink.lastlaststate=!sink->ascii_sink.lastlaststate;
+		InsertCursor ((Widget)sink, sink->ascii_sink.cursor_x,
+				sink->ascii_sink.cursor_y);
+	   } else if (sink->ascii_sink.lastlaststate) {
+	       printf("disablin\n");
+	       InsertCursor ((Widget)sink, sink->ascii_sink.cursor_x,
+				sink->ascii_sink.cursor_y);
+	       sink->ascii_sink.lastlaststate=XawisOff;
+	       sink->ascii_sink.blinking=False;
+	   }
+	}
+    }
+
+    sink->ascii_sink.timer_id = 
+      XtAppAddTimeOut(XtWidgetToApplicationContext((Widget)sink),
+		      (unsigned long) interval,
+		      _Xaw_BlinkCursor,
+		      client_data);
+#endif    
 }

@@ -57,8 +57,11 @@ SOFTWARE.
 #include	<X11/IntrinsicP.h>
 #include	<X11/StringDefs.h>
 #include	<X11/Xmu/Misc.h>
-#include	<X11/Xaw3d/XawInit.h>
-#include	<X11/Xaw3d/BoxP.h>
+#include	<X11/neXtaw/XawInit.h>
+#include	<X11/neXtaw/BoxP.h>
+#ifdef XPM_TILE
+#include 	<X11/neXtaw/Misc.h>
+#endif
 
 /****************************************************************
  *
@@ -76,6 +79,10 @@ static XtResource resources[] = {
     { XtNorientation, XtCOrientation, XtROrientation, sizeof(XtOrientation),
 		XtOffsetOf(BoxRec, box.orientation),
 		XtRImmediate, (XtPointer)XtorientVertical },
+#ifdef XPM_TILE
+    {XtNbackgroundTile, XtCBackgroundTile, XtRTilePixmap, sizeof(Pixmap),
+	  XtOffsetOf(BoxRec,box.background_tile), XtRImmediate, (XtPointer)None}
+#endif      
 };
 
 /****************************************************************
@@ -572,9 +579,24 @@ static void ChangeManaged(w)
 
 static void ClassInitialize()
 {
+#ifdef XPM_TILE    
+    static XtConvertArgRec convertArg[] = {
+        {XtWidgetBaseOffset, (XtPointer) XtOffsetOf(WidgetRec, core.screen),
+	     sizeof(Screen *)},
+        {XtWidgetBaseOffset, (XtPointer) XtOffsetOf(WidgetRec, core.colormap),
+	     sizeof(Colormap)}
+    };
+#endif    
+    
     XawInitializeWidgetSet();
     XtAddConverter( XtRString, XtROrientation, XmuCvtStringToOrientation,
 		    (XtConvertArgList)NULL, (Cardinal)0 );
+
+#ifdef XPM_TILE
+    XtSetTypeConverter(XtRString, XtRTilePixmap, neXtawcvtStringToTilePixmap,
+		       convertArg, XtNumber(convertArg),
+		       XtCacheByDisplay, (XtDestructor)NULL);
+#endif    
 }
 
 /* ARGSUSED */
@@ -603,11 +625,21 @@ static void Realize(w, valueMask, attributes)
     Mask *valueMask;
     XSetWindowAttributes *attributes;
 {
+#ifdef XPM_TILE
+    BoxWidget bw = (BoxWidget)w;
+#endif    
     attributes->bit_gravity = NorthWestGravity;
     *valueMask |= CWBitGravity;
 
     XtCreateWindow( w, (unsigned)InputOutput, (Visual *)CopyFromParent,
 		    *valueMask, attributes);
+#ifdef XPM_TILE    
+    if (bw->box.background_tile!=None) {
+	XSetWindowBackgroundPixmap(XtDisplay(w), XtWindow(w),
+				   bw->box.background_tile);
+	XClearWindow(XtDisplay(w), XtWindow(w));
+    }
+#endif    
 } /* Realize */
 
 /* ARGSUSED */

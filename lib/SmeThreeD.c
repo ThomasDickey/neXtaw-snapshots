@@ -1,7 +1,8 @@
 /*
 * $KK: SmeThreeD.c,v 0.3 92/11/04 xx:xx:xx keithley Exp $
 */
-
+/* MODIFIED FOR N*XTSTEP LOOK	 				*/
+/* Modifications Copyright (c) 1996 by Alfredo Kojima		*/
 /***********************************************************
 Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts,
 and the Massachusetts Institute of Technology, Cambridge, Massachusetts.
@@ -30,8 +31,8 @@ SOFTWARE.
 #include <X11/Xlib.h>
 #include <X11/StringDefs.h>
 #include <X11/IntrinsicP.h>
-#include <X11/Xaw3d/XawInit.h>
-#include <X11/Xaw3d/SmeThreeDP.h>
+#include <X11/neXtaw/XawInit.h>
+#include <X11/neXtaw/SmeThreeDP.h>
 #include <X11/Xosdefs.h>
 
 /* Initialization of defaults */
@@ -413,7 +414,8 @@ static void Initialize (request, new, args, num_args)
 {
     SmeThreeDObject 	w = (SmeThreeDObject) new;
     Screen		*scr = XtScreenOfObject (new);
-
+    XGCValues		gcv;
+    
     if (w->sme_threeD.be_nice_to_cmap || DefaultDepthOfScreen (scr) == 1) {
 	AllocTopShadowPixmap (new);
 	AllocBotShadowPixmap (new);
@@ -427,6 +429,10 @@ static void Initialize (request, new, args, num_args)
     AllocTopShadowGC (new);
     AllocBotShadowGC (new);
     AllocEraseGC (new);
+    /* alloc highlight back (move this out from here if it get's bigger) */
+    w->sme_threeD.top_half_shadow_pixel=WhitePixelOfScreen(XtScreen(new));
+    gcv.foreground = w->sme_threeD.top_half_shadow_pixel;
+    w->sme_threeD.top_half_shadow_GC=XtGetGC(new,GCForeground,&gcv);
 }
 
 static void Destroy (gw)
@@ -434,6 +440,7 @@ static void Destroy (gw)
 {
     SmeThreeDObject w = (SmeThreeDObject) gw;
     XtReleaseGC (gw, w->sme_threeD.top_shadow_GC);
+    XtReleaseGC (gw, w->sme_threeD.top_half_shadow_GC);    
     XtReleaseGC (gw, w->sme_threeD.bot_shadow_GC);
     XtReleaseGC (gw, w->sme_threeD.erase_GC);
     if (w->sme_threeD.top_shadow_pxmap)
@@ -534,6 +541,8 @@ _XawSme3dDrawShadows (gw)
     XPoint	pt[6];
     SmeThreeDObject tdo = (SmeThreeDObject) gw;
     Dimension	s = tdo->sme_threeD.shadow_width;
+    
+    
     /* 
      * draw the shadows using the core part width and height, 
      * and the threeD part shadow_width.
@@ -551,6 +560,11 @@ _XawSme3dDrawShadows (gw)
 	Window		win = XtWindowOfObject (gw);
 	GC		top, bot;
 
+	/* draw only the background */
+	XFillRectangle(dpy, win, tdo->sme_threeD.top_half_shadow_GC,
+		       x,y,w,h);
+       return;
+#if 0
 	if (tdo->sme_threeD.shadowed) {
 	    top = tdo->sme_threeD.top_shadow_GC;
 	    bot = tdo->sme_threeD.bot_shadow_GC;
@@ -574,6 +588,7 @@ _XawSme3dDrawShadows (gw)
 	pt[4].x = w - s;	pt[4].y = y + h - s;
      /* pt[5].x = s;		pt[5].y = y + h - s;	*/
 	XFillPolygon (dpy, win, bot, pt,6, Complex,CoordModeOrigin);
+#endif		   
     }
 }
 

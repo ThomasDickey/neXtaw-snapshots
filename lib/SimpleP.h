@@ -52,7 +52,7 @@ SOFTWARE.
 #ifndef _SimpleP_h
 #define _SimpleP_h
 
-#include <X11/Xaw3d/Simple.h>
+#include <X11/neXtaw/Simple.h>
 
 typedef struct {
     Boolean	(*change_sensitive)(/* widget */);

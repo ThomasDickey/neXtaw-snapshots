@@ -48,12 +48,15 @@ SOFTWARE.
 
 ******************************************************************/
 
+/* $XFree86: xc/lib/Xaw/Form.c,v 1.1.1.1.12.2 1998/05/16 09:05:19 dawes Exp $ */
+
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 #include <X11/Xmu/Converters.h>
 #include <X11/Xmu/CharSet.h>
-#include <X11/Xaw3d/XawInit.h>
-#include <X11/Xaw3d/FormP.h>
+#include <X11/neXtaw/XawInit.h>
+#include <X11/neXtaw/FormP.h>
+#include <X11/neXtaw/Misc.h>
 
 /* Private Definitions */
 
@@ -62,7 +65,11 @@ static int default_value = -99999;
 #define Offset(field) XtOffsetOf(FormRec, form.field)
 static XtResource resources[] = {
     {XtNdefaultDistance, XtCThickness, XtRInt, sizeof(int),
-	Offset(default_spacing), XtRImmediate, (XtPointer)4}
+	Offset(default_spacing), XtRImmediate, (XtPointer)4},
+#ifdef XPM_TILE
+    {XtNbackgroundTile, XtCBackgroundTile, XtRTilePixmap, sizeof(Pixmap),
+	Offset(background_tile), XtRImmediate, (XtPointer)None}
+#endif    
 };
 #undef Offset
 
@@ -97,7 +104,9 @@ static Boolean SetValues(), ConstraintSetValues();
 static XtGeometryResult GeometryManager(), PreferredGeometry();
 static void ChangeManaged();
 static Boolean Layout();
-
+#ifdef XPM_TILE
+static void Realize();
+#endif
 static void LayoutChild(), ResizeChildren();
 
 FormClassRec formClassRec = {
@@ -110,7 +119,11 @@ FormClassRec formClassRec = {
     /* class_inited       */    FALSE,
     /* initialize         */    Initialize,
     /* initialize_hook    */    NULL,
+#ifdef XPM_TILE
+    /* realize            */    Realize,	
+#else	
     /* realize            */    XtInheritRealize,
+#endif	
     /* actions            */    NULL,
     /* num_actions        */    0,
     /* resources          */    resources,
@@ -202,6 +215,14 @@ static void _CvtStringToEdgeType(args, num_args, fromVal, toVal)
 
 static void ClassInitialize()
 {
+#ifdef XPM_TILE    
+    static XtConvertArgRec convertArg[] = {
+        {XtWidgetBaseOffset, (XtPointer) XtOffsetOf(WidgetRec, core.screen),
+	     sizeof(Screen *)},
+        {XtWidgetBaseOffset, (XtPointer) XtOffsetOf(WidgetRec, core.colormap),
+	     sizeof(Colormap)}
+    };
+#endif
     static XtConvertArgRec parentCvtArgs[] = {
 	{XtBaseOffset, (XtPointer)XtOffsetOf(WidgetRec, core.parent),
 	     sizeof(Widget)}
@@ -218,6 +239,11 @@ static void ClassInitialize()
     XtSetTypeConverter (XtRString, XtRWidget, XmuNewCvtStringToWidget,
 			parentCvtArgs, XtNumber(parentCvtArgs), XtCacheNone,
 			(XtDestructor)NULL);
+#ifdef XPM_TILE
+    XtSetTypeConverter(XtRString, XtRTilePixmap, neXtawcvtStringToTilePixmap,
+		       convertArg, XtNumber(convertArg),
+		       XtCacheByDisplay, (XtDestructor)NULL);
+#endif
 }
 
 static void ClassPartInitialize(class)
@@ -246,6 +272,24 @@ static void Initialize(request, new, args, num_args)
     fw->form.resize_in_layout = True;
     fw->form.resize_is_no_op = False;
 }
+
+
+#ifdef XPM_TILE
+static void Realize(widget, value_mask, attributes)
+    Widget widget;
+    XtValueMask *value_mask;
+    XSetWindowAttributes *attributes;
+{
+    FormWidget w = (FormWidget) widget;
+    (*((WidgetClass)&constraintClassRec)->core_class.realize)(widget,value_mask,attributes);
+    if (w->form.background_tile!=None) {
+	XSetWindowBackgroundPixmap(XtDisplay(widget), XtWindow(widget),
+				   w->form.background_tile);
+	XClearWindow(XtDisplay(widget), XtWindow(widget));
+    }
+}
+#endif
+
 
 /*	Function Name: ChangeFormGeometry
  *	Description: Ask the parent to change the form widget's geometry.

@@ -32,8 +32,8 @@ in this Software without prior written authorization from the X Consortium.
 
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>		/* get XtN and XtC defines */
-#include <X11/Xaw3d/XawInit.h>		/* get Xaw initialize stuff */
-#include <X11/Xaw3d/PortholeP.h>		/* get porthole structs */
+#include <X11/neXtaw/XawInit.h>		/* get Xaw initialize stuff */
+#include <X11/neXtaw/PortholeP.h>		/* get porthole structs */
 #include <X11/Xmu/Misc.h>		/* for MAX */
 
 

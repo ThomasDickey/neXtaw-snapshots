@@ -1,6 +1,9 @@
 /*
  * $XConsortium: AsciiSink.h,v 1.9 94/04/17 20:11:43 kaleb Exp $
  */
+/* MODIFIED FOR N*XTSTEP LOOK	 				*/
+/* Modifications Copyright (c) 1996 by Alfredo Kojima		*/
+/* Modifications Copyright (c) 1999 by Carlos A M dos Santos	*/
 
 /***********************************************************
 
@@ -59,7 +62,7 @@ SOFTWARE.
  *
  ***********************************************************************/
 
-#include <X11/Xaw3d/TextSink.h>
+#include <X11/neXtaw/TextSink.h>
 
 /* Resources:
 
@@ -74,6 +77,8 @@ SOFTWARE.
 
 #define XtNdisplayNonprinting "displayNonprinting"
 #define XtNecho "echo"
+#define XtNblinkInterval "blinkInterval"	/* Kojima, 1996 */
+#define XtCBlinkInterval "BlinkInterval"
 
 /* Class record constants */
 

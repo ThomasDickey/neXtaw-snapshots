@@ -6,7 +6,8 @@
 /*
  * $XConsortium: ScrollbarP.h,v 1.2 90/04/11 17:33:53 jim Exp $
  */
-
+/* MODIFIED FOR N*XTSTEP LOOK	 				*/
+/* Modifications Copyright (c) 1996 by Alfredo Kojima		*/
 /***********************************************************
 
 Copyright (c) 1987, 1988  X Consortium
@@ -58,8 +59,8 @@ SOFTWARE.
 #ifndef _ScrollbarP_h
 #define _ScrollbarP_h
 
-#include <X11/Xaw3d/Scrollbar.h>
-#include <X11/Xaw3d/ThreeDP.h>
+#include <X11/neXtaw/Scrollbar.h>
+#include <X11/neXtaw/ThreeDP.h>
 
 typedef struct {
      /* public */
@@ -69,14 +70,6 @@ typedef struct {
     XtCallbackList thumbProc;	/* jump (to position) scroll */
     XtCallbackList jumpProc;	/* same as thumbProc but pass data by ref */
     Pixmap	  thumb;	/* thumb color */
-#ifndef ARROW_SCROLLBAR
-    Cursor        upCursor;	/* scroll up cursor */
-    Cursor        downCursor;	/* scroll down cursor */
-    Cursor        leftCursor;	/* scroll left cursor */
-    Cursor        rightCursor;	/* scroll right cursor */
-    Cursor        verCursor;	/* scroll vertical cursor */
-    Cursor        horCursor;	/* scroll horizontal cursor */
-#endif
     float	  top;		/* What percent is above the win's top */
     float	  shown;	/* What percent is shown in the win */
     Dimension	  length;	/* either height or width */
@@ -84,20 +77,23 @@ typedef struct {
     Dimension	  min_thumb;	/* minium size for the thumb. */
     float         picked;       /* How much of the thumb is picked *
 				 * when scrolling starts */
-
+    Boolean	  draw_border;	/* Whether the border for the thumb's base
+				 * should be drawn or not */
+    Boolean   	  draw_arrows;	/* whether we should draw the arrow buttons */
+    Boolean	  always_visible; /* arrows and slider must always be visible*/
      /* private */
-#ifdef ARROW_SCROLLBAR
     XtIntervalId  timer_id;     /* autorepeat timer; remove on destruction */
     char	  scroll_mode;	/* 0:none 1:up/back 2:track 3:down/forward */
-#else
-    Cursor        inactiveCursor; /* the normal cursor for scrollbar */
-    char          direction;	/* a scroll has started; which direction */
-#endif
-    GC		  gc;		/* a (shared) gc */
+    Pixmap	  bump;		/* bump pixmap for the thumb */
+    Pixmap	  stipple;	/* stipple for the background of sbar */    
+    GC		  gc;		/* a (shared) gc for foreground*/
+    GC		  bgc;		/* a (shared) gc for background*/
+    GC		  copygc;	/* used with copyarea */
     Position	  topLoc;	/* Pixel that corresponds to top */
     Dimension	  shownLength;	/* Num pixels corresponding to shown */
     Boolean       pick_top;     /* pick thumb at top or anywhere*/
-
+    int           initial_delay;/* Delay before scrolling repeats */
+    int           repeat_delay; /* Delay between scrolls when repeating */
 } ScrollbarPart;
 
 typedef struct _ScrollbarRec {
@@ -116,6 +112,12 @@ typedef struct _ScrollbarClassRec {
     ScrollbarClassPart		scrollbar_class;
 } ScrollbarClassRec;
 
+#define SB_DEF_INITIAL_DELAY 300	/* milliseconds */
+#define SB_DEF_REPEAT_DELAY 150		/* milliseconds */
+
+/*
+ * external declarations
+ */
 extern ScrollbarClassRec scrollbarClassRec;
 
 #endif /* _ScrollbarP_h */

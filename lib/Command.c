@@ -1,5 +1,7 @@
 /* $XConsortium: Command.c,v 1.79 94/04/17 20:11:58 kaleb Exp $ */
 
+/* MODIFIED FOR N*XTSTEP LOOK	 				*/
+/* Modifications Copyright (c) 1996 by Alfredo Kojima		*/
 /***********************************************************
 
 Copyright (c) 1987, 1988, 1994  X Consortium
@@ -56,11 +58,13 @@ SOFTWARE.
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
 #include <X11/Xmu/Misc.h>
-#include <X11/Xaw3d/XawInit.h>
-#include <X11/Xaw3d/CommandP.h>
+#include <X11/neXtaw/XawInit.h>
+#include <X11/neXtaw/CommandP.h>
 #include <X11/Xmu/Converters.h>
 #include <X11/extensions/shape.h>
-
+#ifdef XPM_TILE
+#include <X11/neXtaw/Misc.h>
+#endif
 #define DEFAULT_HIGHLIGHT_THICKNESS 2
 #define DEFAULT_SHAPE_HIGHLIGHT 32767
 
@@ -155,7 +159,7 @@ CommandClassRec commandClassRec = {
     XtInheritChangeSensitive		/* change_sensitive	*/
   },  /* SimpleClass fields initialization */
   {
-    XtInheritXaw3dShadowDraw,           /* shadowdraw           */
+    XtInheritXaw3dShadowDraw           /* shadowdraw           */
   },  /* ThreeD Class fields initialization */
   {
     0,                                     /* field not used    */
@@ -226,7 +230,8 @@ Cardinal *num_args;		/* unused */
     cbw->threeD.shadow_width = 0;
     cbw->core.border_width = 1;
   }
-
+  cbw->command.was_set = False;
+      
   cbw->command.normal_GC = Get_GC(cbw, cbw->label.foreground, 
 				  cbw->core.background_pixel);
   cbw->command.inverse_GC = Get_GC(cbw, cbw->core.background_pixel, 
@@ -356,7 +361,6 @@ Cardinal *num_params;
       break;
     }
   }
-
   if (XtIsRealized(w))
     PaintCommandWidget(w, event, HighlightRegion(cbw), TRUE);
 }
@@ -438,17 +442,33 @@ Boolean change;
   very_thick = cbw->command.highlight_thickness >
                (Dimension)((Dimension) Min(cbw->core.width, cbw->core.height)/2);
 
+/*    
   if (cbw->command.set) {
     cbw->label.normal_GC = cbw->command.inverse_GC;
     XFillRectangle(XtDisplay(w), XtWindow(w), cbw->command.normal_GC,
 		   s, s, cbw->core.width - 2 * s, cbw->core.height - 2 * s);
-    region = NULL;		/* Force label to repaint text. */
-  }
+    region = NULL;	*/	/* Force label to repaint text. */
+/*  }
   else
     cbw->label.normal_GC = cbw->command.normal_GC;
-
-  if (cbw->command.highlight_thickness <= 0)
-  {
+*/
+    XClearArea(XtDisplay(w), XtWindow(w), s, s, cbw->core.width - 2 * s, 
+	       cbw->core.height - 2 * s, False);        
+    region=NULL;
+    if (cbw->label.pixmap == None) {
+	if (cbw->command.set) {
+	    if (!cbw->command.was_set) {      
+		cbw->label.label_x+=s;
+		cbw->label.label_y+=s;	
+		cbw->command.was_set=True;
+	    }
+	} else if (cbw->command.was_set) {
+	    cbw->label.label_x-=s;
+	    cbw->label.label_y-=s;	      
+	    cbw->command.was_set=False;
+	}
+    }
+  if (cbw->command.highlight_thickness <= 0) {
     (*SuperClass->core_class.expose) (w, event, region);
     (*cwclass->threeD_class.shadowdraw) (w, event, region, !cbw->command.set);
     return;
@@ -461,8 +481,7 @@ Boolean change;
   if (cbw->command.set == (cbw->command.highlighted == HighlightNone)) {
     norm_gc = cbw->command.inverse_GC;
     rev_gc = cbw->command.normal_GC;
-  }
-  else {
+  } else {
     norm_gc = cbw->command.normal_GC;
     rev_gc = cbw->command.inverse_GC;
   }
@@ -478,9 +497,12 @@ Boolean change;
     else {
       /* wide lines are centered on the path, so indent it */
       int offset = cbw->command.highlight_thickness/2;
-      XDrawRectangle(XtDisplay(w),XtWindow(w), rev_gc, s + offset, s + offset, 
+	/* Temporarily out
+      if (cbw->command.highlight_thickness>0)
+	  XDrawRectangle(XtDisplay(w),XtWindow(w), rev_gc, s + offset, s + offset, 
 		     cbw->core.width - cbw->command.highlight_thickness - 2 * s,
 		     cbw->core.height - cbw->command.highlight_thickness - 2 * s);
+	 */
     }
   }
   (*SuperClass->core_class.expose) (w, event, region);
@@ -557,7 +579,7 @@ Cardinal *num_args;
 }
 
 static void ClassInitialize()
-{
+{    
     XawInitializeWidgetSet();
     XtSetTypeConverter( XtRString, XtRShapeStyle, XmuCvtStringToShapeStyle,
 		        (XtConvertArgList)NULL, 0, XtCacheNone, (XtDestructor)NULL );
@@ -594,7 +616,6 @@ static void Realize(w, valueMask, attributes)
 {
     (*commandWidgetClass->core_class.superclass->core_class.realize)
 	(w, valueMask, attributes);
-
     ShapeButton( (CommandWidget) w, FALSE);
 }
 
