@@ -453,28 +453,17 @@ FlipColors(w)
 Widget w;
 {
     SmeBSBObject entry = (SmeBSBObject) w;
-    int hs;
-    
-/*
+
     if (entry->sme_bsb.set_values_area_cleared) {
-	entry->sme_threeD.shadowed = False;
 	return;
     }
 
-    if (entry->sme_threeD.shadow_width > 0) {
-	
-	entry->sme_threeD.shadowed ^= True;
-	(*oclass->sme_threeD_class.shadowdraw) (w);
-	
-    } else
- */
-    hs = (entry->rectangle.x>1?entry->rectangle.x/2 : entry->rectangle.x);
     XFillRectangle(XtDisplayOfObject(w), XtWindowOfObject(w),
 		   entry->sme_bsb.invert_gc,
-		   (int) hs,
-		   (int) entry->rectangle.y+2,
-		   (unsigned int) (entry->rectangle.width+hs),
-		   (unsigned int) entry->rectangle.height-3);
+		   (int) entry->rectangle.x,
+		   (int) entry->rectangle.y,
+		   (unsigned int) entry->rectangle.width,
+		   (unsigned int) entry->rectangle.height);
 }
 
 
@@ -706,13 +695,14 @@ Widget w;
 					    XtParent(w)->core.depth);
     values.graphics_exposures = FALSE;
     mask |= GCTile | GCFillStyle;
+    mask_i18n |= GCTile | GCFillStyle;
     if ( entry->sme.international == True )
         entry->sme_bsb.norm_gray_gc = XtAllocateGC(w, 0, mask_i18n, &values, GCFont, 0 );
     else
         entry->sme_bsb.norm_gray_gc = XtGetGC(w, mask, &values);
 
-    values.foreground ^= values.background|1;
-    values.background = 1;
+    values.foreground ^= values.background;
+    values.background = 0;
     values.function = GXxor; 
     mask = GCForeground | GCBackground | GCGraphicsExposures | GCFunction;
     entry->sme_bsb.invert_gc = XtGetGC(w, mask, &values);
