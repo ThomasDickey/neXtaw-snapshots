@@ -2,6 +2,7 @@
 /* MODIFIED FOR N*XTSTEP LOOK	 				*/
 /* Modifications Copyright (c) 1996 by Alfredo Kojima		*/
 /* Modifications Copyright (c) 1999 by Carlos A M dos Santos	*/
+/* Modifications Copyright (c) 2002 by Ulric Eriksson		*/
 
 /*
 
@@ -42,6 +43,7 @@ in this Software without prior written authorization from the X Consortium.
 #include <X11/Xfuncs.h>
 #include "XawI18n.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <ctype.h>
 
 #define SrcScan                XawTextSourceScan

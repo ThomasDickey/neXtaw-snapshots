@@ -1,4 +1,13 @@
 
+020126	Added -DNARROWPROTO and a bunch of Makefile fixes by
+	Andreas Voegele <voegelas@users.sourceforge.net>.
+	Released 0.11.
+
+020104  Added checks for wslen, wscpy and wsncpy in XawI18n.h.
+	Fixed neXtclock Makefile.am so it works with the new libtool.
+
+011220	Updated automake, autoconf and libtool.
+
 011213	Released 0.10.
 
 011212	Tested on Linux and Solaris.
