@@ -190,10 +190,6 @@ typedef struct _MultiSrcRec {
   MultiSrcPart	multi_src;
 } MultiSrcRec;
 
-#if NeedFunctionPrototypes
 extern void _XawMultiSourceFreeString( Widget );
-#else
-extern void _XawMultiSourceFreeString();
-#endif
 
 #endif /* _XawMultiSrcP_h  --- Don't add anything after this line. */

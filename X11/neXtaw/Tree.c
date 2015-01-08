@@ -996,12 +996,7 @@ static void layout_tree (tw, insetvalues)
  *****************************************************************************/
 
 void
-#if NeedFunctionPrototypes
 XawTreeForceLayout (Widget tree)
-#else
-XawTreeForceLayout (tree)
-    Widget tree;
-#endif
 {
     layout_tree ((TreeWidget) tree, FALSE);
 }

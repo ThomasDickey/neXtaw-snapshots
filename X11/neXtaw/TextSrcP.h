@@ -125,19 +125,15 @@ typedef struct _TextSrcRec {
  ******************************************************************/
 
 char* _XawTextWCToMB(
-#if NeedFunctionPrototypes
     Display* /* d */,
     wchar_t* /* wstr */,
     int*     /* len_in_out */
-#endif
 );
 
 wchar_t* _XawTextMBToWC(
-#if NeedFunctionPrototypes
     Display*  /* d */,
     char*     /* str */,
     int*      /* len_in_out */
-#endif
 );
 
 /************************************************************

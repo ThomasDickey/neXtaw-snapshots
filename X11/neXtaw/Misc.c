@@ -11,11 +11,11 @@
 #endif
 
 void
-neXtawDrawShadowBox (gw, tdw, x0, y0, x1, y1, out) 
-    Widget gw;
-    ThreeDWidget tdw;
-    Position x0, y0, x1, y1;
-    Boolean out;
+neXtawDrawShadowBox (
+    Widget gw,
+    ThreeDWidget tdw,
+    Position x0, Position y0, Position x1, Position y1,
+    Boolean out)
 {
     XPoint	pt[6];
     Dimension	s = tdw->threeD.shadow_width;

@@ -141,10 +141,8 @@ _XFUNCPROTOBEGIN
  */
 
 extern void XawToggleChangeRadioGroup(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     Widget		/* radio_group */
-#endif
 );
 
 /*	Function Name: XawToggleGetCurrent
@@ -155,9 +153,7 @@ extern void XawToggleChangeRadioGroup(
  */
 
 extern XtPointer XawToggleGetCurrent(
-#if NeedFunctionPrototypes
     Widget		/* radio_group */
-#endif
 );
 
 /*	Function Name: XawToggleSetCurrent
@@ -169,10 +165,8 @@ extern XtPointer XawToggleGetCurrent(
  */
 
 extern void XawToggleSetCurrent(
-#if NeedFunctionPrototypes
     Widget		/* radio_group */,
     XtPointer		/* radio_data */
-#endif
 );
  
 /*	Function Name: XawToggleUnsetCurrent
@@ -182,9 +176,7 @@ extern void XawToggleSetCurrent(
  */
 
 extern void XawToggleUnsetCurrent(
-#if NeedFunctionPrototypes
     Widget		/* radio_group */
-#endif
 );
 
 _XFUNCPROTOEND

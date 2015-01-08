@@ -1,5 +1,5 @@
 /*
- * $Id: TraversalP.h,v 1.2 2000/10/12 14:55:20 ulric Exp $
+ * $Id: TraversalP.h,v 1.3 2015/01/08 02:18:33 tom Exp $
  */
 
 /*
@@ -42,9 +42,7 @@ in this Software without prior written authorization from the X Consortium.
 	 */
 
 extern	Boolean	XawAcceptFocus(
-#if NeedFunctionPrototypes
     Widget, Time *
-#endif
 );
 
 
@@ -83,102 +81,80 @@ extern	Boolean	XawAcceptFocus(
 	 */
 
 extern	void	XawFocusNextAction(
-#if NeedFunctionPrototypes
     Widget w,
     XEvent *event,
     String *params,
     Cardinal *num_params
-#endif
 );
 
 extern	void	XawFocusPreviousAction(
-#if NeedFunctionPrototypes
     Widget w,
     XEvent *event,
     String *params,
     Cardinal *num_params
-#endif
 );
 
 extern	void	XawFocusHomeAction(
-#if NeedFunctionPrototypes
     Widget w,
     XEvent *event,
     String *params,
     Cardinal *num_params
-#endif
 );
 
 extern	void	XawFocusEndAction(
-#if NeedFunctionPrototypes
     Widget w,
     XEvent *event,
     String *params,
     Cardinal *num_params
-#endif
 );
 
 extern	void	XawFocusTakeAction(
-#if NeedFunctionPrototypes
     Widget w,
     XEvent *event,
     String *params,
     Cardinal *num_params
-#endif
 );
 
 extern	void	XawFocusNextGroupAction(
-#if NeedFunctionPrototypes
     Widget w,
     XEvent *event,
     String *params,
     Cardinal *num_params
-#endif
 );
 
 extern	void	XawFocusPreviousGroupAction(
-#if NeedFunctionPrototypes
     Widget w,
     XEvent *event,
     String *params,
     Cardinal *num_params
-#endif
 );
 
 extern	void	XawFocusHomeGroupAction(
-#if NeedFunctionPrototypes
     Widget w,
     XEvent *event,
     String *params,
     Cardinal *num_params
-#endif
 );
 
 extern	void	XawFocusEndGroupAction(
-#if NeedFunctionPrototypes
     Widget w,
     XEvent *event,
     String *params,
     Cardinal *num_params
-#endif
 );
 
 extern	void	XawFocusEnterWindowAction(
-#if NeedFunctionPrototypes
     Widget w,
     XEvent *event,
     String *params,
     Cardinal *num_params
-#endif
 );
 
 extern	void	XawFocusLeaveWindowAction(
-#if NeedFunctionPrototypes
     Widget w,
     XEvent *event,
     String *params,
     Cardinal *num_params
-#endif
 );
 
 

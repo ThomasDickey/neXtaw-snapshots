@@ -1400,18 +1400,8 @@ static void NotifyThumb (w, event, params, num_params )
 
 /* Set the scroll bar to the given location. */
 
-#if NeedFunctionPrototypes
 void XawScrollbarSetThumb (Widget w, 
-#if NeedWidePrototypes
-			double top, double shown)
-#else
 			float top, float shown)
-#endif
-#else
-void XawScrollbarSetThumb (w, top, shown)
-    Widget w;
-    float top, shown;
-#endif
 {
     ScrollbarWidget sbw = (ScrollbarWidget) w;
 

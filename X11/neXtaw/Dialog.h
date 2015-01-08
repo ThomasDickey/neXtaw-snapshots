@@ -90,18 +90,14 @@ extern WidgetClass dialogWidgetClass;
 _XFUNCPROTOBEGIN
 
 extern void XawDialogAddButton(
-#if NeedFunctionPrototypes
     Widget		/* dialog */,
     _Xconst char*	/* name */,
     XtCallbackProc	/* function */,
     XtPointer		/* client_data */
-#endif
 );
 
 extern char *XawDialogGetValueString(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 _XFUNCPROTOEND

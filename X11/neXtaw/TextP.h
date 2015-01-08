@@ -258,36 +258,28 @@ typedef struct _TextRec {
  *******************************************/
 
 extern void _XawTextBuildLineTable (
-#if NeedFunctionPrototypes
     TextWidget /*ctx*/, 
     XawTextPosition /*top pos*/, 
     _XtBoolean /* force_rebuild */
-#endif
 );
 
 extern char* _XawTextGetSTRING(
-#if NeedFunctionPrototypes
     TextWidget /*ctx*/, 
     XawTextPosition /*left*/, 
     XawTextPosition /*right*/
-#endif
 ); 
 
 extern void _XawTextSaltAwaySelection(
-#if NeedFunctionPrototypes
     TextWidget /*ctx*/, 
     Atom* /*selections*/, 
     int /*num_atoms*/
-#endif
 ); 
 
 extern void _XawTextPosToXY(
-#if NeedFunctionPrototypes
     Widget			/* w */,
     XawTextPosition		/* pos */,
     Position *			/* x */,
     Position *			/*y */
-#endif
 );
 
 #endif /* _XawTextP_h */

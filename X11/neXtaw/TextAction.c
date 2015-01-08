@@ -1440,8 +1440,10 @@ printf("\tcursor coords = (%d,%d)\n", x, y);
 printf("\twidget size = %d x %d\n", width, height);
 if (x > width) printf("Need to scroll\n");
 
+#if 0
 //	InsertCursor(w, sink->ascii_sink.cursor_x,
 //			sink->ascii_sink.cursor_y);
+#endif
 }
 
 /*ARGSUSED*/
