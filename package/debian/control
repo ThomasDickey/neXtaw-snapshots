@@ -1,0 +1,14 @@
+Source: nextaw
+Maintainer: Thomas E. Dickey <dickey@invisible-island.net>
+Section: misc
+Priority: optional
+Standards-Version: 3.8.4
+Build-Depends: debhelper (>= 5), libncursesw5-dev (>= 5.3), groff-base
+Homepage: http://invisible-island.net/neXtaw/
+
+Package: nextaw
+Architecture: any
+Depends: libncursesw5 (>= 5.3)
+Description: neXtaw widget set development package
+ This is neXtaw, a modified version of the Athena Widgets with N*XTSTEP
+ appearance. It is based on the Xaw3d 1.5 library by Kaleb S. Keithley.

@@ -174,17 +174,10 @@ WidgetClass multiSinkObjectClass = (WidgetClass)&multiSinkClassRec;
 /* Utilities */
 
 static int 
-#if NeedFunctionPrototypes
 CharWidth (
     Widget w,
     int x,
     wchar_t c)
-#else
-CharWidth (w, x, c)
-    Widget w;
-    int x;
-    wchar_t c;
-#endif
 {
     int    i, width;
     MultiSinkObject sink = (MultiSinkObject) w;
@@ -683,15 +676,9 @@ MaxLines(w, height)
 
 /* ARGSUSED */
 static int
-#if NeedFunctionPrototypes
 MaxHeight( 
     Widget w, 
     int lines )
-#else
-MaxHeight( w, lines )
-    Widget w;
-    int lines;
-#endif
 {
   MultiSinkObject sink = (MultiSinkObject) w;
   XFontSetExtents *ext = XExtentsOfFontSet(sink->multi_sink.fontset);
@@ -708,17 +695,10 @@ MaxHeight( w, lines )
  */
 
 static void 
-#if NeedFunctionPrototypes
 SetTabs( 
     Widget w, 
     int tab_count, 
     short* tabs )
-#else
-SetTabs( w, tab_count, tabs )
-    Widget w;
-    int tab_count;
-    short* tabs;
-#endif
 {
   MultiSinkObject sink = (MultiSinkObject) w;
   int i;
@@ -776,18 +756,11 @@ SetTabs( w, tab_count, tabs )
 }
 
 void
-#if NeedFunctionPrototypes
 _XawMultiSinkPosToXY(
     Widget w, 
     XawTextPosition pos, 
     Position *x,
     Position *y )
-#else
-_XawMultiSinkPosToXY( w, pos, x, y )
-    Widget w;
-    XawTextPosition pos;
-    Position *x, *y;
-#endif
 {
     MultiSinkObject sink = (MultiSinkObject) ((TextWidget)w)->text.sink;
     XFontSetExtents *ext = XExtentsOfFontSet( sink->multi_sink.fontset );

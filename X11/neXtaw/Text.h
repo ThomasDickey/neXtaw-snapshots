@@ -177,129 +177,87 @@ typedef struct _TextRec      *TextWidget;
 _XFUNCPROTOBEGIN
 
 extern XrmQuark _XawTextFormat(
-#if NeedFunctionPrototypes
     TextWidget		/* tw */
-#endif
 );
 
 extern void XawTextDisplay(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 ); 
 
 extern void XawTextEnableRedisplay(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 extern void XawTextDisableRedisplay(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 extern void XawTextSetSelectionArray(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     XawTextSelectType*	/* sarray */
-#endif
 );
 
 extern void XawTextGetSelectionPos(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     XawTextPosition*	/* begin_return */,
     XawTextPosition*	/* end_return */
-#endif
 );
 
 extern void XawTextSetSource(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     Widget		/* source */,
     XawTextPosition	/* position */
-#endif
 );
 
 extern int XawTextReplace(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     XawTextPosition	/* start */,
     XawTextPosition	/* end */,
     XawTextBlock*	/* text */
-#endif
 );
 
 extern XawTextPosition XawTextTopPosition(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 extern void XawTextSetInsertionPoint(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     XawTextPosition	/* position */
-#endif
 );
 
 extern XawTextPosition XawTextGetInsertionPoint(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 extern void XawTextUnsetSelection(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 extern void XawTextSetSelection(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     XawTextPosition	/* left */,
     XawTextPosition	/* right */
-#endif
 );
 
 extern void XawTextInvalidate(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     XawTextPosition	/* from */,
     XawTextPosition	/* to */
-#endif
 );
 
 extern Widget XawTextGetSource(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 extern XawTextPosition XawTextSearch(
-#if NeedFunctionPrototypes
     Widget			/* w */,
-#if NeedWidePrototypes
-    /* XawTextScanDirection */ int /* dir */,
-#else
     XawTextScanDirection	/* dir */,
-#endif
     XawTextBlock*		/* text */
-#endif
 );
 
 extern void XawTextDisplayCaret(
-#if NeedFunctionPrototypes
     Widget		/* w */,
-#if NeedWidePrototypes
-    /* Boolean */ int	/* visible */
-#else
     Boolean		/* visible */
-#endif
-#endif
 );
 
 _XFUNCPROTOEND

@@ -837,13 +837,8 @@ Destroy (w)
  */
 
 void
-#if NeedFunctionPrototypes
 _XawMultiSourceFreeString(
     Widget w)
-#else
-_XawMultiSourceFreeString(w)
-    Widget w;
-#endif
 {
   MultiSrcObject src = (MultiSrcObject) w;
 
@@ -865,13 +860,8 @@ _XawMultiSourceFreeString(w)
  */
 
 Boolean
-#if NeedFunctionPrototypes
 _XawMultiSave(
     Widget w)
-#else
-_XawMultiSave(w)
-    Widget w;
-#endif
 {
   MultiSrcObject src = (MultiSrcObject) w;
   XtAppContext app_con = XtWidgetToApplicationContext(w);
@@ -945,15 +935,9 @@ _XawMultiSave(w)
  */
 
 Boolean
-#if NeedFunctionPrototypes
 _XawMultiSaveAsFile(
     Widget w, 
     _Xconst char* name)
-#else
-_XawMultiSaveAsFile(w, name)
-    Widget w;
-    String name;
-#endif
 {
   MultiSrcObject src = (MultiSrcObject) w;
   String mb_string;

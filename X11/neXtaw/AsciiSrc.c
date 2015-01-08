@@ -737,12 +737,7 @@ Widget w;
  */
 
 void
-#if NeedFunctionPrototypes
 XawAsciiSourceFreeString(Widget w)
-#else
-XawAsciiSourceFreeString(w)
-Widget w;
-#endif
 {
   AsciiSrcObject src = (AsciiSrcObject) w;
 
@@ -773,12 +768,7 @@ Widget w;
  */
 
 Boolean
-#if NeedFunctionPrototypes
 XawAsciiSave(Widget w)
-#else
-XawAsciiSave(w)
-Widget w;
-#endif
 {
   AsciiSrcObject src = (AsciiSrcObject) w;
 
@@ -835,13 +825,9 @@ Widget w;
  */
 
 Boolean
-#if NeedFunctionPrototypes
-XawAsciiSaveAsFile(Widget w, _Xconst char* name)
-#else
-XawAsciiSaveAsFile(w, name)
-Widget w;
-String name;
-#endif
+XawAsciiSaveAsFile(
+Widget w,
+String name)
 {
   AsciiSrcObject src = (AsciiSrcObject) w;
   String string;
@@ -872,12 +858,7 @@ String name;
  */
 
 Boolean 
-#if NeedFunctionPrototypes
 XawAsciiSourceChanged(Widget w)
-#else
-XawAsciiSourceChanged(w)
-Widget w;
-#endif
 {
   if ( XtIsSubclass( w, multiSrcObjectClass ) )
       return( ( (MultiSrcObject) w )->multi_src.changes );
@@ -949,15 +930,17 @@ AsciiSrcObject src;
   String string;
   XawTextPosition first;
   Piece * piece;
+  char *result;
 
-  string = XtMalloc((unsigned) sizeof(unsigned char) * 
+  result = XtMalloc((unsigned) sizeof(unsigned char) * 
 		    src->ascii_src.length + 1);
   
   for (first = 0, piece = src->ascii_src.first_piece ; piece != NULL; 
        first += piece->used, piece = piece->next) 
-    strncpy(string + first, piece->text, piece->used);
+    strncpy(result + first, piece->text, piece->used);
 
-  string[src->ascii_src.length] = '\0';	/* NULL terminate this sucker. */
+  result[src->ascii_src.length] = '\0';	/* NULL terminate this sucker. */
+  string = result;
 
 /*
  * This will refill all pieces to capacity. 

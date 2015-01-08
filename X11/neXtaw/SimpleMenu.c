@@ -892,12 +892,7 @@ Cardinal * num_params;
  */
 
 void
-#if NeedFunctionPrototypes
 XawSimpleMenuAddGlobalActions(XtAppContext app_con)
-#else
-XawSimpleMenuAddGlobalActions(app_con)
-XtAppContext app_con;
-#endif
 {
     XtInitializeWidgetClass(simpleMenuWidgetClass);
     XmuCallInitializers( app_con );
@@ -911,12 +906,7 @@ XtAppContext app_con;
  */
 
 Widget
-#if NeedFunctionPrototypes
 XawSimpleMenuGetActiveEntry(Widget w)
-#else
-XawSimpleMenuGetActiveEntry(w)
-Widget w;
-#endif
 {
     SimpleMenuWidget smw = (SimpleMenuWidget) w;
 
@@ -930,12 +920,7 @@ Widget w;
  */
 
 void
-#if NeedFunctionPrototypes
 XawSimpleMenuClearActiveEntry(Widget w)
-#else
-XawSimpleMenuClearActiveEntry(w)
-Widget w;
-#endif
 {
     SimpleMenuWidget smw = (SimpleMenuWidget) w;
 

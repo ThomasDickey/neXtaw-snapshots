@@ -151,19 +151,15 @@ typedef struct _MultiSinkRec {
  *******************************************/
 
 extern void _XawMultiSinkPosToXY(
-#if NeedFunctionPrototypes
     Widget			/* w */,
     XawTextPosition		/* pos */,
     Position *			/* x */,
     Position *			/* y */
-#endif
 );
 
 extern void _Xaw_BlinkCursor(	/* Casantos, Jun 27 1999 */
-#if NeedFunctionPrototypes
     XtPointer			/* client_data */,
     XtIntervalId *		/* idp */
-#endif
 );
 
 #endif /* _XawMultiSinkP_h */

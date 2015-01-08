@@ -180,17 +180,11 @@ _XFUNCPROTOBEGIN
  */
 
 extern void XawListChange(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     String*		/* list */,
     int			/* nitems */,
     int			/* longest */,
-#if NeedWidePrototypes
-    /* Boolean */ int	/* resize */
-#else
     Boolean		/* resize */
-#endif
-#endif
 );
 
 /*	Function Name: XawListUnhighlight
@@ -200,9 +194,7 @@ extern void XawListChange(
  */
 
 extern void XawListUnhighlight(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 /*	Function Name: XawListHighlight
@@ -213,10 +205,8 @@ extern void XawListUnhighlight(
  */
 
 extern void XawListHighlight(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     int			/* item */
-#endif
 );
 
 
@@ -227,9 +217,7 @@ extern void XawListHighlight(
  */
 
 extern XawListReturnStruct * XawListShowCurrent(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 _XFUNCPROTOEND

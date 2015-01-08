@@ -60,9 +60,7 @@ typedef struct _SmeThreeDRec {
   } SmeThreeDRec;
 
 typedef void (*XawSme3dShadowDrawProc)(
-#if NeedFunctionPrototypes
     Widget
-#endif
 );
 
 typedef struct {

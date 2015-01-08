@@ -78,17 +78,13 @@ extern WidgetClass smeThreeDWidgetClass;
 _XFUNCPROTOBEGIN
 
 extern void XawSme3dComputeTopShadowRGB (
-#if NeedFunctionPrototypes
     Widget	 	/* new */,
     XColor*		/* xcol_out */
-#endif
 );
 
 extern void XawSme3dComputeBottomShadowRGB (
-#if NeedFunctionPrototypes
     Widget		/* new */,
     XColor*		/* xcol_out */
-#endif
 );
 
 _XFUNCPROTOEND

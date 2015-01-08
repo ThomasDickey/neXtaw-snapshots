@@ -59,13 +59,8 @@ in this Software without prior written authorization from the X Consortium.
 #include <X11/IntrinsicP.h>
 #include "XawI18n.h"
 
-#if NeedFunctionPrototypes
 wchar_t _Xaw_atowc(
     unsigned char c)
-#else
-wchar_t _Xaw_atowc(c)
-    unsigned char c;
-#endif
 {
     wchar_t  wc;
     char str[2];

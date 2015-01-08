@@ -45,9 +45,7 @@ typedef	enum {
 	 */
 
 extern	void	XawFocusInstallActions(
-#if NeedFunctionPrototypes
     XtAppContext
-#endif
 ) ;
 
 	/* This function can be called to help connect non-Athena widgets
@@ -118,9 +116,7 @@ extern	void	XawFocusInstallActions(
 	 */
 
 extern	void	XawFocusInstall(
-#if NeedFunctionPrototypes
     Widget, Bool override
-#endif
 );
 
 
@@ -128,7 +124,6 @@ extern	void	XawFocusInstall(
 	/* These functions may be called to explicitly modify focus. */
 
 
-#if NeedFunctionPrototypes
 extern	void	XawFocusNext(Widget w, Time tm) ;
 extern	void	XawFocusNextGroup(Widget w, Time tm) ;
 extern	void	XawFocusPrevious(Widget w, Time tm) ;
@@ -140,19 +135,6 @@ extern	void	XawFocusEndGroup(Widget w, Time tm) ;
 extern	void	XawFocusTake(Widget w, Time tm) ;
 extern	void	XawFocusEnterWindow(Widget w, XawFocusPolicy p, Time tm) ;
 extern	void	XawFocusLeaveWindow(Widget w, XawFocusPolicy p, Time tm) ;
-#else
-extern	void	XawFocusNext() ;
-extern	void	XawFocusNextGroup() ;
-extern	void	XawFocusPrevious() ;
-extern	void	XawFocusPreviousGroup() ;
-extern	void	XawFocusHome() ;
-extern	void	XawFocusHomeGroup() ;
-extern	void	XawFocusEnd() ;
-extern	void	XawFocusEndGroup() ;
-extern	void	XawFocusTake() ;
-extern	void	XawFocusEnterWindow() ;
-extern	void	XawFocusLeaveWindow() ;
-#endif
 
 
 #endif	/* XawTraversal_h */

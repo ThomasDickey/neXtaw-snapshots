@@ -126,22 +126,16 @@ _XFUNCPROTOBEGIN
 
 
 extern void XawMultiSourceFreeString(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 extern Boolean _XawMultiSave(
-#if NeedFunctionPrototypes
     Widget		/* w */
-#endif
 );
 
 extern Boolean _XawMultiSaveAsFile(
-#if NeedFunctionPrototypes
     Widget		/* w */,
     _Xconst char*	/* name */
-#endif 
 );
 
 
