@@ -1,11 +1,7 @@
-/* $XConsortium: Clock.c /main/75 1996/01/14 16:50:48 kaleb $ */
-
-/*
- * MODIFIED FOR N*XTSTEP LOOK by Carlos A M dos Santos - 1999
-*/
-
 /***********************************************************
 
+Copyright 2015 by Thomas E. Dickey
+Copyright 1999 by Carlos A M dos Santos
 Copyright (c) 1987, 1988  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -34,13 +30,13 @@ Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the name of Digital not be
 used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  
+software without specific, written prior permission.
 
 DIGITAL DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
 ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -52,35 +48,28 @@ SOFTWARE.
 
 ******************************************************************/
 
+#include "config.h"
+
 #include <X11/Xlib.h>
 #include <X11/StringDefs.h>
 #include <X11/IntrinsicP.h>
 #include "ClockP.h"		/* Casantos, Jul 4 1999 */
 #include <X11/Xosdefs.h>
 
-#if defined(__STDC__) && !defined(AIXV3) /* AIX is broken */
-#define Const const
-#else
-#define Const /**/
-#endif
-
-#ifdef X_NOT_STDC_ENV
-extern struct tm *localtime();
-#define Time_t long
-extern Time_t time ();
-#else
 #include <time.h>
-#define Time_t time_t
-#endif
 
 #ifdef XKB
 #include <X11/extensions/XKBbells.h>
 #endif
 
-static void clock_tic(), DrawHand(), DrawSecond(), SetSeg(), DrawClockFace();
-static void erase_hands();
-static int round();
-	
+static void clock_tic(XtPointer, XtIntervalId *);
+static void DrawHand(ClockWidget, Dimension, Dimension, int);
+static void DrawSecond(ClockWidget, Dimension, Dimension, Dimension, int);
+static void SetSeg(ClockWidget, int, int, int, int);
+static void DrawClockFace(ClockWidget);
+static void erase_hands(ClockWidget, struct tm *);
+static int my_round(double);
+
 /* Private Definitions */
 
 #define VERTICES_IN_HANDS	6	/* to draw triangle */
@@ -112,7 +101,7 @@ static XtResource resources[] = {
 	goffset(width), XtRImmediate, (XtPointer) 0},
     {XtNheight, XtCHeight, XtRDimension, sizeof(Dimension),
 	goffset(height), XtRImmediate, (XtPointer) 0},
-    {XtNupdate, XtCInterval, XtRInt, sizeof(int), 
+    {XtNupdate, XtCInterval, XtRInt, sizeof(int),
         offset(update), XtRImmediate, (XtPointer) 60 },
     {XtNforeground, XtCForeground, XtRPixel, sizeof(Pixel),
         offset(fgpixel), XtRString, XtDefaultForeground},
@@ -139,9 +128,13 @@ static XtResource resources[] = {
 #undef goffset
 #undef toffset
 
-static void ClassInitialize();
-static void Initialize(), Realize(), Destroy(), Resize(), Redisplay();
-static Boolean SetValues();
+static void ClassInitialize(void);
+static void Initialize(Widget, Widget, ArgList, Cardinal *);
+static void Realize(Widget, XtValueMask *, XSetWindowAttributes *);
+static void Destroy(Widget);
+static void Resize(Widget);
+static void Redisplay(Widget, XEvent *, Region);
+static Boolean SetValues(Widget, Widget, Widget, ArgList, Cardinal *);
 
 ClockClassRec clockClassRec = {
     { /* core fields */			/* Casantos, Jul 4 1999 */
@@ -197,17 +190,18 @@ WidgetClass clockWidgetClass = (WidgetClass) &clockClassRec;
  *
  ****************************************************************/
 
-static void ClassInitialize()
+static void ClassInitialize(void)
 {
     XtAddConverter( XtRString, XtRBackingStore, XmuCvtStringToBackingStore,
 		    NULL, 0 );
 }
 
 /* ARGSUSED */
-static void Initialize (request, new, args, num_args)
-    Widget request, new;
-    ArgList args;
-    Cardinal *num_args;
+static void
+Initialize(Widget request GCC_UNUSED,
+	   Widget new,
+	   ArgList args GCC_UNUSED,
+	   Cardinal *num_args GCC_UNUSED)
 {
     ClockWidget w = (ClockWidget)new;
     XtGCMask		valuemask;
@@ -224,7 +218,7 @@ static void Initialize (request, new, args, num_args)
     if(!w->clock.analog) {
        char *str;
        struct tm tm;
-       Time_t time_value;
+       time_t time_value;
 
        (void) time(&time_value);
        tm = *localtime(&time_value);
@@ -233,15 +227,15 @@ static void Initialize (request, new, args, num_args)
           w->clock.font = XQueryFont( XtDisplay(w),
 				      XGContextFromGC(
 					   DefaultGCOfScreen(XtScreen(w))) );
-       min_width = XTextWidth(w->clock.font, str, strlen(str)) +
-	  2 * w->clock.padding;
+       min_width = XTextWidth(w->clock.font, str,
+			       (int) strlen(str)) + 2 * w->clock.padding;
        min_height = w->clock.font->ascent +
 	  w->clock.font->descent + 2 * w->clock.padding;
     }
     if (w->core.width == 0)
-	w->core.width = w->threeD.shadow_width * 2 + min_width;
+	w->core.width = (Dimension) (w->threeD.shadow_width * 2 + min_width);
     if (w->core.height == 0)
-	w->core.height = w->threeD.shadow_width * 2 + min_height;
+	w->core.height = (Dimension) (w->threeD.shadow_width * 2 + min_height);
 
     myXGCV.foreground = w->clock.fgpixel;
     myXGCV.background = w->core.background_pixel;
@@ -270,10 +264,8 @@ static void Initialize (request, new, args, num_args)
     w->clock.interval_id = 0;
 }
 
-static void Realize (gw, valueMask, attrs)
-     Widget gw;
-     XtValueMask *valueMask;
-     XSetWindowAttributes *attrs;
+static void
+Realize(Widget gw, XtValueMask *valueMask, XSetWindowAttributes *attrs)
 {
      ClockWidget	w = (ClockWidget) gw;
 #ifdef notdef
@@ -293,8 +285,8 @@ static void Realize (gw, valueMask, attrs)
      Resize(gw);
 }
 
-static void Destroy (gw)
-     Widget gw;
+static void
+Destroy(Widget gw)
 {
      ClockWidget w = (ClockWidget) gw;
      if (w->clock.interval_id) XtRemoveTimeOut (w->clock.interval_id);
@@ -304,8 +296,8 @@ static void Destroy (gw)
      XtReleaseGC (gw, w->clock.EraseGC);
 }
 
-static void Resize (gw) 
-    Widget gw;
+static void
+Resize(Widget gw)
 {
     ClockWidget w = (ClockWidget) gw;
     /* don't do this computation if window hasn't been realized yet. */
@@ -316,22 +308,20 @@ static void Resize (gw)
 		- (int) (2 * w->clock.padding)) / 2;
         w->clock.radius = (Dimension) max (radius, 1);
 
-        w->clock.second_hand_length = (int)(SECOND_HAND_FRACT * w->clock.radius) / 100;
-        w->clock.minute_hand_length = (int)(MINUTE_HAND_FRACT * w->clock.radius) / 100;
-        w->clock.hour_hand_length = (int)(HOUR_HAND_FRACT * w->clock.radius) / 100;
-        w->clock.hand_width = (int)(HAND_WIDTH_FRACT * w->clock.radius) / 100;
-        w->clock.second_hand_width = (int)(SECOND_WIDTH_FRACT * w->clock.radius) / 100;
+        w->clock.second_hand_length = (Dimension)(SECOND_HAND_FRACT * w->clock.radius) / 100;
+        w->clock.minute_hand_length = (Dimension)(MINUTE_HAND_FRACT * w->clock.radius) / 100;
+        w->clock.hour_hand_length = (Dimension)(HOUR_HAND_FRACT * w->clock.radius) / 100;
+        w->clock.hand_width = (Dimension)(HAND_WIDTH_FRACT * w->clock.radius) / 100;
+        w->clock.second_hand_width = (Dimension)(SECOND_WIDTH_FRACT * w->clock.radius) / 100;
 
-        w->clock.centerX = w->core.width / 2;
-        w->clock.centerY = w->core.height / 2;
+        w->clock.centerX = (Position) (w->core.width / 2);
+        w->clock.centerY = (Position) (w->core.height / 2);
     }
 }
 
 /* ARGSUSED */
-static void Redisplay (gw, event, region)
-    Widget gw;
-    XEvent *event;		/* unused */
-    Region region;		/* unused */
+static void
+Redisplay(Widget gw, XEvent *event, Region region)
 {
     ClockWidget w = (ClockWidget) gw;
     ClockWidgetClass cwclass = (ClockWidgetClass) XtClass (gw);
@@ -349,13 +339,12 @@ static void Redisplay (gw, event, region)
 }
 
 /* ARGSUSED */
-static void clock_tic(client_data, id)
-    XtPointer client_data;
-    XtIntervalId *id;
+static void
+clock_tic(XtPointer client_data, XtIntervalId *id)
 {
-    ClockWidget w = (ClockWidget)client_data;    
-    struct tm tm; 
-    Time_t	time_value;
+    ClockWidget w = (ClockWidget)client_data;
+    struct tm tm;
+    time_t	time_value;
     char	*time_ptr;
     register Display *dpy = XtDisplay(w);
     register Window win = XtWindow(w);
@@ -363,7 +352,8 @@ static void clock_tic(client_data, id)
     if (id || !w->clock.interval_id)
 	w->clock.interval_id =
 	    XtAppAddTimeOut( XtWidgetToApplicationContext( (Widget) w),
-			    w->clock.update*1000, clock_tic, (XtPointer)w );
+			    (unsigned long) w->clock.update*1000,
+			    clock_tic, (XtPointer)w );
     (void) time(&time_value);
     tm = *localtime(&time_value);
     /*
@@ -373,7 +363,7 @@ static void clock_tic(client_data, id)
 	if (w->clock.beeped && (tm.tm_min != 30) &&
 	    (tm.tm_min != 0))
 	  w->clock.beeped = FALSE;
-	if (((tm.tm_min == 30) || (tm.tm_min == 0)) 
+	if (((tm.tm_min == 30) || (tm.tm_min == 0))
 	    && (!w->clock.beeped)) {
 	    w->clock.beeped = TRUE;
 #ifdef XKB
@@ -385,7 +375,7 @@ static void clock_tic(client_data, id)
 		XkbStdBell(dpy,win,50,XkbBI_ClockChimeHalf);
 	    }
 #else
-	    XBell(dpy, 50);	
+	    XBell(dpy, 50);
 	    if (tm.tm_min == 0)
 	      XBell(dpy, 50);
 #endif
@@ -396,10 +386,10 @@ static void clock_tic(client_data, id)
 	int i, len, prev_len;
 
 	time_ptr = asctime(&tm);
-	len = strlen (time_ptr);
+	len = (int) strlen (time_ptr);
 	if (time_ptr[len - 1] == '\n') time_ptr[--len] = '\0';
-	prev_len = strlen (w->clock.prev_time_string);
-	for (i = 0; ((i < len) && (i < prev_len) && 
+	prev_len = (int) strlen (w->clock.prev_time_string);
+	for (i = 0; ((i < len) && (i < prev_len) &&
 		     (w->clock.prev_time_string[i] == time_ptr[i])); i++);
 	strcpy (w->clock.prev_time_string+i, time_ptr+i);
 
@@ -416,11 +406,12 @@ static void clock_tic(client_data, id)
 		    + 2 + w->clock.padding;
 	if (clear_from < (int)w->core.width)
 	    XFillRectangle (dpy, win, w->clock.EraseGC,
-		clear_from, 0, w->core.width - clear_from,
-		w->core.height - w->threeD.shadow_width);
+		clear_from, 0,
+		(unsigned) (w->core.width - clear_from),
+		(unsigned) (w->core.height - w->threeD.shadow_width));
     } else {
 	/*
-	 * The second (or minute) hand is sec (or min) 
+	 * The second (or minute) hand is sec (or min)
 	 * sixtieths around the clock face. The hour hand is
 	 * (hour + min/60) twelfths of the way around the
 	 * clock-face.  The derivation is left as an excercise
@@ -461,7 +452,7 @@ static void clock_tic(client_data, id)
 		w->clock.segbuff, VERTICES_IN_HANDS,
 		       CoordModeOrigin);
 	    w->clock.hour = w->clock.segbuffptr;
-	    DrawHand(w, 
+	    DrawHand(w,
 		w->clock.hour_hand_length, w->clock.hand_width,
 		tm.tm_hour * 60 + tm.tm_min
 	    );
@@ -483,7 +474,7 @@ static void clock_tic(client_data, id)
 	if (w->clock.show_second_hand == TRUE) {
 	    w->clock.segbuffptr = w->clock.sec;
 	    DrawSecond(w,
-		w->clock.second_hand_length - 2, 
+		w->clock.second_hand_length - 2,
 		w->clock.second_hand_width,
 		w->clock.minute_hand_length + 2,
 		tm.tm_sec * 12
@@ -506,10 +497,9 @@ static void clock_tic(client_data, id)
 	w->clock.otm = tm;
     }
 }
-	
-static void erase_hands (w, tm)
-ClockWidget	w;
-struct tm	*tm;
+
+static void
+erase_hands(ClockWidget w, struct tm *tm)
 {
     /*
      * Erase old hands.
@@ -563,7 +553,7 @@ struct tm	*tm;
     }
 }
 
-static float Const Sines[] = {
+static double const Sines[] = {
 .000000, .008727, .017452, .026177, .034899, .043619, .052336, .061049,
 .069756, .078459, .087156, .095846, .104528, .113203, .121869, .130526,
 .139173, .147809, .156434, .165048, .173648, .182236, .190809, .199368,
@@ -578,7 +568,7 @@ static float Const Sines[] = {
 .694658, .700909, .707107
 };
 
-static float Const Cosines[] = {
+static double const Cosines[] = {
 1.00000, .999962, .999848, .999657, .999391, .999048, .998630, .998135,
 .997564, .996917, .996195, .995396, .994522, .993572, .992546, .991445,
 .990268, .989016, .987688, .986286, .984808, .983255, .981627, .979925,
@@ -593,9 +583,8 @@ static float Const Cosines[] = {
 .719340, .713250, .707107
 };
 
-static void ClockAngle(tick_units, sinp, cosp)
-    int tick_units;
-    double *sinp, *cosp;
+static void
+ClockAngle(int tick_units, double *sinp, double *cosp)
 {
     int reduced, upper;
 
@@ -629,11 +618,11 @@ static void ClockAngle(tick_units, sinp, cosp)
  * to the perimeter, then erasing all but the outside most pixels doesn't
  * work because of round-off error (sigh).
  */
-static void DrawLine(w, blank_length, length, tick_units)
-ClockWidget w;
-Dimension blank_length;
-Dimension length;
-int tick_units;
+static void
+DrawLine(ClockWidget w,
+Dimension blank_length,
+Dimension length,
+int tick_units)
 {
 	double dblank_length = (double)blank_length, dlength = (double)length;
 	double cosangle, sinangle;
@@ -666,10 +655,8 @@ int tick_units;
  * how far around the circle (clockwise) from high noon.
  *
  */
-static void DrawHand(w, length, width, tick_units)
-ClockWidget w;
-Dimension length, width;
-int tick_units;
+static void
+DrawHand(ClockWidget w, Dimension length, Dimension width, int tick_units)
 {
 
 	double cosangle, sinangle;
@@ -697,14 +684,14 @@ int tick_units;
 	wc = width * cosangle;
 	ws = width * sinangle;
 	SetSeg(w,
-	       x = w->clock.centerX + round(length * sinangle),
-	       y = w->clock.centerY - round(length * cosangle),
-	       x1 = w->clock.centerX - round(ws + wc), 
-	       y1 = w->clock.centerY + round(wc - ws));  /* 1 ---- 2 */
+	       x = (Position) (w->clock.centerX + my_round(length * sinangle)),
+	       y = (Position) (w->clock.centerY - my_round(length * cosangle)),
+	       x1 = (Position) (w->clock.centerX - my_round(ws + wc)),
+	       y1 = (Position) (w->clock.centerY + my_round(wc - ws)));  /* 1 ---- 2 */
 	/* 2 */
-	SetSeg(w, x1, y1, 
-	       x2 = w->clock.centerX - round(ws - wc), 
-	       y2 = w->clock.centerY + round(wc + ws));  /* 2 ----- 3 */
+	SetSeg(w, x1, y1,
+	       x2 = (Position)(w->clock.centerX - my_round(ws - wc)),
+	       y2 = (Position)(w->clock.centerY + my_round(wc + ws)));  /* 2 ----- 3 */
 
 	SetSeg(w, x2, y2, x, y);	/* 3 ----- 1(4) */
 }
@@ -719,10 +706,8 @@ int tick_units;
  * how far around the circle (clockwise) from high noon.
  *
  */
-static void DrawSecond(w, length, width, offset, tick_units)
-ClockWidget w;
-Dimension length, width, offset;
-int tick_units;
+static void
+DrawSecond(ClockWidget w, Dimension length, Dimension width, Dimension offset, int tick_units)
 {
 
 	double cosangle, sinangle;
@@ -766,27 +751,26 @@ int tick_units;
 	ws = width * sinangle;
 	/*1 ---- 2 */
 	SetSeg(w,
-	       x = w->clock.centerX + round(length * sinangle),
-	       y = w->clock.centerY - round(length * cosangle),
-	       w->clock.centerX + round(ms - wc),
-	       w->clock.centerY - round(mc + ws) );
-	SetSeg(w, w->clock.centerX + round(offset *sinangle),
-	       w->clock.centerY - round(offset * cosangle), /* 2-----3 */
-	       w->clock.centerX + round(ms + wc), 
-	       w->clock.centerY - round(mc - ws));
+	       x = (Position) (w->clock.centerX + my_round(length * sinangle)),
+	       y = (Position) (w->clock.centerY - my_round(length * cosangle)),
+	       w->clock.centerX + my_round(ms - wc),
+	       w->clock.centerY - my_round(mc + ws) );
+	SetSeg(w, w->clock.centerX + my_round(offset *sinangle),
+	       w->clock.centerY - my_round(offset * cosangle), /* 2-----3 */
+	       w->clock.centerX + my_round(ms + wc),
+	       w->clock.centerY - my_round(mc - ws));
 	w->clock.segbuffptr->x = x;
 	w->clock.segbuffptr++->y = y;
 	w->clock.numseg ++;
 }
 
-static void SetSeg(w, x1, y1, x2, y2)
-ClockWidget w;
-int x1, y1, x2, y2;
+static void
+SetSeg(ClockWidget w, int x1, int y1, int x2, int y2)
 {
-	w->clock.segbuffptr->x = x1;
-	w->clock.segbuffptr++->y = y1;
-	w->clock.segbuffptr->x = x2;
-	w->clock.segbuffptr++->y = y2;
+	w->clock.segbuffptr->x = (short) x1;
+	w->clock.segbuffptr++->y = (short) y1;
+	w->clock.segbuffptr->x = (short) x2;
+	w->clock.segbuffptr++->y = (short) y2;
 	w->clock.numseg += 2;
 }
 
@@ -794,18 +778,18 @@ int x1, y1, x2, y2;
  *  Draw the clock face (every fifth tick-mark is longer
  *  than the others).
  */
-static void DrawClockFace(w)
-ClockWidget w;
+static void
+DrawClockFace(ClockWidget w)
 {
-	register int i;
-	register int delta = (int)(w->clock.radius - w->clock.second_hand_length) / 3;
-	
+	int i;
+	int delta = (int)(w->clock.radius - w->clock.second_hand_length) / 3;
+
 	w->clock.segbuffptr = w->clock.segbuff;
 	w->clock.numseg = 0;
 	for (i = 0; i < 60; i++)
-		DrawLine(w, ( (i % 5) == 0 ? 
-			     w->clock.second_hand_length :
-			     (w->clock.radius - delta) ),
+		DrawLine(w, ((i % 5) == 0)
+				? w->clock.second_hand_length
+				: (w->clock.radius - delta) ,
 			 w->clock.radius, i * 12);
 	/*
 	 * Go ahead and draw it.
@@ -813,22 +797,24 @@ ClockWidget w;
 	XDrawSegments(XtDisplay(w), XtWindow(w),
 		      w->clock.myGC, (XSegment *) &(w->clock.segbuff[0]),
 		      w->clock.numseg/2);
-	
+
 	w->clock.segbuffptr = w->clock.segbuff;
 	w->clock.numseg = 0;
 }
 
-static int round(x)
-double x;
+static int
+my_round(double x)
 {
 	return(x >= 0.0 ? (int)(x + .5) : (int)(x - .5));
 }
 
 /* ARGSUSED */
-static Boolean SetValues (gcurrent, grequest, gnew, args, num_args)
-    Widget gcurrent, grequest, gnew;
-    ArgList args;
-    Cardinal *num_args;
+static Boolean
+SetValues(Widget gcurrent,
+	  Widget grequest GCC_UNUSED,
+	  Widget gnew,
+	  ArgList args GCC_UNUSED,
+	  Cardinal *num_args GCC_UNUSED)
 {
       ClockWidget current = (ClockWidget) gcurrent;
       ClockWidget new = (ClockWidget) gnew;
@@ -843,10 +829,11 @@ static Boolean SetValues (gcurrent, grequest, gnew, args, num_args)
 	  if (current->clock.interval_id)
 	      XtRemoveTimeOut (current->clock.interval_id);
 	  if (XtIsRealized( (Widget) new))
-	      new->clock.interval_id = XtAppAddTimeOut( 
+	      new->clock.interval_id = XtAppAddTimeOut(
                                          XtWidgetToApplicationContext(gnew),
-					 new->clock.update*1000,
-				         clock_tic, (XtPointer)gnew);
+					 (unsigned long)(new->clock.update*1000),
+				         clock_tic,
+					 (XtPointer)gnew);
 
 	  new->clock.show_second_hand =(new->clock.update <= SECOND_HAND_TIME);
       }
@@ -898,7 +885,7 @@ static Boolean SetValues (gcurrent, grequest, gnew, args, num_args)
 	  new->clock.EraseGC = XtGetGC((Widget)gcurrent, valuemask, &myXGCV);
 	  redisplay = TRUE;
 	  }
-     
+
      return (redisplay);
 
 }

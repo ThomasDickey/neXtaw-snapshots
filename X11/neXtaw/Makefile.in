@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.9 2015/01/08 01:45:17 tom Exp $
+# $Id: Makefile.in,v 1.10 2015/01/08 21:56:20 tom Exp $
 # template makefile for neXtaw
 ##############################################################################
 # Copyright 2015 Thomas E. Dickey                                            #
@@ -261,8 +261,8 @@ LIB_DIRS	= $(LIBDIR) $(INCLUDEDIR)
 
 all	:: $(ALL)
 
-@LIBTOOL_MAKE@install	:: install-lib
-@LIBTOOL_MAKE@uninstall	:: uninstall-lib
+@LIBTOOL_MAKE@install	:: install.libs
+@LIBTOOL_MAKE@uninstall	:: uninstall.libs
 
 $(OBJECTS) : $(HDRS)
 
@@ -275,14 +275,13 @@ clean	::
 distclean :: clean
 	$(RM) Makefile
 
-install :: $(LIB_DIRS) $(LIB)
-	@ echo "** installing library in $(LIBDIR)"
-	@ $(LIBTOOL_INSTALL) $(INSTALL_DATA) $(LIB) $(LIBDIR)
+install \
+install.libs :: $(INCLUDEDIR) $(LIB)
 	@ echo "** installing headers in $(INCLUDEDIR)"
 	@ $(SHELL) -c 'for n in $(HDRS); do $(INSTALL_DATA) $(srcdir)/$$n $(INCLUDEDIR); done'
 
-uninstall ::
-	- $(LIBTOOL_UNINSTALL) $(RM) $(LIBDIR)/$(LIB)
+uninstall \
+uninstall.libs ::
 	@ $(SHELL) -c 'for n in $(HDRS); do $(RM) $(INCLUDEDIR)/$$n; done'
 
 $(INCLUDEDIR) \

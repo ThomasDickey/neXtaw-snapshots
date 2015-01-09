@@ -1,7 +1,6 @@
-/* $XConsortium: Box.c,v 1.49 94/04/17 20:11:54 kaleb Exp $ */
-
 /***********************************************************
 
+Copyright 2015 by Thomas E. Dickey
 Copyright (c) 1987, 1988, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -54,6 +53,8 @@ SOFTWARE.
  * 
  */
 
+#include	"config.h"
+
 #include	<X11/IntrinsicP.h>
 #include	<X11/StringDefs.h>
 #include	<X11/Xmu/Misc.h>
@@ -91,14 +92,14 @@ static XtResource resources[] = {
  *
  ****************************************************************/
 
-static void ClassInitialize();
-static void Initialize();
-static void Realize();
-static void Resize();
-static Boolean SetValues();
-static XtGeometryResult GeometryManager();
-static void ChangeManaged();
-static XtGeometryResult PreferredSize();
+static void ClassInitialize(void);
+static void Initialize(Widget, Widget, ArgList, Cardinal *);
+static void Realize(Widget, Mask *, XSetWindowAttributes *);
+static void Resize(Widget);
+static Boolean SetValues(Widget, Widget, Widget, ArgList, Cardinal *);
+static XtGeometryResult GeometryManager(Widget, XtWidgetGeometry *, XtWidgetGeometry *);
+static void ChangeManaged(Widget);
+static XtGeometryResult PreferredSize(Widget, XtWidgetGeometry *, XtWidgetGeometry *);
 
 BoxClassRec boxClassRec = {
   {
@@ -164,11 +165,14 @@ WidgetClass boxWidgetClass = (WidgetClass)&boxClassRec;
  *
  */
 
-static void DoLayout(bbw, width, height, reply_width, reply_height, position)
-    BoxWidget	bbw;
-    Dimension	width, height;
-    Dimension	*reply_width, *reply_height; /* bounding box */
-    Boolean	position;	/* actually reposition the windows? */
+static void
+DoLayout(
+    BoxWidget	bbw,
+    Dimension	width,
+    Dimension	height,
+    Dimension	*reply_width,
+    Dimension	*reply_height,
+    Boolean	position)
 {
     Boolean vbox = (bbw->box.orientation == XtorientVertical);
     Cardinal  i;
@@ -200,7 +204,7 @@ static void DoLayout(bbw, width, height, reply_width, reply_height, position)
 	if (widget->core.managed) {
 	    if (widget->core.mapped_when_managed) num_mapped_children++;
 	    /* Compute widget width */
-	    bw = widget->core.width + 2*widget->core.border_width + h_space;
+	    bw = (Dimension) (widget->core.width + 2*widget->core.border_width + h_space);
 	    if ((Dimension)(lw + bw) > width) {
 		if (lw > h_space) {
 		    /* At least one widget on this line, and
@@ -267,12 +271,12 @@ static void DoLayout(bbw, width, height, reply_width, reply_height, position)
         return;
     }
     if (position && XtIsRealized((Widget)bbw)) {
-	if (bbw->composite.num_children == num_mapped_children)
+	if ((int) bbw->composite.num_children == num_mapped_children) {
 	    XMapSubwindows( XtDisplay((Widget)bbw), XtWindow((Widget)bbw) );
-	else {
-	    int i = bbw->composite.num_children;
+	} else {
+	    int i2 = (int) bbw->composite.num_children;
 	    Widget *childP = bbw->composite.children;
-	    for (; i > 0; childP++, i--)
+	    for (; i2 > 0; childP++, i2--)
 		if (XtIsRealized(*childP) && XtIsManaged(*childP) &&
 		    (*childP)->core.mapped_when_managed)
 		    XtMapWidget(*childP);
@@ -295,9 +299,8 @@ static void DoLayout(bbw, width, height, reply_width, reply_height, position)
  *
  */
 
-static XtGeometryResult PreferredSize(widget, constraint, preferred)
-    Widget widget;
-    XtWidgetGeometry *constraint, *preferred;
+static XtGeometryResult
+PreferredSize(Widget widget, XtWidgetGeometry *constraint, XtWidgetGeometry *preferred)
 {
     BoxWidget w = (BoxWidget)widget;
     Dimension width /*, height */;
@@ -396,8 +399,8 @@ static XtGeometryResult PreferredSize(widget, constraint, preferred)
  *
  */
 
-static void Resize(w)
-    Widget	w;
+static void
+Resize(Widget w)
 {
     Dimension junk;
 
@@ -414,8 +417,8 @@ static void Resize(w)
  * TryNewLayout just says if it's possible, and doesn't actually move the kids
  */
 
-static Boolean TryNewLayout(bbw)
-    BoxWidget	bbw;
+static Boolean
+TryNewLayout(BoxWidget bbw)
 {
     Dimension 	preferred_width, preferred_height;
     Dimension	proposed_width, proposed_height;
@@ -505,11 +508,10 @@ static Boolean TryNewLayout(bbw)
  */
 
 /*ARGSUSED*/
-static XtGeometryResult GeometryManager(w, request, reply)
-    Widget		w;
-    XtWidgetGeometry	*request;
-    XtWidgetGeometry	*reply;	/* RETURN */
-
+static XtGeometryResult
+GeometryManager(Widget w,
+		XtWidgetGeometry *request,
+		XtWidgetGeometry *reply GCC_UNUSED)
 {
     Dimension	width, height, borderWidth;
     BoxWidget bbw;
@@ -569,15 +571,16 @@ static XtGeometryResult GeometryManager(w, request, reply)
     return (XtGeometryYes);
 }
 
-static void ChangeManaged(w)
-    Widget w;
+static void
+ChangeManaged(Widget w)
 {
     /* Reconfigure the box */
     (void) TryNewLayout((BoxWidget)w);
     Resize(w);
 }
 
-static void ClassInitialize()
+static void
+ClassInitialize(void)
 {
 #ifdef XPM_TILE    
     static XtConvertArgRec convertArg[] = {
@@ -600,17 +603,18 @@ static void ClassInitialize()
 }
 
 /* ARGSUSED */
-static void Initialize(request, new, args, num_args)
-    Widget request, new;
-    ArgList args;
-    Cardinal *num_args;
+static void
+Initialize(Widget request GCC_UNUSED,
+	   Widget new,
+	   ArgList args GCC_UNUSED,
+	   Cardinal *num_args GCC_UNUSED)
 {
     BoxWidget newbbw = (BoxWidget)new;
 
     newbbw->box.last_query_mode = CWWidth | CWHeight;
     newbbw->box.last_query_width = newbbw->box.last_query_height = 0;
-    newbbw->box.preferred_width = Max(newbbw->box.h_space, 1);
-    newbbw->box.preferred_height = Max(newbbw->box.v_space, 1);
+    newbbw->box.preferred_width = (Dimension) Max(newbbw->box.h_space, 1);
+    newbbw->box.preferred_height = (Dimension) Max(newbbw->box.v_space, 1);
 
     if (newbbw->core.width == 0)
         newbbw->core.width = newbbw->box.preferred_width;
@@ -620,10 +624,8 @@ static void Initialize(request, new, args, num_args)
 
 } /* Initialize */
 
-static void Realize(w, valueMask, attributes)
-    Widget w;
-    Mask *valueMask;
-    XSetWindowAttributes *attributes;
+static void
+Realize(Widget w, Mask *valueMask, XSetWindowAttributes *attributes)
 {
 #ifdef XPM_TILE
     BoxWidget bw = (BoxWidget)w;
@@ -643,10 +645,12 @@ static void Realize(w, valueMask, attributes)
 } /* Realize */
 
 /* ARGSUSED */
-static Boolean SetValues(current, request, new, args, num_args)
-    Widget current, request, new;
-    ArgList args;
-    Cardinal *num_args;
+static Boolean
+SetValues(Widget current GCC_UNUSED,
+	  Widget request GCC_UNUSED,
+	  Widget new GCC_UNUSED,
+	  ArgList args GCC_UNUSED,
+	  Cardinal *num_args GCC_UNUSED)
 {
    /* need to relayout if h_space or v_space change */
 
