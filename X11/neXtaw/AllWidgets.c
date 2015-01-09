@@ -1,11 +1,7 @@
-/* $XConsortium: AllWidgets.c,v 1.8 94/04/17 20:11:39 kaleb Exp $ */
-
-/*
- * MODIFIED FOR N*XTSTEP LOOK by Carlos A M dos Santos - 1999
-*/
-
 /*
 
+Copyright 2015 Thomas E. Dickey
+Copyright 1999 Carlos A M dos Santos
 Copyright (c) 1991, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -39,7 +35,7 @@ extern WidgetClass asciiSinkObjectClass;
 extern WidgetClass asciiSrcObjectClass;
 extern WidgetClass asciiTextWidgetClass;
 extern WidgetClass boxWidgetClass;
-extern WidgetClass clockWidgetClass;		/* Casantos, Jun 30 1999 */
+extern WidgetClass clockWidgetClass;	/* Casantos, Jun 30 1999 */
 extern WidgetClass commandWidgetClass;
 extern WidgetClass compositeWidgetClass;
 extern WidgetClass constraintWidgetClass;
@@ -79,52 +75,56 @@ extern WidgetClass vendorShellWidgetClass;
 extern WidgetClass viewportWidgetClass;
 extern WidgetClass wmShellWidgetClass;
 
-XmuWidgetNode XawWidgetArray[] = {
-{ "applicationShell", &applicationShellWidgetClass },
-{ "asciiSink", &asciiSinkObjectClass },
-{ "asciiSrc", &asciiSrcObjectClass },
-{ "asciiText", &asciiTextWidgetClass },
-{ "box", &boxWidgetClass },
-{ "clock", &clockWidgetClass },
-{ "command", &commandWidgetClass },
-{ "composite", &compositeWidgetClass },
-{ "constraint", &constraintWidgetClass },
-{ "core", &coreWidgetClass },
-{ "dialog", &dialogWidgetClass },
-{ "form", &formWidgetClass },
-{ "grip", &gripWidgetClass },
-{ "label", &labelWidgetClass },
-{ "layout", &layoutWidgetClass },
-{ "list", &listWidgetClass },
-{ "menuButton", &menuButtonWidgetClass },
-{ "object", &objectClass },
-{ "overrideShell", &overrideShellWidgetClass },
-{ "paned", &panedWidgetClass },
-{ "panner", &pannerWidgetClass },
-{ "porthole", &portholeWidgetClass },
-{ "rect", &rectObjClass },
-{ "repeater", &repeaterWidgetClass },
-{ "scrollbar", &scrollbarWidgetClass },
-{ "shell", &shellWidgetClass },
-{ "simpleMenu", &simpleMenuWidgetClass },
-{ "simple", &simpleWidgetClass },
-{ "smeBSB", &smeBSBObjectClass },
-{ "smeLine", &smeLineObjectClass },
-{ "smeThreeD", &smeThreeDObjectClass },
-{ "sme", &smeObjectClass },
-{ "stripChart", &stripChartWidgetClass },
-{ "textSink", &textSinkObjectClass },
-{ "textSrc", &textSrcObjectClass },
-{ "text", &textWidgetClass },
-{ "threeD", &threeDWidgetClass },
-{ "toggle", &toggleWidgetClass },
-{ "topLevelShell", &topLevelShellWidgetClass },
-{ "transientShell", &transientShellWidgetClass },
-{ "tree", &treeWidgetClass },
-{ "vendorShell", &vendorShellWidgetClass },
-{ "viewport", &viewportWidgetClass },
-{ "wmShell", &wmShellWidgetClass },
+#define EMPTY_OBJECT(name, class) { name, &class, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+#define OBJECT_CLASS(name) EMPTY_OBJECT(#name, name ## ObjectClass)
+#define WIDGET_CLASS(name) EMPTY_OBJECT(#name, name ## WidgetClass)
+
+XmuWidgetNode XawWidgetArray[] =
+{
+    WIDGET_CLASS(applicationShell),
+    OBJECT_CLASS(asciiSink),
+    OBJECT_CLASS(asciiSrc),
+    WIDGET_CLASS(asciiText),
+    WIDGET_CLASS(box),
+    WIDGET_CLASS(clock),
+    WIDGET_CLASS(command),
+    WIDGET_CLASS(composite),
+    WIDGET_CLASS(constraint),
+    WIDGET_CLASS(core),
+    WIDGET_CLASS(dialog),
+    WIDGET_CLASS(form),
+    WIDGET_CLASS(grip),
+    WIDGET_CLASS(label),
+    WIDGET_CLASS(layout),
+    WIDGET_CLASS(list),
+    WIDGET_CLASS(menuButton),
+    EMPTY_OBJECT("object", objectClass),
+    WIDGET_CLASS(overrideShell),
+    WIDGET_CLASS(paned),
+    WIDGET_CLASS(panner),
+    WIDGET_CLASS(porthole),
+    EMPTY_OBJECT("rect", rectObjClass),
+    WIDGET_CLASS(repeater),
+    WIDGET_CLASS(scrollbar),
+    WIDGET_CLASS(shell),
+    WIDGET_CLASS(simpleMenu),
+    WIDGET_CLASS(simple),
+    OBJECT_CLASS(smeBSB),
+    OBJECT_CLASS(smeLine),
+    OBJECT_CLASS(smeThreeD),
+    OBJECT_CLASS(sme),
+    WIDGET_CLASS(stripChart),
+    OBJECT_CLASS(textSink),
+    OBJECT_CLASS(textSrc),
+    WIDGET_CLASS(text),
+    WIDGET_CLASS(threeD),
+    WIDGET_CLASS(toggle),
+    WIDGET_CLASS(topLevelShell),
+    WIDGET_CLASS(transientShell),
+    WIDGET_CLASS(tree),
+    WIDGET_CLASS(vendorShell),
+    WIDGET_CLASS(viewport),
+    WIDGET_CLASS(wmShell),
 };
 
 int XawWidgetCount = XtNumber(XawWidgetArray);
-

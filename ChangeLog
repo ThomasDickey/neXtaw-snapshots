@@ -1,6 +1,7 @@
--- $XTermId: ChangeLog,v 1.9 2015/01/08 02:27:53 tom Exp $
+-- $XTermId: ChangeLog,v 1.10 2015/01/09 02:24:11 tom Exp $
 
-2015/01/07
+2015/01/08
+	+ convert to ANSI (4800 warnings -> 4000 with gcc-normal)
 	+ eliminate NeedFunctionPrototypes and NeedWideFunctionPrototypes
 	  ifdefs
 	+ use shared-library autoconf macros from cdk/dialog/ncurses.

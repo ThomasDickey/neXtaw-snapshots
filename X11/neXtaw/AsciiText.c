@@ -1,11 +1,7 @@
-/* $XConsortium: AsciiText.c,v 1.47 95/06/06 20:50:30 kaleb Exp $ */
-
-/*
- * MODIFIED FOR N*XTSTEP LOOK by Carlos A M dos Santos - 1999
-*/
-
 /*
 
+Copyright 2015 by Thomas E. Dickey
+Copyright 1999 by Carlos A M dos Santos
 Copyright (c) 1987, 1988, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -71,6 +67,8 @@ SOFTWARE.
  *          kit@expo.lcs.mit.edu
  */
 
+#include "config.h"
+
 #include <stdio.h>
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
@@ -86,7 +84,8 @@ SOFTWARE.
 
 #define TAB_COUNT 32
 
-static void Initialize(), Destroy();
+static void Initialize(Widget, Widget, ArgList, Cardinal *);
+static void Destroy(Widget);
 
 AsciiTextClassRec asciiTextClassRec = {
   { /* core fields */
@@ -119,7 +118,9 @@ AsciiTextClassRec asciiTextClassRec = {
     /* version          */	XtVersion,
     /* callback_private */      NULL,
     /* tm_table         */      XtInheritTranslations,
-    /* query_geometry	*/	XtInheritQueryGeometry
+    /* query_geometry	*/	XtInheritQueryGeometry,
+    /* display_accelerator */	0,
+    /* extension	*/	0
   },
   { /* Simple fields */
     /* change_sensitive	*/	XtInheritChangeSensitive
@@ -136,10 +137,7 @@ WidgetClass asciiTextWidgetClass = (WidgetClass)&asciiTextClassRec;
 
 
 static void
-Initialize(request, new, args, num_args)
-Widget request, new;
-ArgList args;
-Cardinal *num_args;
+Initialize(Widget request, Widget new, ArgList args, Cardinal *num_args)
 {
   AsciiWidget w = (AsciiWidget) new;
   int i;
@@ -172,7 +170,7 @@ Cardinal *num_args;
   }
 
   if (w->core.height == DEFAULT_TEXT_HEIGHT)
-    w->core.height = VMargins(w) + XawTextSinkMaxHeight(w->text.sink, 1);
+    w->core.height = (Dimension) (VMargins(w) + XawTextSinkMaxHeight(w->text.sink, 1));
 
   for (i=0, tab=0 ; i < TAB_COUNT ; i++) 
     tabs[i] = (tab += 8);
@@ -201,8 +199,7 @@ Cardinal *num_args;
 }
 
 static void 
-Destroy(w)
-Widget w;
+Destroy(Widget w)
 {
     /* Disconnect input method */
 

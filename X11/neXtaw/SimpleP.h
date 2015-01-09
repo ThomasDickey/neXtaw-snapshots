@@ -55,10 +55,10 @@ SOFTWARE.
 #include "Simple.h"
 
 typedef struct {
-    Boolean	(*change_sensitive)(/* widget */);
+    Boolean	(*change_sensitive)(Widget);
 } SimpleClassPart;
 
-#define XtInheritChangeSensitive ((Boolean (*)())_XtInherit)
+#define XtInheritChangeSensitive ((Boolean (*)(Widget))_XtInherit)
 
 typedef struct _SimpleClassRec {
     CoreClassPart	core_class;
