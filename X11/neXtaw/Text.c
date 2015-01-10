@@ -26,9 +26,9 @@ X CONSORTIUM BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
 AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Except as contained in this notice, the name of the X Consortium shall not be
-used in advertising or otherwise to promote the sale, use or other dealings
-in this Software without prior written authorization from the X Consortium.
+Except as contained in this notice, the name(s) of the above copyright holders
+shall not be used in advertising or otherwise to promote the sale, use or
+other dealings in this Software without prior written authorization. 
 
 
 Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
@@ -53,7 +53,7 @@ SOFTWARE.
 
 ******************************************************************/
 
-/* $XFree86: xc/lib/Xaw/Text.c,v 3.2.4.3 1998/10/04 13:36:29 hohndel Exp $ */
+#include "private.h"
 
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
@@ -3088,7 +3088,7 @@ TextWidget ctx;
     struct text_move * offsets = ctx->text.copy_area_offsets;
 
     if (offsets == NULL)
-	(void) printf( "Xaw Text widget %s: empty copy queue\n",
+	(void) printf( LIBRARY_NAME " Text widget %s: empty copy queue\n",
 		       XtName( (Widget) ctx ) );
     else {
 	ctx->text.copy_area_offsets = offsets->next;

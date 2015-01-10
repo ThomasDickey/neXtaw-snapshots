@@ -20,9 +20,9 @@ X CONSORTIUM BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
 AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Except as contained in this notice, the name of the X Consortium shall not be
-used in advertising or otherwise to promote the sale, use or other dealings
-in this Software without prior written authorization from the X Consortium.
+Except as contained in this notice, the name(s) of the above copyright holders
+shall not be used in advertising or otherwise to promote the sale, use or
+other dealings in this Software without prior written authorization. 
 
 */
 
@@ -58,7 +58,7 @@ in this Software without prior written authorization from the X Consortium.
  * MultiSrc.c - MultiSrc object. (For use with the text widget).
  */
 
-#include "config.h"
+#include "private.h"
 
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
@@ -1294,7 +1294,8 @@ FreeAllPieces(MultiSrcObject src)
     MultiPiece *next, *first = src->multi_src.first_piece;
 
     if (first->prev != NULL)
-	printf("Xaw MultiSrc Object: possible memory leak in FreeAllPieces().\n");
+	printf(LIBRARY_NAME
+	       " MultiSrc Object: possible memory leak in FreeAllPieces().\n");
 
     for (; first != NULL; first = next) {
 	next = first->next;

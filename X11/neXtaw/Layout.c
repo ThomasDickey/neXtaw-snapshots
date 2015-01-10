@@ -22,7 +22,7 @@
  * Author:  Keith Packard, MIT X Consortium
  */
 
-#include "config.h"
+#include "private.h"
 
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
