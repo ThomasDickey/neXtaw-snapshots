@@ -1,6 +1,7 @@
 /* 
  * Misc. functions for neXtaw 
  * 
+ * Copyright 2015 by Thomas E. Dickey
  * Copyright (c) 1996 Alfedo K. Kojima
  */
 
@@ -27,10 +28,11 @@
 #endif
 
 extern void
-neXtawDrawShadowBox (Widget, ThreeDWidget, Position, Position, Position, 
-		     Position, Boolean);
+  neXtawDrawShadowBox(Widget, ThreeDWidget, Position, Position, Position,
+		      Position, Boolean);
 
 extern Boolean
-neXtawcvtStringToTilePixmap ();
+  neXtawcvtStringToTilePixmap(Display *, XrmValue *, Cardinal *,
+			      XrmValuePtr, XrmValuePtr, XtPointer *);
 
 #endif

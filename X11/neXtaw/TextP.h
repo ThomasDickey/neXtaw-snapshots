@@ -155,8 +155,6 @@ struct SearchAndReplace {
     
 /* Private Text Definitions */
 
-typedef int (*ActionProc)();
-
 /* New fields for the Text widget class record */
 
 typedef struct {int empty;} TextClassPart;

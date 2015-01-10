@@ -27,6 +27,10 @@ in this Software without prior written authorization from the X Consortium.
 
 ********************************************************/
 
+#ifdef HAS_WCHAR_H
+#include <wchar.h>
+#endif
+
 #ifdef HAS_WCTYPE_H
 #include <wctype.h>
 #if !defined(__linux__)
@@ -43,10 +47,6 @@ in this Software without prior written authorization from the X Consortium.
 #define wcsncpy(d,s,l) wsncpy(d,s,l)
 #endif
 #endif 
-#endif
-
-#ifdef HAS_WCHAR_H
-#include <wchar.h>
 #endif
 
 #ifdef AIXV3

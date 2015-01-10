@@ -75,13 +75,13 @@ SOFTWARE.
  ************************************************************/
 
 typedef struct _TextSinkClassPart {
-  void (*DisplayText)();
-  void (*InsertCursor)();
+  void (*DisplayText)(Widget, Position, Position, XawTextPosition, XawTextPosition, Boolean);
+  void (*InsertCursor)(Widget, Position, Position, XawTextInsertState);
   void (*ClearToBackground)();
   void (*FindPosition)();
   void (*FindDistance)();
   void (*Resolve)();
-  int  (*MaxLines)();
+  int  (*MaxLines)(Widget, Dimension);
   int  (*MaxHeight)();
   void (*SetTabs)();		
   void (*GetCursorBounds)();	

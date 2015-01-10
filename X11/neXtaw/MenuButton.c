@@ -1,8 +1,7 @@
-/* $XConsortium: MenuButton.c,v 1.21 95/06/26 20:35:12 kaleb Exp $ */
-/* MODIFIED FOR N*XTSTEP LOOK	 				*/
-/* Modifications Copyright (c) 1996, 1997 by Alfredo Kojima	*/
-
 /*
+
+Copyright 2015 by Thomas E. Dickey
+Copyright (c) 1996, 1997 by Alfredo Kojima	
 Copyright (c) 1989, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,8 +27,6 @@ in this Software without prior written authorization from the X Consortium.
  *
  */
 
-/* $XFree86: xc/lib/Xaw/MenuButton.c,v 3.0.6.2 1998/05/20 05:06:17 dawes Exp $ */
-
 /***********************************************************************
  *
  * MenuButton Widget
@@ -49,6 +46,8 @@ in this Software without prior written authorization from the X Consortium.
  *          kit@expo.lcs.mit.edu
  */
 
+#include "config.h"
+
 #include <stdio.h>
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
@@ -61,19 +60,20 @@ in this Software without prior written authorization from the X Consortium.
 
 #include "XawAlloc.h"
 
-static void ClassInitialize(), Initialize();
-static void PopupMenu();
-static void Redisplay();
+static void ClassInitialize(void);
+static void Initialize(Widget, Widget, ArgList, Cardinal *);
+static void PopupMenu(Widget, XEvent *, String *, Cardinal *);
+static void Redisplay(Widget, XEvent *, Region);
 
 #define INDICATOR_SPACE 13
 
 #define superclass ((CommandWidgetClass)&commandClassRec)
 
-static char defaultTranslations[] = 
+static char defaultTranslations[] =
 /*"<EnterWindow>: highlight()\n\
  <LeaveWindow>: reset()\n\
  Any<BtnDown>:  reset() PopupMenu()";*/
- "Any<BtnDown>:  PopupMenu()";
+"Any<BtnDown>:  PopupMenu()";
 
 /****************************************************************
  *
@@ -84,76 +84,78 @@ static char defaultTranslations[] =
 /* Private Data */
 
 #define offset(field) XtOffsetOf(MenuButtonRec, field)
-static XtResource resources[] = {
-  {
-    XtNmenuName, XtCMenuName, XtRString, sizeof(String), 
-    offset(menu_button.menu_name), XtRString, (XtPointer)"menu"},
-      
-   {XtNmenuButtonStyle, XtCMenuButtonStyle, XtRMenuButtonStyle, 
-	 sizeof(XtMenuButtonStyle), offset(menu_button.menubutton_style), 
-	 XtRMenuButtonStyle, (XtPointer)XtMenuButtonSimple},
+static XtResource resources[] =
+{
+    {
+	XtNmenuName, XtCMenuName, XtRString, sizeof(String),
+	offset(menu_button.menu_name), XtRString, (XtPointer) "menu"},
+
+    {XtNmenuButtonStyle, XtCMenuButtonStyle, XtRMenuButtonStyle,
+     sizeof(XtMenuButtonStyle), offset(menu_button.menubutton_style),
+     XtRMenuButtonStyle, (XtPointer) XtMenuButtonSimple},
 };
 #undef offset
 
 static XtActionsRec actionsList[] =
 {
-  {"PopupMenu",	PopupMenu}
+    {"PopupMenu", PopupMenu}
 };
 
-MenuButtonClassRec menuButtonClassRec = {
-  {
-    (WidgetClass) superclass,		/* superclass		  */	
-    "MenuButton",			/* class_name		  */
-    sizeof(MenuButtonRec),       	/* size			  */
-    ClassInitialize,			/* class_initialize	  */
-    NULL,				/* class_part_initialize  */
-    FALSE,				/* class_inited		  */
-    Initialize,				/* initialize		  */
-    NULL,				/* initialize_hook	  */
-    XtInheritRealize,			/* realize		  */
-    actionsList,			/* actions		  */
-    XtNumber(actionsList),		/* num_actions		  */
-    resources,				/* resources		  */
-    XtNumber(resources),		/* resource_count	  */
-    NULLQUARK,				/* xrm_class		  */
-    FALSE,				/* compress_motion	  */
-    TRUE,				/* compress_exposure	  */
-    TRUE,				/* compress_enterleave    */
-    FALSE,				/* visible_interest	  */
-    NULL,				/* destroy		  */
-    XtInheritResize,			/* resize		  */
-    Redisplay,				/* expose		  */
-    NULL,				/* set_values		  */
-    NULL,				/* set_values_hook	  */
-    XtInheritSetValuesAlmost,		/* set_values_almost	  */
-    NULL,				/* get_values_hook	  */
-    NULL,				/* accept_focus		  */
-    XtVersion,				/* version		  */
-    NULL,				/* callback_private	  */
-    defaultTranslations,               	/* tm_table		  */
-    XtInheritQueryGeometry,		/* query_geometry	  */
-    XtInheritDisplayAccelerator,	/* display_accelerator	  */
-    NULL				/* extension		  */
-  },  /* CoreClass fields initialization */
-  {
-    XtInheritChangeSensitive		/* change_sensitive	  */ 
-  },  /* SimpleClass fields initialization */
-  {
-    XtInheritXaw3dShadowDraw           /* shadowdraw           */
-  },  /* ThreeDClass fields initialization */
-  {
-    0,                                     /* field not used    */
-  },  /* LabelClass fields initialization */
-  {
-    0,                                     /* field not used    */
-  },  /* CommandClass fields initialization */
-  {
-    0,                                     /* field not used    */
-  }  /* MenuButtonClass fields initialization */
+MenuButtonClassRec menuButtonClassRec =
+{
+    {
+	(WidgetClass) superclass,	/* superclass             */
+	"MenuButton",		/* class_name             */
+	sizeof(MenuButtonRec),	/* size                   */
+	ClassInitialize,	/* class_initialize       */
+	NULL,			/* class_part_initialize  */
+	FALSE,			/* class_inited           */
+	Initialize,		/* initialize             */
+	NULL,			/* initialize_hook        */
+	XtInheritRealize,	/* realize                */
+	actionsList,		/* actions                */
+	XtNumber(actionsList),	/* num_actions            */
+	resources,		/* resources              */
+	XtNumber(resources),	/* resource_count         */
+	NULLQUARK,		/* xrm_class              */
+	FALSE,			/* compress_motion        */
+	TRUE,			/* compress_exposure      */
+	TRUE,			/* compress_enterleave    */
+	FALSE,			/* visible_interest       */
+	NULL,			/* destroy                */
+	XtInheritResize,	/* resize                 */
+	Redisplay,		/* expose                 */
+	NULL,			/* set_values             */
+	NULL,			/* set_values_hook        */
+	XtInheritSetValuesAlmost,	/* set_values_almost      */
+	NULL,			/* get_values_hook        */
+	NULL,			/* accept_focus           */
+	XtVersion,		/* version                */
+	NULL,			/* callback_private       */
+	defaultTranslations,	/* tm_table               */
+	XtInheritQueryGeometry,	/* query_geometry         */
+	XtInheritDisplayAccelerator,	/* display_accelerator    */
+	NULL			/* extension              */
+    },				/* CoreClass fields initialization */
+    {
+	XtInheritChangeSensitive	/* change_sensitive       */
+    },				/* SimpleClass fields initialization */
+    {
+	XtInheritXaw3dShadowDraw	/* shadowdraw           */
+    },				/* ThreeDClass fields initialization */
+    {
+	0,			/* field not used    */
+    },				/* LabelClass fields initialization */
+    {
+	0,			/* field not used    */
+    },				/* CommandClass fields initialization */
+    {
+	0,			/* field not used    */
+    }				/* MenuButtonClass fields initialization */
 };
 
   /* for public consumption */
-WidgetClass menuButtonWidgetClass = (WidgetClass) &menuButtonClassRec;
+WidgetClass menuButtonWidgetClass = (WidgetClass) & menuButtonClassRec;
 
 /****************************************************************
  *
@@ -161,7 +163,7 @@ WidgetClass menuButtonWidgetClass = (WidgetClass) &menuButtonClassRec;
  *
  ****************************************************************/
 
-static XrmQuark	XtQMenuButtonSimple, XtQMenuButtonSelect, XtQMenuButtonAction;
+static XrmQuark XtQMenuButtonSimple, XtQMenuButtonSelect, XtQMenuButtonAction;
 
 #define	done(address, type) \
 	{ toVal->size = sizeof(type); \
@@ -170,17 +172,18 @@ static XrmQuark	XtQMenuButtonSimple, XtQMenuButtonSelect, XtQMenuButtonAction;
 	}
 
 /* ARGSUSED */
-static void _CvtStringToMenuButtonStyle(args, num_args, fromVal, toVal)
-    XrmValuePtr args;		/* unused */
-    Cardinal    *num_args;      /* unused */
-    XrmValuePtr fromVal;
-    XrmValuePtr toVal;
+static void
+_CvtStringToMenuButtonStyle(
+			       XrmValuePtr args GCC_UNUSED,
+			       Cardinal *num_args GCC_UNUSED,
+			       XrmValuePtr fromVal,
+			       XrmValuePtr toVal)
 {
     static XtMenuButtonStyle mbStyle;
     XrmQuark q;
     char lowerName[1000];
 
-    XmuCopyISOLatin1Lowered (lowerName, (char*)fromVal->addr);
+    XmuCopyISOLatin1Lowered(lowerName, (char *) fromVal->addr);
     q = XrmStringToQuark(lowerName);
     if (q == XtQMenuButtonSimple) {
 	mbStyle = XtMenuButtonSimple;
@@ -199,169 +202,171 @@ static void _CvtStringToMenuButtonStyle(args, num_args, fromVal, toVal)
     toVal->size = 0;
 }
 
-
-static void ClassInitialize()
+static void
+ClassInitialize(void)
 {
     XawInitializeWidgetSet();
     XtQMenuButtonSimple = XrmPermStringToQuark("simple");
     XtQMenuButtonAction = XrmPermStringToQuark("action");
     XtQMenuButtonSelect = XrmPermStringToQuark("select");
 
-    XtAddConverter( XtRString, XtRMenuButtonStyle, _CvtStringToMenuButtonStyle,
-		    (XtConvertArgList)NULL, 0 );
-    
-    XtRegisterGrabAction(PopupMenu, True, 
-			 (unsigned int)(ButtonPressMask | ButtonReleaseMask),
+    XtAddConverter(XtRString, XtRMenuButtonStyle, _CvtStringToMenuButtonStyle,
+		   (XtConvertArgList) NULL, 0);
+
+    XtRegisterGrabAction(PopupMenu, True,
+			 (unsigned int) (ButtonPressMask | ButtonReleaseMask),
 			 GrabModeAsync, GrabModeAsync);
 }
 
-
 /*ARGSUSED*/
-static void Initialize(request, new, args, num_args)
- Widget request, new;
- ArgList args;
- Cardinal *num_args;
+static void
+Initialize(
+	      Widget request GCC_UNUSED,
+	      Widget new,
+	      ArgList args GCC_UNUSED,
+	      Cardinal *num_args GCC_UNUSED)
 {
     MenuButtonWidget mbw = (MenuButtonWidget) new;
-    
-    if (mbw->menu_button.menubutton_style!=XtMenuButtonSimple) {
+
+    if (mbw->menu_button.menubutton_style != XtMenuButtonSimple) {
 	/* if we'll use an indicator */
-	XtResizeWidget(new, mbw->core.width + INDICATOR_SPACE, mbw->core.height,
-		       mbw->core.border_width);
+	XtResizeWidget(new,
+		       (Dimension) (mbw->core.width + INDICATOR_SPACE),
+		       (Dimension) mbw->core.height,
+		       (Dimension) mbw->core.border_width);
     }
 }
 
-
 /*ARGSUSED*/
 static void
-Redisplay(w, event, region)
-Widget w;
-XEvent *event;
-Region region;
+Redisplay(
+	     Widget w,
+	     XEvent *event,
+	     Region region)
 {
     MenuButtonWidget mbw = (MenuButtonWidget) w;
-    Dimension	s = mbw->threeD.shadow_width;
+    Dimension s = mbw->threeD.shadow_width;
     GC light2 = mbw->threeD.top_shadow_GC;
     GC light = mbw->threeD.top_half_shadow_GC;
-    GC dark2 = mbw->threeD.bot_shadow_GC;      
+    GC dark2 = mbw->threeD.bot_shadow_GC;
     GC dark = mbw->threeD.bot_half_shadow_GC;
     Display *dpy = XtDisplay(w);
     Window win = XtWindow(w);
     int x, y;
 
     x = w->core.width - INDICATOR_SPACE - s;
-    y = (w->core.height - 8)/2;
+    y = (w->core.height - 8) / 2;
 
     switch (mbw->menu_button.menubutton_style) {
-     case XtMenuButtonSelect:
+    case XtMenuButtonSelect:
 	mbw->label.label_width -= INDICATOR_SPACE;
 	(*superclass->core_class.expose) (w, event, region);
 	mbw->label.label_width += INDICATOR_SPACE;
-	
-	XFillRectangle(dpy, win, dark2, x+2, y+2, 9, 6);
-	XDrawLine(dpy, win, light, x, y, x+8, y);
-	XDrawLine(dpy, win, light, x, y, x, y+5);
-	XDrawLine(dpy, win, dark, x, y+5, x+8, y+5);
-	XDrawLine(dpy, win, dark, x+8, y, x+8, y+5);
-	
-	XFillRectangle(dpy, win, light2, x+1, y+1, 6, 3);
-	XDrawLine(dpy, win, dark2, x+1, y+4, x+7, y+4);
-	XDrawLine(dpy, win, dark2, x+7, y+1, x+7, y+4);
-	break;
-	
-     case XtMenuButtonAction:
-	mbw->label.label_width -= INDICATOR_SPACE;
-	(*superclass->core_class.expose) (w, event, region);
-	mbw->label.label_width += INDICATOR_SPACE;
-	
-	XDrawLine(dpy, win, dark2, x, y+1, x+3, y+6);
-	XDrawLine(dpy, win, light, x+7, y+1, x+4, y+7);
-	XDrawLine(dpy, win, dark, x, y, x+7, y);
+
+	XFillRectangle(dpy, win, dark2, x + 2, y + 2, 9, 6);
+	XDrawLine(dpy, win, light, x, y, x + 8, y);
+	XDrawLine(dpy, win, light, x, y, x, y + 5);
+	XDrawLine(dpy, win, dark, x, y + 5, x + 8, y + 5);
+	XDrawLine(dpy, win, dark, x + 8, y, x + 8, y + 5);
+
+	XFillRectangle(dpy, win, light2, x + 1, y + 1, 6, 3);
+	XDrawLine(dpy, win, dark2, x + 1, y + 4, x + 7, y + 4);
+	XDrawLine(dpy, win, dark2, x + 7, y + 1, x + 7, y + 4);
 	break;
 
-     default:
+    case XtMenuButtonAction:
 	mbw->label.label_width -= INDICATOR_SPACE;
 	(*superclass->core_class.expose) (w, event, region);
 	mbw->label.label_width += INDICATOR_SPACE;
-    }    
+
+	XDrawLine(dpy, win, dark2, x, y + 1, x + 3, y + 6);
+	XDrawLine(dpy, win, light, x + 7, y + 1, x + 4, y + 7);
+	XDrawLine(dpy, win, dark, x, y, x + 7, y);
+	break;
+
+    case XtMenuButtonSimple:
+    default:
+	mbw->label.label_width -= INDICATOR_SPACE;
+	(*superclass->core_class.expose) (w, event, region);
+	mbw->label.label_width += INDICATOR_SPACE;
+    }
 }
 
-    
 /* ARGSUSED */
 static void
-PopupMenu(w, event, params, num_params)
-Widget w;
-XEvent * event;
-String * params;
-Cardinal * num_params;
+PopupMenu(
+	     Widget w,
+	     XEvent *event GCC_UNUSED,
+	     String *params GCC_UNUSED,
+	     Cardinal *num_params GCC_UNUSED)
 {
-  MenuButtonWidget mbw = (MenuButtonWidget) w;
-  Widget menu = NULL, temp;
-  Arg arglist[2];
-  Cardinal num_args;
-  int menu_x, menu_y, menu_width, menu_height, button_height;
-  Position button_x, button_y;
+    MenuButtonWidget mbw = (MenuButtonWidget) w;
+    Widget menu = NULL, temp;
+    Arg arglist[2];
+    Cardinal num_args;
+    int menu_x, menu_y, menu_width, menu_height, button_height;
+    Position button_x, button_y;
 
-  temp = w;
-  while(temp != NULL) {
-    menu = XtNameToWidget(temp, mbw->menu_button.menu_name);
-    if (menu == NULL) 
-      temp = XtParent(temp);
-    else
-      break;
-  }
+    temp = w;
+    while (temp != NULL) {
+	menu = XtNameToWidget(temp, mbw->menu_button.menu_name);
+	if (menu == NULL)
+	    temp = XtParent(temp);
+	else
+	    break;
+    }
 
-  if (menu == NULL) {
-    char error_buf[BUFSIZ];
-    char *err1 = "MenuButton: Could not find menu widget named ";
-    char *perr;
-    int len;
+    if (menu == NULL) {
+	char error_buf[BUFSIZ];
+	char *err1 = "MenuButton: Could not find menu widget named ";
+	char *perr;
+	int len;
 
-    len = strlen(err1) + strlen(mbw->menu_button.menu_name) + 1 + 1;
-    perr = XtStackAlloc(len, error_buf);
-    if (perr == NULL) return;
-    sprintf(perr, "%s%s.", err1, mbw->menu_button.menu_name);
-    XtAppWarning(XtWidgetToApplicationContext(w), perr);
-    XtStackFree(perr, error_buf);
-    return;
-  }
-  if (!XtIsRealized(menu))
-      XtRealizeWidget(menu);
-  
-  menu_width = menu->core.width + 2 * menu->core.border_width;
-    /*
-  if (menu_width < mbw->core.width) {
-      menu_width = mbw->core.width - 2 * menu->core.border_width;
-  }
-     * */
-  button_height = w->core.height + 2 * w->core.border_width;
-  menu_height = menu->core.height + 2 * menu->core.border_width;
+	len = (int) strlen(err1)
+	    + (int) strlen(mbw->menu_button.menu_name)
+	    + 1 + 1;
+	perr = XtStackAlloc(len, error_buf);
+	if (perr == NULL)
+	    return;
+	sprintf(perr, "%s%s.", err1, mbw->menu_button.menu_name);
+	XtAppWarning(XtWidgetToApplicationContext(w), perr);
+	XtStackFree(perr, error_buf);
+	return;
+    }
+    if (!XtIsRealized(menu))
+	XtRealizeWidget(menu);
 
-  XtTranslateCoords(w, 0, 0, &button_x, &button_y);
-  menu_x = button_x;
-  menu_y = button_y + button_height;
+    menu_width = menu->core.width + 2 * menu->core.border_width;
 
-  if (menu_x >= 0) {
-    int scr_width = WidthOfScreen(XtScreen(menu));
-    if (menu_x + menu_width > scr_width)
-      menu_x = scr_width - menu_width;
-  }
-  if (menu_x < 0) 
-    menu_x = 0;
+    button_height = w->core.height + 2 * w->core.border_width;
+    menu_height = menu->core.height + 2 * menu->core.border_width;
 
-  if (menu_y >= 0) {
-    int scr_height = HeightOfScreen(XtScreen(menu));
-    if (menu_y + menu_height > scr_height)
-      menu_y = scr_height - menu_height;
-  }
-  if (menu_y < 0)
-    menu_y = 0;
+    XtTranslateCoords(w, 0, 0, &button_x, &button_y);
+    menu_x = button_x;
+    menu_y = button_y + button_height;
 
-  num_args = 0;
-  XtSetArg(arglist[num_args], XtNx, menu_x); num_args++;
-  XtSetArg(arglist[num_args], XtNy, menu_y); num_args++;
-  XtSetValues(menu, arglist, num_args);
+    if (menu_x >= 0) {
+	int scr_width = WidthOfScreen(XtScreen(menu));
+	if (menu_x + menu_width > scr_width)
+	    menu_x = scr_width - menu_width;
+    }
+    if (menu_x < 0)
+	menu_x = 0;
 
-  XtPopupSpringLoaded(menu);
+    if (menu_y >= 0) {
+	int scr_height = HeightOfScreen(XtScreen(menu));
+	if (menu_y + menu_height > scr_height)
+	    menu_y = scr_height - menu_height;
+    }
+    if (menu_y < 0)
+	menu_y = 0;
+
+    num_args = 0;
+    XtSetArg(arglist[num_args], XtNx, menu_x);
+    num_args++;
+    XtSetArg(arglist[num_args], XtNy, menu_y);
+    num_args++;
+    XtSetValues(menu, arglist, num_args);
+
+    XtPopupSpringLoaded(menu);
 }
-

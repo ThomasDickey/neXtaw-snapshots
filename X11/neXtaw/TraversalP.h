@@ -1,5 +1,5 @@
 /*
- * $Id: TraversalP.h,v 1.3 2015/01/08 02:18:33 tom Exp $
+ * $Id: TraversalP.h,v 1.4 2015/01/09 10:18:49 tom Exp $
  */
 
 /*
@@ -157,9 +157,5 @@ extern	void	XawFocusLeaveWindowAction(
     Cardinal *num_params
 );
 
-
-	/* internal only; called by XawInitializeWidgetSet: */
-
-extern	void	XawRegisterFocusConverter() ;
 
 #endif	/* XawTraversalP_h */

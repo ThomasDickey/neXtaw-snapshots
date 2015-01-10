@@ -386,7 +386,7 @@ static void ChangeManaged(widget)
 	    }
 	    GetGeometry( widget, child->core.width, child->core.height );
 	    (*((ViewportWidgetClass)w->core.widget_class)->form_class.layout)
-		( (FormWidget)w, w->core.width, w->core.height );
+		( w, w->core.width, w->core.height, FALSE );
 	    /* %%% do we need to hide this child from Form?  */
 	}
     }
