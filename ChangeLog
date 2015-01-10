@@ -1,7 +1,7 @@
--- $XTermId: ChangeLog,v 1.10 2015/01/09 02:24:11 tom Exp $
+-- $XTermId: ChangeLog,v 1.11 2015/01/10 02:05:25 tom Exp $
 
-2015/01/08
-	+ convert to ANSI (4800 warnings -> 4000 with gcc-normal)
+20150109
+	+ convert to ANSI (4800 warnings -> 3450 with gcc-normal)
 	+ eliminate NeedFunctionPrototypes and NeedWideFunctionPrototypes
 	  ifdefs
 	+ use shared-library autoconf macros from cdk/dialog/ncurses.
@@ -9,7 +9,7 @@
 	+ reformatted this file, to help with metrics-gathering.
 	+ updated config.guess, config.sub, install-sh
 
-2003/09/15
+20030915
 	> updates by Ulric Eriksson:
 	+ Toggle again: the check mark displayed in the wrong place
 	  when the widget wasn't its default height.
@@ -18,32 +18,32 @@
 	  style. That's really ugly because we're depending
 	  on how the widget is subclassed. But it works.
 
-2003/09/13
+20030913
 	> updates by Ulric Eriksson:
 	  The new highlighting code broke with the Toggle widget
 	  in radio or check style.
 
-2003/09/12
+20030912
 	> updates by Ulric Eriksson:
 	+ Fixed function prototypes in Toggle.c and fixed bugs
 	  caused by not having them in the first place.
 
-2003/09/03
+20030903
 	> updates by Ulric Eriksson:
 	+ Eliminated warnings caused by missing #includes.
 
-2003/09/02
+20030902
 	> updates by Ulric Eriksson:
 	+ Scrollbar: Added XtNarrowStyle resource to make arrows in the
 	  style of Windows ("win95") or NeXt ("next", default).
 	  UPDATE: This was later backed out.
 
-2003/09/02
+20030902
 	> updates by Ulric Eriksson:
 	+ Scrollbar: Made the bump on the thumb optional (resource
 	  XtNdrawBump, default True).
 
-2003/09/01
+20030901
 	> updates by Ulric Eriksson:
 	+ ThreeD: Added XtNbevel resource to make the bevel "solid"
 	  (Motif/Xaw3d-like) or "rounded" (neXtaw, default).
@@ -51,22 +51,22 @@
 	  is used by Scrollbar and SimpleMenu.
 	+ Added a 3D bevel to Text using a similar hack as in Xaw95.
 
-2003/08/31
+20030831
 	> updates by Ulric Eriksson:
 	+ Command, Repeater and Toggle: Draw a dotted rectangle around
 	  the highlighted widget. Reduced the distance the text shifts
 	  in a set widget to 1 pixel.
 
-2003/08/24
+20030824
 	> updates by Ulric Eriksson:
 	+ Added traversal code from Ed Falk's XawM. Note: KDE messes up
 	  translations for the Command widget. That is a bug in KDE.
 
-2003/08/23
+20030823
 	> updates by Ulric Eriksson:
 	+ Released 0.14.1.
 
-2003/08/23
+20030823
 	> patch from Alexey I Froloff <raorn@altlinux.ru>:
 	+ This patch adds shadow width to SimpleMenu widget's height
 	  (last Sme overlaps with bottom shadow) and fixes SmeBSB drawing
@@ -74,7 +74,7 @@
 	  FlipColors, "disabled" menu items were displayed as normal if
 	  .international is set to True).
 
-2003/02/27
+20030227
 	> updates by Ulric Eriksson:
 	+ Updated selection code in Text widget.
 	+ Removed support for cut buffers.
@@ -92,11 +92,11 @@
 	+ New configuration option --enable-obsolete-selections reverts
 	  to the old code.
 
-2003/02/04
+20030204
 	> updates by Ulric Eriksson:
 	  Check for the existence of widec.h (c/o Matthias Buelow).
 
-2003/01/15
+20030115
 	> updates by Ulric Eriksson:
 	+ Released 0.13.0.
 	> patches by Alexey I Froloff:
@@ -104,46 +104,46 @@
 	  look more flat).
 	+ Fixed thumb positioning for Button2 scrolling.
 
-2002/08/28
+20020828
 	> updates by Ulric Eriksson:
 	+ Added scrollwheel support and a fix for horizontal scrollbars.
 	+ Changed default beNiceToColormap to False.
 
-2002/03/14
+20020314
 	> updates by Ulric Eriksson:
 	+ Released 0.12.
 	> patch by Andreas Voegele:
 	+ modify acinclude.m4 to add -DNARROWPROTO only for systems that need
 	  it.
 
-2002/01/26
+20020126
 	> updates by Ulric Eriksson:
 	+ Released 0.11.
 	+ Added -DNARROWPROTO and a bunch of Makefile fixes by
 	  Andreas Voegele <voegelas@users.sourceforge.net>.
 
-2002/01/04
+20020104
 	> updates by Ulric Eriksson:
 	+ Added checks for wslen, wscpy and wsncpy in XawI18n.h.
 	+ Fixed neXtclock Makefile.am so it works with the new libtool.
 
-2001/12/20
+20011220
 	> updates by Ulric Eriksson:
 	+ Updated automake, autoconf and libtool.
 
-2001/12/13
+20011213
 	> updates by Ulric Eriksson:
 	+ Released 0.10.
 
-2001/12/12
+20011212
 	> updates by Ulric Eriksson:
 	+ Tested on Linux and Solaris.
 
-2001/12/11
+20011211
 	> updates by Ulric Eriksson:
 	+ Most (relevant) compiler warnings were fixed.
 
-2001/12/10
+20011210
 	> updates by Ulric Eriksson:
 	+ Converted to autoconf.
 	+ Directory structure was reorganised.

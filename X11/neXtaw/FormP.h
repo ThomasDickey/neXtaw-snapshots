@@ -1,7 +1,6 @@
-/* $XConsortium: FormP.h,v 1.22 94/04/17 20:12:09 kaleb Exp $ */
-
 /***********************************************************
 
+Copyright 2015 by Thomas E. Dickey
 Copyright (c) 1987, 1988, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -58,10 +57,10 @@ SOFTWARE.
 #define XtREdgeType "EdgeType"
 
 typedef enum {LayoutPending, LayoutInProgress, LayoutDone} LayoutState;
-#define XtInheritLayout ((Boolean (*)())_XtInherit)
+#define XtInheritLayout ((Boolean (*)(Widget, Dimension, Dimension, Boolean))_XtInherit)
 
 typedef struct {
-    Boolean	(*layout)(/* FormWidget, Dimension, Dimension */);
+    Boolean	(*layout)(Widget, Dimension, Dimension, Boolean);
 } FormClassPart;
 
 /*
