@@ -1,7 +1,6 @@
-/* $XConsortium: Simple.c,v 1.36 94/04/17 20:12:43 kaleb Exp $ */
-
 /***********************************************************
 
+Copyright 2015 by Thomas E. Dickey
 Copyright (c) 1987, 1988, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,10 +20,9 @@ X CONSORTIUM BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
 AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Except as contained in this notice, the name of the X Consortium shall not be
-used in advertising or otherwise to promote the sale, use or other dealings
-in this Software without prior written authorization from the X Consortium.
-
+Except as contained in this notice, the name(s) of the above copyright holders
+shall not be used in advertising or otherwise to promote the sale, use or
+other dealings in this Software without prior written authorization.
 
 Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
@@ -48,7 +46,7 @@ SOFTWARE.
 
 ******************************************************************/
 
-/* $XFree86: xc/lib/Xaw/Simple.c,v 1.1.1.1.12.2 1998/05/18 14:08:41 dawes Exp $ */
+#include "private.h"
 
 #include <stdio.h>
 #include <X11/IntrinsicP.h>
@@ -62,104 +60,113 @@ SOFTWARE.
 
 #define offset(field) XtOffsetOf(SimpleRec, simple.field)
 
-static XtResource resources[] = {
-  {XtNcursor, XtCCursor, XtRCursor, sizeof(Cursor),
+static XtResource resources[] =
+{
+    {XtNcursor, XtCCursor, XtRCursor, sizeof(Cursor),
      offset(cursor), XtRImmediate, (XtPointer) None},
-  {XtNinsensitiveBorder, XtCInsensitive, XtRPixmap, sizeof(Pixmap),
+    {XtNinsensitiveBorder, XtCInsensitive, XtRPixmap, sizeof(Pixmap),
      offset(insensitive_border), XtRImmediate, (XtPointer) NULL},
-  {XtNpointerColor, XtCForeground, XtRPixel, sizeof(Pixel),
+    {XtNpointerColor, XtCForeground, XtRPixel, sizeof(Pixel),
      offset(pointer_fg), XtRString, XtDefaultForeground},
-  {XtNpointerColorBackground, XtCBackground, XtRPixel, sizeof(Pixel),
+    {XtNpointerColorBackground, XtCBackground, XtRPixel, sizeof(Pixel),
      offset(pointer_bg), XtRString, XtDefaultBackground},
-  {XtNcursorName, XtCCursor, XtRString, sizeof(String),
+    {XtNcursorName, XtCCursor, XtRString, sizeof(String),
      offset(cursor_name), XtRString, NULL},
-  {XtNinternational, XtCInternational, XtRBoolean, sizeof(Boolean),
+    {XtNinternational, XtCInternational, XtRBoolean, sizeof(Boolean),
      offset(international), XtRImmediate, (XtPointer) FALSE},
 #undef offset
 };
 
-static XtActionsRec	actionsList[] = {
-  {"FocusNext", XawFocusNextAction},
-  {"FocusPrevious", XawFocusPreviousAction},
-  {"FocusHome", XawFocusHomeAction},
-  {"FocusEnd", XawFocusEndAction},
-  {"FocusNextGroup", XawFocusNextGroupAction},
-  {"FocusPreviousGroup", XawFocusPreviousGroupAction},
-  {"FocusHomeGroup", XawFocusHomeGroupAction},
-  {"FocusEndGroup", XawFocusEndGroupAction},
-  {"FocusTake", XawFocusTakeAction},
-  {"FocusEnterWindow", XawFocusEnterWindowAction},
-  {"FocusLeaveWindow", XawFocusLeaveWindowAction}
-};
-
-static void ClassPartInitialize(), ClassInitialize(),Realize(),ConvertCursor();
-static Boolean SetValues(), ChangeSensitive();
-
-SimpleClassRec simpleClassRec = {
-  { /* core fields */
-    /* superclass		*/	(WidgetClass) &widgetClassRec,
-    /* class_name		*/	"Simple",
-    /* widget_size		*/	sizeof(SimpleRec),
-    /* class_initialize		*/	ClassInitialize,
-    /* class_part_initialize	*/	ClassPartInitialize,
-    /* class_inited		*/	FALSE,
-    /* initialize		*/	NULL,
-    /* initialize_hook		*/	NULL,
-    /* realize			*/	Realize,
-    /* actions			*/	actionsList,
-    /* num_actions		*/	XtNumber(actionsList),
-    /* resources		*/	resources,
-    /* num_resources		*/	XtNumber(resources),
-    /* xrm_class		*/	NULLQUARK,
-    /* compress_motion		*/	TRUE,
-    /* compress_exposure	*/	TRUE,
-    /* compress_enterleave	*/	TRUE,
-    /* visible_interest		*/	FALSE,
-    /* destroy			*/	NULL,
-    /* resize			*/	NULL,
-    /* expose			*/	NULL,
-    /* set_values		*/	SetValues,
-    /* set_values_hook		*/	NULL,
-    /* set_values_almost	*/	XtInheritSetValuesAlmost,
-    /* get_values_hook		*/	NULL,
-    /* accept_focus		*/	NULL,
-    /* version			*/	XtVersion,
-    /* callback_private		*/	NULL,
-    /* tm_table			*/	NULL,
-    /* query_geometry		*/	XtInheritQueryGeometry,
-    /* display_accelerator	*/	XtInheritDisplayAccelerator,
-    /* extension		*/	NULL
-  },
-  { /* simple fields */
-    /* change_sensitive		*/	ChangeSensitive
-  }
-};
-
-WidgetClass simpleWidgetClass = (WidgetClass)&simpleClassRec;
-
-static void ClassInitialize()
+static XtActionsRec actionsList[] =
 {
-    static XtConvertArgRec convertArg[] = {
-        {XtWidgetBaseOffset, (XtPointer) XtOffsetOf(WidgetRec, core.screen),
-	     sizeof(Screen *)},
-        {XtResourceString, (XtPointer) XtNpointerColor, sizeof(Pixel)},
-        {XtResourceString, (XtPointer) XtNpointerColorBackground,
-	     sizeof(Pixel)},
-        {XtWidgetBaseOffset, (XtPointer) XtOffsetOf(WidgetRec, core.colormap),
-	     sizeof(Colormap)}
+    {"FocusNext", XawFocusNextAction},
+    {"FocusPrevious", XawFocusPreviousAction},
+    {"FocusHome", XawFocusHomeAction},
+    {"FocusEnd", XawFocusEndAction},
+    {"FocusNextGroup", XawFocusNextGroupAction},
+    {"FocusPreviousGroup", XawFocusPreviousGroupAction},
+    {"FocusHomeGroup", XawFocusHomeGroupAction},
+    {"FocusEndGroup", XawFocusEndGroupAction},
+    {"FocusTake", XawFocusTakeAction},
+    {"FocusEnterWindow", XawFocusEnterWindowAction},
+    {"FocusLeaveWindow", XawFocusLeaveWindowAction}
+};
+
+static void ClassPartInitialize(WidgetClass);
+static void ClassInitialize(void);
+static void Realize(Widget, Mask *, XSetWindowAttributes *);
+static void ConvertCursor(Widget);
+static Boolean SetValues(Widget, Widget, Widget, ArgList, Cardinal *);
+static Boolean ChangeSensitive(Widget);
+
+SimpleClassRec simpleClassRec =
+{
+    {				/* core fields */
+    /* superclass               */ (WidgetClass) & widgetClassRec,
+    /* class_name               */ "Simple",
+    /* widget_size              */ sizeof(SimpleRec),
+    /* class_initialize         */ ClassInitialize,
+    /* class_part_initialize    */ ClassPartInitialize,
+    /* class_inited             */ FALSE,
+    /* initialize               */ NULL,
+    /* initialize_hook          */ NULL,
+    /* realize                  */ Realize,
+    /* actions                  */ actionsList,
+    /* num_actions              */ XtNumber(actionsList),
+    /* resources                */ resources,
+    /* num_resources            */ XtNumber(resources),
+    /* xrm_class                */ NULLQUARK,
+    /* compress_motion          */ TRUE,
+    /* compress_exposure        */ TRUE,
+    /* compress_enterleave      */ TRUE,
+    /* visible_interest         */ FALSE,
+    /* destroy                  */ NULL,
+    /* resize                   */ NULL,
+    /* expose                   */ NULL,
+    /* set_values               */ SetValues,
+    /* set_values_hook          */ NULL,
+    /* set_values_almost        */ XtInheritSetValuesAlmost,
+    /* get_values_hook          */ NULL,
+    /* accept_focus             */ NULL,
+    /* version                  */ XtVersion,
+    /* callback_private         */ NULL,
+    /* tm_table                 */ NULL,
+    /* query_geometry           */ XtInheritQueryGeometry,
+    /* display_accelerator      */ XtInheritDisplayAccelerator,
+    /* extension                */ NULL
+    },
+    {				/* simple fields */
+    /* change_sensitive         */ ChangeSensitive
+    }
+};
+
+WidgetClass simpleWidgetClass = (WidgetClass) & simpleClassRec;
+
+static void
+ClassInitialize(void)
+{
+    static XtConvertArgRec convertArg[] =
+    {
+	{XtWidgetBaseOffset, (XtPointer) XtOffsetOf(WidgetRec, core.screen),
+	 sizeof(Screen *)},
+	{XtResourceString, (XtPointer) XtNpointerColor, sizeof(Pixel)},
+	{XtResourceString, (XtPointer) XtNpointerColorBackground,
+	 sizeof(Pixel)},
+	{XtWidgetBaseOffset, (XtPointer) XtOffsetOf(WidgetRec, core.colormap),
+	 sizeof(Colormap)}
     };
     XawInitializeWidgetSet();
-    XtSetTypeConverter( XtRString, XtRColorCursor, XmuCvtStringToColorCursor,
-		       convertArg, XtNumber(convertArg), 
-		       XtCacheByDisplay, (XtDestructor)NULL);
+    XtSetTypeConverter(XtRString, XtRColorCursor, XmuCvtStringToColorCursor,
+		       convertArg, XtNumber(convertArg),
+		       XtCacheByDisplay, (XtDestructor) NULL);
 }
 
-static void ClassPartInitialize(class)
-    WidgetClass class;
+static void
+ClassPartInitialize(WidgetClass class)
 {
-    SimpleWidgetClass c     = (SimpleWidgetClass) class;
+    SimpleWidgetClass c = (SimpleWidgetClass) class;
     SimpleWidgetClass super = (SimpleWidgetClass)
-      c->core_class.superclass;
+    c->core_class.superclass;
 
     if (c->simple_class.change_sensitive == NULL) {
 	char buf[BUFSIZ];
@@ -167,7 +174,7 @@ static void ClassPartInitialize(class)
 	char *msg1 = " Widget: The Simple Widget class method 'change_sensitive' is undefined.\nA function must be defined or inherited.";
 	int len;
 
-	len = strlen(msg1) + strlen(c->core_class.class_name) + 1;
+	len = (int) (strlen(msg1) + strlen(c->core_class.class_name) + 1);
 	pbuf = XtStackAlloc(len, buf);
 	if (pbuf != NULL) {
 	    sprintf(pbuf, "%s%s", c->core_class.class_name, msg1);
@@ -181,24 +188,25 @@ static void ClassPartInitialize(class)
 	c->simple_class.change_sensitive = super->simple_class.change_sensitive;
 }
 
-static void Realize(w, valueMask, attributes)
-    Widget w;
-    Mask *valueMask;
-    XSetWindowAttributes *attributes;
+static void
+Realize(
+	   Widget w,
+	   Mask * valueMask,
+	   XSetWindowAttributes * attributes)
 {
     Pixmap border_pixmap = 0;
     if (!XtIsSensitive(w)) {
 	/* change border to gray; have to remember the old one,
 	 * so XtDestroyWidget deletes the proper one */
-	if (((SimpleWidget)w)->simple.insensitive_border == None)
-	    ((SimpleWidget)w)->simple.insensitive_border =
+	if (((SimpleWidget) w)->simple.insensitive_border == None)
+	    ((SimpleWidget) w)->simple.insensitive_border =
 		XmuCreateStippledPixmap(XtScreen(w),
-					w->core.border_pixel, 
+					w->core.border_pixel,
 					w->core.background_pixel,
 					w->core.depth);
-        border_pixmap = w->core.border_pixmap;
+	border_pixmap = w->core.border_pixmap;
 	attributes->border_pixmap =
-	  w->core.border_pixmap = ((SimpleWidget)w)->simple.insensitive_border;
+	    w->core.border_pixmap = ((SimpleWidget) w)->simple.insensitive_border;
 
 	*valueMask |= CWBorderPixmap;
 	*valueMask &= ~CWBorderPixel;
@@ -206,11 +214,11 @@ static void Realize(w, valueMask, attributes)
 
     ConvertCursor(w);
 
-    if ((attributes->cursor = ((SimpleWidget)w)->simple.cursor) != None)
+    if ((attributes->cursor = ((SimpleWidget) w)->simple.cursor) != None)
 	*valueMask |= CWCursor;
 
-    XtCreateWindow( w, (unsigned int)InputOutput, (Visual *)CopyFromParent,
-		    *valueMask, attributes );
+    XtCreateWindow(w, (unsigned int) InputOutput, (Visual *) CopyFromParent,
+		   *valueMask, attributes);
     if (!XtIsSensitive(w))
 	w->core.border_pixmap = border_pixmap;
 }
@@ -222,95 +230,94 @@ static void Realize(w, valueMask, attributes)
  */
 
 static void
-ConvertCursor(w)
-Widget w;
+ConvertCursor(Widget w)
 {
     SimpleWidget simple = (SimpleWidget) w;
     XrmValue from, to;
     Cursor cursor;
-   
+
     if (simple->simple.cursor_name == NULL)
 	return;
 
     from.addr = (XPointer) simple->simple.cursor_name;
-    from.size = strlen((char *) from.addr) + 1;
+    from.size = (unsigned) strlen((char *) from.addr) + 1;
 
     to.size = sizeof(Cursor);
-    to.addr = (XPointer) &cursor;
+    to.addr = (XPointer) & cursor;
 
     if (XtConvertAndStore(w, XtRString, &from, XtRColorCursor, &to)) {
-	if ( cursor !=  None) 
+	if (cursor != None)
 	    simple->simple.cursor = cursor;
-    } 
-    else {
+    } else {
 	XtAppErrorMsg(XtWidgetToApplicationContext(w),
-		      "convertFailed","ConvertCursor","XawError",
+		      "convertFailed", "ConvertCursor", "XawError",
 		      "Simple: ConvertCursor failed.",
-		      (String *)NULL, (Cardinal *)NULL);
+		      (String *) NULL, (Cardinal *) NULL);
     }
 }
 
-
 /* ARGSUSED */
-static Boolean SetValues(current, request, new, args, num_args)
-    Widget current, request, new;
-    ArgList args;
-    Cardinal *num_args;
+static Boolean
+SetValues(
+	     Widget current,
+	     Widget request GCC_UNUSED,
+	     Widget new,
+	     ArgList args GCC_UNUSED,
+	     Cardinal *num_args GCC_UNUSED)
 {
     SimpleWidget s_old = (SimpleWidget) current;
     SimpleWidget s_new = (SimpleWidget) new;
     Boolean new_cursor = FALSE;
 
-    /* this disables user changes after creation*/
+    /* this disables user changes after creation */
     s_new->simple.international = s_old->simple.international;
 
-    if ( XtIsSensitive(current) != XtIsSensitive(new) )
-	(*((SimpleWidgetClass)XtClass(new))->
-	     simple_class.change_sensitive) ( new );
+    if (XtIsSensitive(current) != XtIsSensitive(new))
+	(*((SimpleWidgetClass) XtClass(new))->
+	 simple_class.change_sensitive) (new);
 
     if (s_old->simple.cursor != s_new->simple.cursor) {
 	new_cursor = TRUE;
     }
-	
+
 /*
  * We are not handling the string cursor_name correctly here.
  */
 
-    if ( (s_old->simple.pointer_fg != s_new->simple.pointer_fg) ||
+    if ((s_old->simple.pointer_fg != s_new->simple.pointer_fg) ||
 	(s_old->simple.pointer_bg != s_new->simple.pointer_bg) ||
-	(s_old->simple.cursor_name != s_new->simple.cursor_name) ) {
+	(s_old->simple.cursor_name != s_new->simple.cursor_name)) {
 	ConvertCursor(new);
 	new_cursor = TRUE;
     }
 
     if (new_cursor && XtIsRealized(new))
-        XDefineCursor(XtDisplay(new), XtWindow(new), s_new->simple.cursor);
+	XDefineCursor(XtDisplay(new), XtWindow(new), s_new->simple.cursor);
 
-    return False;   
+    return False;
 }
 
-
-static Boolean ChangeSensitive(w)
-    Widget w;
+static Boolean
+ChangeSensitive(Widget w)
 {
     if (XtIsRealized(w)) {
 	if (XtIsSensitive(w))
 	    if (w->core.border_pixmap != XtUnspecifiedPixmap)
-		XSetWindowBorderPixmap( XtDisplay(w), XtWindow(w),
-				        w->core.border_pixmap );
+		XSetWindowBorderPixmap(XtDisplay(w), XtWindow(w),
+				       w->core.border_pixmap);
 	    else
-		XSetWindowBorder( XtDisplay(w), XtWindow(w), 
-				  w->core.border_pixel );
+		XSetWindowBorder(XtDisplay(w), XtWindow(w),
+				 w->core.border_pixel);
 	else {
-	    if (((SimpleWidget)w)->simple.insensitive_border == None)
-		((SimpleWidget)w)->simple.insensitive_border =
+	    if (((SimpleWidget) w)->simple.insensitive_border == None)
+		((SimpleWidget) w)->simple.insensitive_border =
 		    XmuCreateStippledPixmap(XtScreen(w),
-					    w->core.border_pixel, 
+					    w->core.border_pixel,
 					    w->core.background_pixel,
 					    w->core.depth);
-	    XSetWindowBorderPixmap( XtDisplay(w), XtWindow(w),
-				    ((SimpleWidget)w)->
-				        simple.insensitive_border );
+	    XSetWindowBorderPixmap(XtDisplay(w), XtWindow(w),
+				   ((SimpleWidget) w)->
+				   simple.insensitive_border);
 	}
     }
     return False;
