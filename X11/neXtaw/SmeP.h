@@ -1,6 +1,5 @@
 /*
- * $XConsortium: SmeP.h,v 1.6 94/04/17 20:12:54 kaleb Exp $
- *
+Copyright 2015 by Thomas E. Dickey
 Copyright (c) 1989, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -29,12 +28,12 @@ in this Software without prior written authorization from the X Consortium.
  * SmeP.h - Private Header file for Sme object.
  *
  * This is the private header file for the Athena Sme object.
- * This object is intended to be used with the simple menu widget.  
+ * This object is intended to be used with the simple menu widget.
  *
  * Date:    April 3, 1989
  *
  * By:      Chris D. Peterson
- *          MIT X Consortium 
+ *          MIT X Consortium
  *          kit@expo.lcs.mit.edu
  */
 
@@ -56,16 +55,16 @@ in this Software without prior written authorization from the X Consortium.
  ************************************************************/
 
 typedef struct _SmeClassPart {
-  void (*highlight)();
-  void (*unhighlight)();
-  void (*notify)();	
-  XtPointer extension;
+    void (*highlight) (Widget);
+    void (*unhighlight) (Widget);
+    void (*notify) (Widget);
+    XtPointer extension;
 } SmeClassPart;
 
 /* Full class record declaration */
 typedef struct _SmeClassRec {
-    RectObjClassPart    rect_class;
-    SmeClassPart	sme_class;
+    RectObjClassPart rect_class;
+    SmeClassPart sme_class;
 } SmeClassRec;
 
 extern SmeClassRec smeClassRec;
@@ -74,7 +73,7 @@ extern SmeClassRec smeClassRec;
 typedef struct {
     /* resources */
     XtCallbackList callbacks;	/* The callback list */
-    Boolean     international;
+    Boolean international;
 
 } SmePart;
 
@@ -85,9 +84,9 @@ typedef struct {
  ****************************************************************/
 
 typedef struct _SmeRec {
-  ObjectPart     object;
-  RectObjPart    rectangle;
-  SmePart	 sme;
+    ObjectPart object;
+    RectObjPart rectangle;
+    SmePart sme;
 } SmeRec;
 
 /************************************************************
@@ -96,7 +95,7 @@ typedef struct _SmeRec {
  *
  ************************************************************/
 
-typedef void (*_XawEntryVoidFunc)();
+typedef void (*_XawEntryVoidFunc) ();
 
 #define XtInheritHighlight   ((_XawEntryVoidFunc) _XtInherit)
 #define XtInheritUnhighlight XtInheritHighlight
