@@ -275,6 +275,20 @@ extern void _XawTextClearAndCenterDisplay(
 		TextWidget	/* ctx */
 );
 
+extern void _XawTextDoReplaceAction(
+		Widget		/* w */,
+		XEvent *	/* event */,
+		String *	/* params */,
+		Cardinal *	/* num_params */
+);
+
+extern void _XawTextDoSearchAction(
+		Widget		/* w */,
+		XEvent *	/* event */,
+		String *	/* params */,
+		Cardinal *	/* num_params */
+);
+
 extern void _XawTextExecuteUpdate(
 		TextWidget	/* ctx */
 );
@@ -291,10 +305,31 @@ extern char *_XawTextGetText(
 		XawTextPosition	/* right */
 );
 
+extern void _XawTextInsertFileAction(
+		Widget		/* w */,
+		XEvent *	/* event */,
+		String *	/* params */,
+		Cardinal *	/* num_params */
+);
+
+extern void _XawTextInsertFile(
+		Widget		/* w */,
+		XEvent *	/* event */,
+		String *	/* params */,
+		Cardinal *	/* num_params */
+);
+
 extern void _XawTextNeedsUpdating(
 		TextWidget 	/* ctx */ ,
 		XawTextPosition /* left */ ,
 		XawTextPosition	/* right */
+);
+
+extern void _XawTextPopdownSearchAction(
+		Widget		/* w */,
+		XEvent *	/* event */,
+		String *	/* params */,
+		Cardinal *	/* num_params */
 );
 
 extern void _XawTextPosToXY(
@@ -304,10 +339,28 @@ extern void _XawTextPosToXY(
 		Position *	/*y */
 );
 
+extern void _XawTextPrepareToUpdate(
+		TextWidget	/* ctx */
+);
+
+extern int _XawTextReplace(
+		TextWidget 	/* ctx */ ,
+		XawTextPosition /* pos1 */ ,
+		XawTextPosition /* pos2 */ ,
+		XawTextBlock *	/* text */
+);
+
 extern void _XawTextSaltAwaySelection(
 		TextWidget	/*ctx */ ,
 		Atom *		/*selections */ ,
 		int		/*num_atoms */
+);
+
+extern void _XawTextSearch(
+		Widget		/* w */,
+		XEvent *	/* event */,
+		String *	/* params */,
+		Cardinal *	/* num_params */
 );
 
 extern Atom *_XawTextSelectionList(
@@ -320,23 +373,19 @@ extern void _XawTextSetScrollBars(
 		TextWidget	/* ctx */
 );
 
+extern void _XawTextSetField(
+		Widget		/* w */,
+		XEvent *	/* event */,
+		String *	/* params */,
+		Cardinal *	/* num_params */
+);
+
 extern void _XawTextSetSelection(
 		TextWidget 	/* ctx */ ,
 		XawTextPosition /* l */ ,
 		XawTextPosition /* r */ ,
 		String * 	/* list */ ,
 		Cardinal	/* nelems */
-);
-
-extern void _XawTextPrepareToUpdate(
-		TextWidget	/* ctx */
-);
-
-extern int _XawTextReplace(
-		TextWidget 	/* ctx */ ,
-		XawTextPosition /* pos1 */ ,
-		XawTextPosition /* pos2 */ ,
-		XawTextBlock *	/* text */
 );
 
 extern void _XawTextShowPosition(
