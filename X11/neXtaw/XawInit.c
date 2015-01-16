@@ -1,6 +1,5 @@
 /*
- * $XConsortium: XawInit.c,v 1.3 94/04/17 20:13:32 jim Exp $
- *
+
 Copyright (c) 1989  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -34,16 +33,19 @@ in this Software without prior written authorization from the X Consortium.
  * used as the class init proc).
  */
 
+#include "private.h"
+
 #include <X11/Intrinsic.h>
 #include <X11/Vendor.h>
 #include "XawInit.h"
 
-void XawInitializeWidgetSet ()
+void
+XawInitializeWidgetSet(void)
 {
     static int firsttime = 1;
 
     if (firsttime) {
 	firsttime = 0;
-	XtInitializeWidgetClass (vendorShellWidgetClass);
+	XtInitializeWidgetClass(vendorShellWidgetClass);
     }
 }

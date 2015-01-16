@@ -75,7 +75,7 @@ static void SetTabs(Widget , int , short *);
 
 static void DisplayText(Widget, Position, Position, XawTextPosition, XawTextPosition, Boolean);
 static void InsertCursor(Widget, Position, Position, XawTextInsertState);
-static void FindPosition(Widget, XawTextPosition, int, int, int, XawTextPosition *, int *, int *);
+static void FindPosition(Widget, XawTextPosition, int, int, Boolean, XawTextPosition *, int *, int *);
 static void FindDistance(Widget, XawTextPosition, int, XawTextPosition, int *, XawTextPosition *, int *);
 static void Resolve(Widget, XawTextPosition, int, int, XawTextPosition *, XawTextPosition *);
 static void GetCursorBounds(Widget, XRectangle *);
@@ -282,12 +282,12 @@ DisplayText(
     if (!sink->ascii_sink.echo)
 	return;
 
-    y += sink->ascii_sink.font->ascent;
+    y = (Position) (y + sink->ascii_sink.font->ascent);
     for (j = 0; pos1 < pos2;) {
 	pos1 = XawTextSourceRead(source, pos1, &blk, (int) (pos2 - pos1));
 	for (k = 0; k < blk.length; k++) {
 	    if (j >= BUFSIZ) {	/* buffer full, dump the text. */
-		x += PaintText(w, gc, x, y, buf, j);
+		x = (Position) (x + PaintText(w, gc, x, y, buf, j));
 		j = 0;
 	    }
 	    buf[j] = (unsigned char) blk.ptr[k];
@@ -298,10 +298,11 @@ DisplayText(
 		Position temp = 0;
 		Dimension width;
 
-		if ((j != 0) && ((temp = PaintText(w, gc, x, y, buf, j)) == 0))
+		if ((j != 0) && ((temp = (Position) PaintText(w, gc, x, y,
+							      buf, j)) == 0))
 		    return;
 
-		x += temp;
+		x = (Position) (x + temp);
 		width = (Dimension) CharWidth(w, x, (unsigned char) '\t');
 		XFillRectangle(XtDisplayOfObject(w), XtWindowOfObject(w),
 			       invgc, (int) x,
@@ -309,7 +310,7 @@ DisplayText(
 			       (unsigned int) width,
 			       (unsigned int) (sink->ascii_sink.font->ascent +
 					       sink->ascii_sink.font->descent));
-		x += width;
+		x = (Position) (x + width);
 		j = -1;
 	    } else if (buf[j] < (unsigned char) ' ') {
 		if (sink->ascii_sink.display_nonprinting) {
@@ -426,8 +427,8 @@ FindPosition(
 		XawTextPosition fromPos,	/* Starting position. */
 		int fromx,	/* Horizontal location of starting position. */
 		int width,	/* Desired width. */
-		int stopAtWordBreak,	/* Whether the resulting position should be at
-					   a word break. */
+		Boolean stopAtWordBreak,	/* Whether the resulting position should be at
+						   a word break. */
 		XawTextPosition * resPos,	/* Resulting position. */
 		int *resWidth,	/* Actual width used. */
 		int *resHeight)	/* Height required. */

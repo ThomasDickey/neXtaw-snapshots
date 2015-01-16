@@ -1,9 +1,6 @@
-/*
-* $XConsortium: TextSinkP.h,v 1.6 94/04/17 20:13:13 kaleb Exp $
-*/
-
 /***********************************************************
 
+Copyright 2015 by Thomas E. Dickey
 Copyright (c) 1987, 1988, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,18 +24,17 @@ Except as contained in this notice, the name of the X Consortium shall not be
 used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from the X Consortium.
 
-
 Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the name of Digital not be
 used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  
+software without specific, written prior permission.
 
 DIGITAL DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
 ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -50,13 +46,14 @@ SOFTWARE.
 
 ******************************************************************/
 
-/* 
+/*
  * TextSinkP.h - Private definitions for TextSink object
- * 
+ *
  */
 
 #ifndef _XawTextSinkP_h
 #define _XawTextSinkP_h
+/* *INDENT-OFF* */
 
 /***********************************************************************
  *
@@ -77,14 +74,14 @@ SOFTWARE.
 typedef struct _TextSinkClassPart {
   void (*DisplayText)(Widget, Position, Position, XawTextPosition, XawTextPosition, Boolean);
   void (*InsertCursor)(Widget, Position, Position, XawTextInsertState);
-  void (*ClearToBackground)();
-  void (*FindPosition)();
-  void (*FindDistance)();
-  void (*Resolve)();
+  void (*ClearToBackground)(Widget, Position, Position, Dimension, Dimension);
+  void (*FindPosition)(Widget, XawTextPosition, int, int, Boolean, XawTextPosition *, int *, int *);
+  void (*FindDistance)(Widget, XawTextPosition, int, XawTextPosition, int *, XawTextPosition *, int *);
+  void (*Resolve)(Widget, XawTextPosition, int, int, XawTextPosition *, XawTextPosition *);
   int  (*MaxLines)(Widget, Dimension);
-  int  (*MaxHeight)();
-  void (*SetTabs)();		
-  void (*GetCursorBounds)();	
+  int  (*MaxHeight)(Widget, int);
+  void (*SetTabs)(Widget, int, short *);
+  void (*GetCursorBounds)(Widget, XRectangle *);
 } TextSinkClassPart;
 
 /* Full class record declaration */
@@ -125,18 +122,17 @@ typedef struct _TextSinkRec {
  *
  ************************************************************/
 
-typedef int (*_XawSinkIntFunc)();
-typedef void (*_XawSinkVoidFunc)();
+#define XtInheritDisplayText          ((void(*)(Widget, Position, Position, XawTextPosition, XawTextPosition, Boolean)) _XtInherit)
+#define XtInheritInsertCursor         ((void(*)(Widget, Position, Position, XawTextInsertState)) _XtInherit)
+#define XtInheritClearToBackground    ((void(*)(Widget, Position, Position, Dimension, Dimension)) _XtInherit)
+#define XtInheritFindPosition         ((void(*)(Widget, XawTextPosition, int, int, Boolean, XawTextPosition *, int *, int *)) _XtInherit)
+#define XtInheritFindDistance         ((void(*)(Widget, XawTextPosition, int, XawTextPosition, int *, XawTextPosition *, int *)) _XtInherit)
+#define XtInheritResolve              ((void(*)(Widget, XawTextPosition, int, int, XawTextPosition *, XawTextPosition *)) _XtInherit)
+#define XtInheritMaxLines             ((int(*)(Widget, Dimension)) _XtInherit)
+#define XtInheritMaxHeight            ((int(*)(Widget, int)) _XtInherit)
+#define XtInheritSetTabs              ((void(*)(Widget, int, short *)) _XtInherit)
+#define XtInheritGetCursorBounds      ((void(*)(Widget, XRectangle *)) _XtInherit)
 
-#define XtInheritDisplayText          ((_XawSinkVoidFunc) _XtInherit)
-#define XtInheritInsertCursor         ((_XawSinkVoidFunc) _XtInherit)
-#define XtInheritClearToBackground    ((_XawSinkVoidFunc) _XtInherit)
-#define XtInheritFindPosition         ((_XawSinkVoidFunc) _XtInherit)
-#define XtInheritFindDistance         ((_XawSinkVoidFunc) _XtInherit)
-#define XtInheritResolve              ((_XawSinkVoidFunc) _XtInherit)
-#define XtInheritMaxLines             ((_XawSinkIntFunc) _XtInherit)
-#define XtInheritMaxHeight            ((_XawSinkIntFunc) _XtInherit)
-#define XtInheritSetTabs              ((_XawSinkVoidFunc) _XtInherit)
-#define XtInheritGetCursorBounds      ((_XawSinkVoidFunc) _XtInherit)
+/* *INDENT-ON* */
 
 #endif /* _XawTextSinkP_h */

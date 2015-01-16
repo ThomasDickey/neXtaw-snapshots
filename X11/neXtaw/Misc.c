@@ -81,7 +81,6 @@ neXtawDrawShadowBox(
 	    toph = top;
 	    both = bot;
 	}
-#define SetPT(n,X,Y) pt[n].x = (short)(X); pt[n].y = (short)(Y)
 
 	/* top-left shadow */
 	SetPT(0, x0, y0 + h);

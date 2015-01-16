@@ -226,8 +226,7 @@ Replace(
  *
  */
 /* ARGSUSED */
-static
-  XawTextPosition
+static XawTextPosition
 Scan(
 	Widget w,
 	XawTextPosition position GCC_UNUSED,

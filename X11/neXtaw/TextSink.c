@@ -65,7 +65,7 @@ static void InsertCursor(Widget, Position, Position, XawTextInsertState);
 static void ClearToBackground(Widget, Position, Position, Dimension, Dimension);
 static void FindPosition(Widget, XawTextPosition, int, int, Boolean, XawTextPosition *, int *, int *);
 static void FindDistance(Widget, XawTextPosition, int, XawTextPosition, int *, XawTextPosition *, int *);
-static void Resolve(Widget, XawTextPosition, int, int, XawTextPosition *);
+static void Resolve(Widget, XawTextPosition, int, int, XawTextPosition *, XawTextPosition *);
 static void SetTabs(Widget, int, short *);
 static void GetCursorBounds(Widget, XRectangle *);
 /* *INDENT-ON* */
@@ -389,12 +389,13 @@ FindDistance(
 }
 
 /*	Function Name: Resolve
- *	Description: Resloves a location to a position.
+ *	Description: Resolves a location to a position.
  *	Arguments: w - the TextSink Object.
  *                 pos - a reference Position.
  *                 fromx - a reference Location.
  *                 width - width to move.
- *                 resPos - the resulting position.
+ *                 leftPos - the resulting position.
+ *                 rightPos - the resulting position.
  *	Returns: none
  */
 
@@ -405,9 +406,10 @@ Resolve(
 	   XawTextPosition pos,
 	   int fromx GCC_UNUSED,
 	   int width GCC_UNUSED,
-	   XawTextPosition * resPos)
+	   XawTextPosition * leftPos,
+	   XawTextPosition * rightPos GCC_UNUSED)
 {
-    *resPos = pos;
+    *leftPos = pos;
 }
 
 /*	Function Name: MaxLines
@@ -628,12 +630,15 @@ XawTextSinkFindDistance(Widget w, XawTextPosition fromPos, int fromx,
 
 /* ARGSUSED */
 void
-XawTextSinkResolve(Widget w, XawTextPosition pos, int fromx, int width,
+XawTextSinkResolve(Widget w,
+		   XawTextPosition pos,
+		   int fromx,
+		   int width,
 		   XawTextPosition * resPos)
 {
     TextSinkObjectClass class = (TextSinkObjectClass) w->core.widget_class;
 
-    (*class->text_sink_class.Resolve) (w, pos, fromx, width, resPos);
+    (*class->text_sink_class.Resolve) (w, pos, fromx, width, resPos, 0);
 }
 
 /*	Function Name: XawTextSinkMaxLines
