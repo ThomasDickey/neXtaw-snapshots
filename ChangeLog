@@ -1,9 +1,9 @@
--- $XTermId: ChangeLog,v 1.19 2015/01/15 02:18:48 tom Exp $
+-- $XTermId: ChangeLog,v 1.21 2015/01/16 02:13:10 tom Exp $
 
-20150114
+20150115
 	+ update copyright notices.
 	+ reformat sources with ncu-indent.
-	+ convert to ANSI (4800 warnings -> 1490 with gcc-normal)
+	+ convert to ANSI (4800 warnings -> 750 with gcc-normal)
 	+ eliminate NeedFunctionPrototypes and NeedWideFunctionPrototypes
 	  ifdefs
 	+ use shared-library autoconf macros from cdk/dialog/ncurses.

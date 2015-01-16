@@ -1,10 +1,6 @@
 /*
- * $Id: Traversal.c,v 1.2 2000/10/12 14:55:20 ulric Exp $
- */
 
-
-/*
-
+Copyright 2015 by Thomas E. Dickey
 Copyright (c) 1999  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -37,8 +33,7 @@ in this Software without prior written authorization from the X Consortium.
  *    \_/_______________________________________________________________/
  */
 
-
-
+#include "private.h"
 
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
@@ -46,15 +41,11 @@ in this Software without prior written authorization from the X Consortium.
 #include "TraversalP.h"
 #include <stdio.h>
 
+static XawFocusPolicy policy = XawFocusPointer;
 
+static Time getEventTime(XEvent *event);
 
-static	XawFocusPolicy	policy = XawFocusPointer ;
-
-
-static	Time	getEventTime(XEvent *event) ;
-
-
-static	char	focusTransTab[] =
+static char focusTransTab[] =
 "   <EnterWindow>:	XawFocusEnterWindow()\n"
 "   <LeaveWindow>:	XawFocusLeaveWindow()\n"
 "   Shift<Key>Tab:	XawFocusPrevious()\n"
@@ -67,62 +58,58 @@ static	char	focusTransTab[] =
 "   <Key>KP_Up:		XawFocusPreviousGroup()\n"
 "   <Key>Down:		XawFocusNextGroup()\n"
 "   <Key>KP_Down:	XawFocusNextGroup()\n";
-static	XtTranslations	focusTrans ;
-static	Bool		focusInited = False ;
+static XtTranslations focusTrans;
+static Bool focusInited = False;
 
-static	XtActionsRec	focusActions[] = {
-  {"XawFocusNext", XawFocusNextAction},
-  {"XawFocusPrevious", XawFocusPreviousAction},
-  {"XawFocusHome", XawFocusHomeAction},
-  {"XawFocusEnd", XawFocusEndAction},
-  {"XawFocusNextGroup", XawFocusNextGroupAction},
-  {"XawFocusPreviousGroup", XawFocusPreviousGroupAction},
-  {"XawFocusHomeGroup", XawFocusHomeGroupAction},
-  {"XawFocusEndGroup", XawFocusEndGroupAction},
-  {"XawFocusTake", XawFocusTakeAction},
-  {"XawFocusEnterWindow", XawFocusEnterWindowAction},
-  {"XawFocusLeaveWindow", XawFocusLeaveWindowAction}
-} ;
-
-
-
+static XtActionsRec focusActions[] =
+{
+    {"XawFocusNext", XawFocusNextAction},
+    {"XawFocusPrevious", XawFocusPreviousAction},
+    {"XawFocusHome", XawFocusHomeAction},
+    {"XawFocusEnd", XawFocusEndAction},
+    {"XawFocusNextGroup", XawFocusNextGroupAction},
+    {"XawFocusPreviousGroup", XawFocusPreviousGroupAction},
+    {"XawFocusHomeGroup", XawFocusHomeGroupAction},
+    {"XawFocusEndGroup", XawFocusEndGroupAction},
+    {"XawFocusTake", XawFocusTakeAction},
+    {"XawFocusEnterWindow", XawFocusEnterWindowAction},
+    {"XawFocusLeaveWindow", XawFocusLeaveWindowAction}
+};
 
 void
 XawFocusInstallActions(XtAppContext ctx)
 {
-	XtAppAddActions(ctx, focusActions, XtNumber(focusActions));
+    XtAppAddActions(ctx, focusActions, XtNumber(focusActions));
 }
-
-
 
 void
 XawFocusInstall(Widget w, Bool override)
 {
-	if( !focusInited ) {
-	  focusTrans = XtParseTranslationTable(focusTransTab) ;
-	  focusInited = True ;
-	}
-	if( override )
-	  XtOverrideTranslations(w, focusTrans) ;
-	else
-	  XtAugmentTranslations(w, focusTrans) ;
+    if (!focusInited) {
+	focusTrans = XtParseTranslationTable(focusTransTab);
+	focusInited = True;
+    }
+    if (override)
+	XtOverrideTranslations(w, focusTrans);
+    else
+	XtAugmentTranslations(w, focusTrans);
 }
 
-
-static	Bool
-isViewable(dpy, w)
-    Display	*dpy ;
-    Window	w ;
+static Bool
+isViewable(
+	      Display *dpy,
+	      Window w)
 {
-    XWindowAttributes atts ;
+    XWindowAttributes atts;
 
-    if( !XGetWindowAttributes(dpy, w, &atts) ) return False ;
-    else return atts.map_state == IsViewable ;
+    if (!XGetWindowAttributes(dpy, w, &atts))
+	return False;
+    else
+	return atts.map_state == IsViewable;
 }
-
 
 Boolean
-XawAcceptFocus( Widget w, Time *tm )
+XawAcceptFocus(Widget w, Time * tm)
 {
     /* To be eligible for keyboard focus, the widget must be
      * realized, sensitive, managed, and be viewable.
@@ -132,524 +119,520 @@ XawAcceptFocus( Widget w, Time *tm )
      * to find out if a window is viewable.
      */
 
-    if( !w->core.being_destroyed  && XtIsRealized(w) &&
-	XtIsSensitive(w) && w->core.visible && XtIsManaged(w)  &&
-	isViewable(XtDisplay(w), XtWindow(w)) )
-    {
-      XSetInputFocus(XtDisplay(w), XtWindow(w), RevertToParent,
-	tm != NULL ? *tm : CurrentTime );
-      return True ;
+    if (!w->core.being_destroyed && XtIsRealized(w) &&
+	XtIsSensitive(w) && w->core.visible && XtIsManaged(w) &&
+	isViewable(XtDisplay(w), XtWindow(w))) {
+	XSetInputFocus(XtDisplay(w), XtWindow(w), RevertToParent,
+		       tm != NULL ? *tm : CurrentTime);
+	return True;
+    } else
+	return False;
+}
+
+void
+XawFocusNextAction(Widget w,
+		   XEvent *event,
+		   String *params GCC_UNUSED,
+		   Cardinal *np GCC_UNUSED)
+{
+    Time tm = getEventTime(event);
+
+    /* TODO: get policy from resources */
+
+    if (policy == XawFocusOld) {
+	XSetInputFocus(XtDisplay(w), PointerRoot, RevertToPointerRoot, tm);
+	return;
     }
-    else
-      return False ;
-}
 
+    XawFocusNext(w, tm);
+}
 
 void
-XawFocusNextAction(Widget w, XEvent *event, String *params, Cardinal *np)
+XawFocusPreviousAction(Widget w,
+		       XEvent *event,
+		       String *params GCC_UNUSED,
+		       Cardinal *np GCC_UNUSED)
 {
-	Time	tm = getEventTime(event) ;
+    Time tm = getEventTime(event);
 
-	/* TODO: get policy from resources */
+    /* TODO: get policy from resources */
 
-	if( policy == XawFocusOld ) {
-	  XSetInputFocus(XtDisplay(w), PointerRoot, RevertToPointerRoot, tm) ;
-	  return ;
-	}
+    if (policy == XawFocusOld) {
+	XSetInputFocus(XtDisplay(w), PointerRoot, RevertToPointerRoot, tm);
+	return;
+    }
 
-	XawFocusNext(w, tm) ;
+    XawFocusPrevious(w, tm);
 }
-
-
 
 void
-XawFocusPreviousAction(Widget w, XEvent *event, String *params, Cardinal *np)
+XawFocusHomeAction(Widget w,
+		   XEvent *event,
+		   String *params GCC_UNUSED,
+		   Cardinal *np GCC_UNUSED)
 {
-	Time	tm = getEventTime(event) ;
+    Time tm = getEventTime(event);
 
-	/* TODO: get policy from resources */
+    /* TODO: get policy from resources */
 
-	if( policy == XawFocusOld ) {
-	  XSetInputFocus(XtDisplay(w), PointerRoot, RevertToPointerRoot, tm) ;
-	  return ;
-	}
+    if (policy == XawFocusOld) {
+	XSetInputFocus(XtDisplay(w), PointerRoot, RevertToPointerRoot, tm);
+	return;
+    }
 
-	XawFocusPrevious(w, tm) ;
+    (void) XawFocusHome(w, tm);
 }
-
-
 
 void
-XawFocusHomeAction(Widget w, XEvent *event, String *params, Cardinal *np)
+XawFocusEndAction(Widget w,
+		  XEvent *event,
+		  String *params GCC_UNUSED,
+		  Cardinal *np GCC_UNUSED)
 {
-	Time	tm = getEventTime(event) ;
+    Time tm = getEventTime(event);
 
-	/* TODO: get policy from resources */
+    /* TODO: get policy from resources */
 
-	if( policy == XawFocusOld ) {
-	  XSetInputFocus(XtDisplay(w), PointerRoot, RevertToPointerRoot, tm) ;
-	  return ;
-	}
+    if (policy == XawFocusOld) {
+	XSetInputFocus(XtDisplay(w), PointerRoot, RevertToPointerRoot, tm);
+	return;
+    }
 
-	(void) XawFocusHome(w, tm) ;
+    (void) XawFocusEnd(w, tm);
 }
-
-
 
 void
-XawFocusEndAction(Widget w, XEvent *event, String *params, Cardinal *np)
+XawFocusNextGroupAction(Widget w,
+			XEvent *event,
+			String *params GCC_UNUSED,
+			Cardinal *np GCC_UNUSED)
 {
-	Time	tm = getEventTime(event) ;
+    Time tm = getEventTime(event);
 
-	/* TODO: get policy from resources */
+    /* TODO: get policy from resources */
 
-	if( policy == XawFocusOld ) {
-	  XSetInputFocus(XtDisplay(w), PointerRoot, RevertToPointerRoot, tm) ;
-	  return ;
-	}
+    if (policy == XawFocusOld) {
+	XSetInputFocus(XtDisplay(w), PointerRoot, RevertToPointerRoot, tm);
+	return;
+    }
 
-	(void) XawFocusEnd(w, tm) ;
+    XawFocusNextGroup(w, tm);
 }
-
-
 
 void
-XawFocusNextGroupAction(Widget w, XEvent *event, String *params, Cardinal *np)
+XawFocusPreviousGroupAction(Widget w,
+			    XEvent *event,
+			    String *params GCC_UNUSED,
+			    Cardinal *np GCC_UNUSED)
 {
-	Time	tm = getEventTime(event) ;
+    Time tm = getEventTime(event);
 
-	/* TODO: get policy from resources */
+    /* TODO: get policy from resources */
 
-	if( policy == XawFocusOld ) {
-	  XSetInputFocus(XtDisplay(w), PointerRoot, RevertToPointerRoot, tm) ;
-	  return ;
-	}
+    if (policy == XawFocusOld) {
+	XSetInputFocus(XtDisplay(w), PointerRoot, RevertToPointerRoot, tm);
+	return;
+    }
 
-	XawFocusNextGroup(w, tm) ;
+    XawFocusPreviousGroup(w, tm);
 }
-
-
 
 void
-XawFocusPreviousGroupAction(Widget w, XEvent *event,
-	String *params, Cardinal *np)
+XawFocusHomeGroupAction(Widget w,
+			XEvent *event,
+			String *params GCC_UNUSED,
+			Cardinal *np GCC_UNUSED)
 {
-	Time	tm = getEventTime(event) ;
+    Time tm = getEventTime(event);
 
-	/* TODO: get policy from resources */
+    /* TODO: get policy from resources */
 
-	if( policy == XawFocusOld ) {
-	  XSetInputFocus(XtDisplay(w), PointerRoot, RevertToPointerRoot, tm) ;
-	  return ;
-	}
+    if (policy == XawFocusOld) {
+	XSetInputFocus(XtDisplay(w), PointerRoot, RevertToPointerRoot, tm);
+	return;
+    }
 
-	XawFocusPreviousGroup(w, tm) ;
+    XawFocusHomeGroup(w, tm);
 }
-
-
 
 void
-XawFocusHomeGroupAction(Widget w, XEvent *event, String *params, Cardinal *np)
+XawFocusEndGroupAction(Widget w,
+		       XEvent *event,
+		       String *params GCC_UNUSED,
+		       Cardinal *np GCC_UNUSED)
 {
-	Time	tm = getEventTime(event) ;
+    Time tm = getEventTime(event);
 
-	/* TODO: get policy from resources */
+    /* TODO: get policy from resources */
 
-	if( policy == XawFocusOld ) {
-	  XSetInputFocus(XtDisplay(w), PointerRoot, RevertToPointerRoot, tm) ;
-	  return ;
-	}
+    if (policy == XawFocusOld) {
+	XSetInputFocus(XtDisplay(w), PointerRoot, RevertToPointerRoot, tm);
+	return;
+    }
 
-	XawFocusHomeGroup(w, tm) ;
+    XawFocusEndGroup(w, tm);
 }
-
-
 
 void
-XawFocusEndGroupAction(Widget w, XEvent *event, String *params, Cardinal *np)
+XawFocusTakeAction(Widget w,
+		   XEvent *event,
+		   String *params GCC_UNUSED,
+		   Cardinal *np GCC_UNUSED)
 {
-	Time	tm = getEventTime(event) ;
+    Time tm = getEventTime(event);
 
-	/* TODO: get policy from resources */
+    /* TODO: get policy from resources */
 
-	if( policy == XawFocusOld ) {
-	  XSetInputFocus(XtDisplay(w), PointerRoot, RevertToPointerRoot, tm) ;
-	  return ;
-	}
+    if (policy == XawFocusOld) {
+	XSetInputFocus(XtDisplay(w), PointerRoot, RevertToPointerRoot, tm);
+	return;
+    }
 
-	XawFocusEndGroup(w, tm) ;
+    XawFocusTake(w, tm);
 }
-
-
 
 void
-XawFocusTakeAction(Widget w, XEvent *event, String *params, Cardinal *np)
+XawFocusEnterWindowAction(Widget w,
+			  XEvent *event,
+			  String *params GCC_UNUSED,
+			  Cardinal *np GCC_UNUSED)
 {
-	Time	tm = getEventTime(event) ;
+    Time tm = getEventTime(event);
 
-	/* TODO: get policy from resources */
+    /* TODO: get policy from resources */
 
-	if( policy == XawFocusOld ) {
-	  XSetInputFocus(XtDisplay(w), PointerRoot, RevertToPointerRoot, tm) ;
-	  return ;
-	}
+    if (policy == XawFocusOld) {
+	XSetInputFocus(XtDisplay(w), PointerRoot, RevertToPointerRoot, tm);
+	return;
+    }
 
-	XawFocusTake(w, tm) ;
+    XawFocusEnterWindow(w, policy, tm);
 }
-
-
 
 void
-XawFocusEnterWindowAction(Widget w, XEvent *event, String *params, Cardinal *np)
+XawFocusLeaveWindowAction(Widget w,
+			  XEvent *event,
+			  String *params GCC_UNUSED,
+			  Cardinal *np GCC_UNUSED)
 {
-	Time	tm = getEventTime(event) ;
+    Time tm = getEventTime(event);
 
-	/* TODO: get policy from resources */
+    /* TODO: get policy from resources */
 
-	if( policy == XawFocusOld ) {
-	  XSetInputFocus(XtDisplay(w), PointerRoot, RevertToPointerRoot, tm) ;
-	  return ;
-	}
+    if (policy == XawFocusOld) {
+	XSetInputFocus(XtDisplay(w), PointerRoot, RevertToPointerRoot, tm);
+	return;
+    }
 
-	XawFocusEnterWindow(w, policy, tm) ;
+    XawFocusLeaveWindow(w, policy, tm);
 }
-
-
-
-void
-XawFocusLeaveWindowAction(Widget w, XEvent *event, String *params, Cardinal *np)
-{
-	Time	tm = getEventTime(event) ;
-
-	/* TODO: get policy from resources */
-
-	if( policy == XawFocusOld ) {
-	  XSetInputFocus(XtDisplay(w), PointerRoot, RevertToPointerRoot, tm) ;
-	  return ;
-	}
-
-	XawFocusLeaveWindow(w, policy, tm) ;
-}
-
 
 	/* end of the action procs */
 
-
-
-
 #define	lastCh(w)	((w)->composite.num_children - 1)
 
-static	Time
-getEventTime(event)
-	XEvent	*event ;
+static Time
+getEventTime(XEvent *event)
 {
-	Time	tm = CurrentTime ;
+    Time tm = CurrentTime;
 
-	if( event != NULL ) {
-	  switch( event->type ) {
-	    case ButtonPress:
-	    case ButtonRelease: tm = event->xbutton.time ; break ;
-	    case KeyPress:
-	    case KeyRelease: tm = event->xkey.time ; break ;
-	    case MotionNotify: tm = event->xmotion.time ; break ;
-	    case EnterNotify:
-	    case LeaveNotify: tm = event->xcrossing.time ; break ;
-	  }
+    if (event != NULL) {
+	switch (event->type) {
+	case ButtonPress:
+	case ButtonRelease:
+	    tm = event->xbutton.time;
+	    break;
+	case KeyPress:
+	case KeyRelease:
+	    tm = event->xkey.time;
+	    break;
+	case MotionNotify:
+	    tm = event->xmotion.time;
+	    break;
+	case EnterNotify:
+	case LeaveNotify:
+	    tm = event->xcrossing.time;
+	    break;
 	}
+    }
 
-	return tm ;
+    return tm;
 }
 
+/* Utility: search for widget in it's parent's child list,
+ * return the index.
+ */
 
-
-
-	/* Utility: search for widget in it's parent's child list,
-	 * return the index.
-	 */
-
-static	int
-findInParent(w)
-	Widget	w ;
+static int
+findInParent(Widget w)
 {
-	CompositeWidget p = (CompositeWidget) XtParent(w) ;
-	int	i ;
+    CompositeWidget p = (CompositeWidget) XtParent(w);
+    int i;
 
-	if( p == NULL )
-	  return -1 ;
+    if (p == NULL)
+	return -1;
 
-	for(i=0; i < p->composite.num_children; ++i)
-	  if( p->composite.children[i] == w )
-	    return i ;
+    for (i = 0; (Cardinal) i < p->composite.num_children; ++i)
+	if (p->composite.children[i] == w)
+	    return i;
 
-	return -1 ;
+    return -1;
 }
 
+/* utility: search composite widget w, starting at c, for
+ * a child widget willing to accept input.  Direction is
+ * either +1 or -1 for forward/backward search.
+ */
 
-
-
-	/* utility: search composite widget w, starting at c, for
-	 * a child widget willing to accept input.  Direction is
-	 * either +1 or -1 for forward/backward search.
-	 */
-
-
-static	Bool
-focusFind(w, c, recursive, direction, tm)
-	CompositeWidget	w ;
-	int	c ;
-	Bool	recursive ;
-	int	direction ;
-	Time	tm ;
+static Bool
+focusFind(CompositeWidget w,
+	  int c,
+	  Bool recursive,
+	  int direction,
+	  Time tm)
 {
-	int	nc ;
-	Widget	cw ;
+    int nc;
+    Widget cw;
 
-	nc = w->composite.num_children ;
+    nc = (int) w->composite.num_children;
 
-	while( c >= 0 && c < nc )
-	{
-	  cw = w->composite.children[c] ;
-	  if( XtIsManaged(cw) )
-	  {
-	    if( XtCallAcceptFocus(cw, &tm) )
-	      return True ;
-	    if( recursive && XtIsComposite(cw) )
-	    {
-	      CompositeWidget cwc = (CompositeWidget)cw ;
-	      int c0 = direction > 0 ? 0 : lastCh(cwc) ;
-	      if( focusFind(cwc, c0, recursive, direction, tm) )
-		return True ;
+    while (c >= 0 && c < nc) {
+	cw = w->composite.children[c];
+	if (XtIsManaged(cw)) {
+	    if (XtCallAcceptFocus(cw, &tm))
+		return True;
+	    if (recursive && XtIsComposite(cw)) {
+		CompositeWidget cwc = (CompositeWidget) cw;
+		int c0 = (int) (direction > 0 ? 0 : lastCh(cwc));
+		if (focusFind(cwc, c0, recursive, direction, tm))
+		    return True;
 	    }
-	  }
-	  c += direction ;
 	}
+	c += direction;
+    }
 
-	return False ;	/* nobody wanted it */
+    return False;		/* nobody wanted it */
 }
-
-
-
 
 void
-XawFocusNext(w, tm)
-	Widget	w ;
-	Time	tm ;
+XawFocusNext(Widget w,
+	     Time tm)
 {
-	Widget	p ;
-	int	ci ;
+    Widget p;
+    int ci;
 
-	/* Search for the next widget after this one to
-	 * receive input.  If we encounter a composite widget,
-	 * set focus to its first willing child, if any.  If we
-	 * reach the end, pop up a level and keep trying.  If we
-	 * can't pop up, go to the start.
-	 */
+    /* Search for the next widget after this one to
+     * receive input.  If we encounter a composite widget,
+     * set focus to its first willing child, if any.  If we
+     * reach the end, pop up a level and keep trying.  If we
+     * can't pop up, go to the start.
+     */
 
-	/* First, see if this is a composite widget; test children. */
+    /* First, see if this is a composite widget; test children. */
 
-	if( XtIsComposite(w) &&
-	    focusFind((CompositeWidget) w, 0, True, +1, tm) )
-	  return ;
+    if (XtIsComposite(w) &&
+	focusFind((CompositeWidget) w, 0, True, +1, tm))
+	return;
 
-	/* Nope.  Start searching siblings.  Easiest way to do this
-	 * is to search parent.
-	 */
+    /* Nope.  Start searching siblings.  Easiest way to do this
+     * is to search parent.
+     */
 
-	while( (p = XtParent(w)) != NULL && !XtIsShell(p) )
-	{
-	  if( (ci = findInParent(w)) == -1 )
-	    return ;
+    while ((p = XtParent(w)) != NULL && !XtIsShell(p)) {
+	if ((ci = findInParent(w)) == -1)
+	    return;
 
-	  if( focusFind((CompositeWidget)p, ci+1, True, +1, tm) )
-	    return ;
+	if (focusFind((CompositeWidget) p, ci + 1, True, +1, tm))
+	    return;
 
-	  /* No luck there; pop up a level and try again */
-	  w = p ;
-	}
+	/* No luck there; pop up a level and try again */
+	w = p;
+    }
 
-	/* Made it all the way to the top.  Start from the beginning */
-	XawFocusHome(w, tm) ;
+    /* Made it all the way to the top.  Start from the beginning */
+    XawFocusHome(w, tm);
 }
-
 
 	/* Utility: search parents until a parent with multiple children
 	 * is found.
 	 */
 
-static	CompositeWidget
-getMultiParent(w)
-	Widget	w ;
+static CompositeWidget
+getMultiParent(
+		  Widget w)
 {
-	CompositeWidget p ;
-	while( (p = (CompositeWidget)XtParent(w)) != NULL &&
-		!XtIsShell((Widget)p)  &&
-		p->composite.num_children == 1 )
-	    w = (Widget)p ;
-	return p ;
+    CompositeWidget p;
+    while ((p = (CompositeWidget) XtParent(w)) != NULL &&
+	   !XtIsShell((Widget) p) &&
+	   p->composite.num_children == 1)
+	w = (Widget) p;
+    return p;
 }
 
 void
-XawFocusNextGroup(w, tm)
-	Widget	w ;
-	Time	tm ;
+XawFocusNextGroup(
+		     Widget w,
+		     Time tm)
 {
-	CompositeWidget p = getMultiParent(w) ;
-	int	ci ;
+    CompositeWidget p = getMultiParent(w);
+    int ci;
 
-	/* search this widget's parent for another widget eligible
-	 * to receive input.
-	 *
-	 * Actually, if the parent has only this one child, tabbing
-	 * isn't very interesting, so we search up until we find
-	 * a multi-child parent.
-	 */
+    /* search this widget's parent for another widget eligible
+     * to receive input.
+     *
+     * Actually, if the parent has only this one child, tabbing
+     * isn't very interesting, so we search up until we find
+     * a multi-child parent.
+     */
 
-	if( p == NULL )
-	  return ;
+    if (p == NULL)
+	return;
 
-	if( (ci = findInParent(w)) != -1 )
-	{
-	  if( focusFind(p, ci+1, False, +1, tm) )
-	    return ;
-	  if( focusFind(p, 0, False, +1, tm) )
-	    return ;
-	}
-	/* nobody wanted it, just return */
-}
-
-
-void
-XawFocusPrevious(w, tm)
-	Widget	w ;
-	Time	tm ;
-{
-	Widget	p ;
-	int	ci ;
-
-	/* see focusNext() for detailed comments */
-
-	while( (p =  XtParent(w)) != NULL && !XtIsShell(p) )
-	{
-	  if( (ci = findInParent(w)) == -1 ) return ;
-	  if( focusFind((CompositeWidget)p, ci-1, True, -1, tm) ) return ;
-	  w = (Widget)p ;
-	}
-	XawFocusEnd(w, tm) ;
+    if ((ci = findInParent(w)) != -1) {
+	if (focusFind(p, ci + 1, False, +1, tm))
+	    return;
+	if (focusFind(p, 0, False, +1, tm))
+	    return;
+    }
+    /* nobody wanted it, just return */
 }
 
 void
-XawFocusPreviousGroup(w, tm)
-	Widget	w ;
-	Time	tm ;
+XawFocusPrevious(
+		    Widget w,
+		    Time tm)
 {
-	CompositeWidget p = getMultiParent(w) ;
-	int	ci ;
+    Widget p;
+    int ci;
 
-	if( p == NULL ) return ;
+    /* see focusNext() for detailed comments */
 
-	if( (ci = findInParent(w)) != -1 )
-	{
-	  if( focusFind(p, ci-1, False, -1, tm) ) return ;
-	  if( focusFind(p, lastCh(p), False, -1, tm) ) return ;
-	}
+    while ((p = XtParent(w)) != NULL && !XtIsShell(p)) {
+	if ((ci = findInParent(w)) == -1)
+	    return;
+	if (focusFind((CompositeWidget) p, ci - 1, True, -1, tm))
+	    return;
+	w = (Widget) p;
+    }
+    XawFocusEnd(w, tm);
 }
 
 void
-XawFocusHome(w, tm)
-	Widget	w ;
-	Time	tm ;
+XawFocusPreviousGroup(
+			 Widget w,
+			 Time tm)
 {
-	Widget	p ;
+    CompositeWidget p = getMultiParent(w);
+    int ci;
 
-	/* Climb up to the top-level widget and then start
-	 * searching from there.
-	 */
+    if (p == NULL)
+	return;
 
-	while( (p = XtParent(w)) != NULL && !XtIsShell(p) )
-	  w = p ;
-
-	(void) focusFind((CompositeWidget) w, 0, True, +1, tm) ;
+    if ((ci = findInParent(w)) != -1) {
+	if (focusFind(p, ci - 1, False, -1, tm))
+	    return;
+	if (focusFind(p, (int) lastCh(p), False, -1, tm))
+	    return;
+    }
 }
 
 void
-XawFocusHomeGroup(w, tm)
-	Widget	w ;
-	Time	tm ;
+XawFocusHome(
+		Widget w,
+		Time tm)
 {
-	CompositeWidget p = getMultiParent(w) ;
+    Widget p;
 
-	if( p != NULL )
-	  (void) focusFind((CompositeWidget) p, 0, True, +1, tm) ;
+    /* Climb up to the top-level widget and then start
+     * searching from there.
+     */
+
+    while ((p = XtParent(w)) != NULL && !XtIsShell(p))
+	w = p;
+
+    (void) focusFind((CompositeWidget) w, 0, True, +1, tm);
 }
 
 void
-XawFocusEnd(w, tm)
-	Widget	w ;
-	Time	tm ;
+XawFocusHomeGroup(
+		     Widget w,
+		     Time tm)
 {
-	Widget	p ;
+    CompositeWidget p = getMultiParent(w);
 
-	while( (p = XtParent(w)) != NULL && !XtIsShell(p) )
-	  w = p ;
+    if (p != NULL)
+	(void) focusFind((CompositeWidget) p, 0, True, +1, tm);
+}
 
+void
+XawFocusEnd(
+	       Widget w,
+	       Time tm)
+{
+    Widget p;
+
+    while ((p = XtParent(w)) != NULL && !XtIsShell(p))
+	w = p;
+
+    (void) focusFind((CompositeWidget) w,
+		     (int) lastCh(((CompositeWidget) w)),
+		     True, -1, tm);
+}
+
+void
+XawFocusEndGroup(
+		    Widget w,
+		    Time tm)
+{
+    CompositeWidget p = getMultiParent(w);
+
+    if (p != NULL)
 	(void) focusFind((CompositeWidget) w,
-		lastCh(((CompositeWidget)w)),
-		True, -1, tm) ;
+			 (int) lastCh(((CompositeWidget) w)),
+			 True, -1, tm);
 }
 
 void
-XawFocusEndGroup(w, tm)
-	Widget	w ;
-	Time	tm ;
+XawFocusTake(
+		Widget w,
+		Time tm)
 {
-	CompositeWidget p = getMultiParent(w) ;
-
-	if( p != NULL )
-	  (void) focusFind((CompositeWidget) w,
-		lastCh(((CompositeWidget)w)),
-		True, -1, tm) ;
+    (void) XtCallAcceptFocus(w, &tm);
 }
 
 void
-XawFocusTake(w, tm)
-	Widget	w ;
-	Time	tm ;
+XawFocusEnterWindow(
+		       Widget w,
+		       XawFocusPolicy ppolicy GCC_UNUSED,
+		       Time tm)
 {
-	(void) XtCallAcceptFocus(w, &tm) ;
+    switch (ppolicy) {
+    case XawFocusExplicit:
+	break;
+    case XawFocusPointer:
+    case XawFocusOld:
+	XawFocusTake(w, tm);
+	break;
+    }
 }
 
 void
-XawFocusEnterWindow(w, policy, tm)
-	Widget	w ;
-	XawFocusPolicy policy ;
-	Time	tm ;
+XawFocusLeaveWindow(
+		       Widget w,
+		       XawFocusPolicy ppolicy,
+		       Time tm)
 {
-	switch( policy ) {
-	  case XawFocusExplicit: break ;
-	  case XawFocusPointer:
-	  case XawFocusOld:
-	    XawFocusTake(w, tm) ;
-	    break ;
+    Window current;
+    int revert;
+    XGetInputFocus(XtDisplay(w), &current, &revert);
+    if (XtWindow(w) != current) {
+	switch (ppolicy) {
+	case XawFocusExplicit:
+	    break;
+	case XawFocusPointer:
+	case XawFocusOld:
+	    XSetInputFocus(XtDisplay(w), PointerRoot, RevertToPointerRoot, tm);
+	    break;
 	}
+    }
 }
-
-void
-XawFocusLeaveWindow(w, policy, tm)
-	Widget	w ;
-	XawFocusPolicy policy ;
-	Time	tm ;
-{
-	Window current;
-	int revert;
-	XGetInputFocus(XtDisplay(w), &current, &revert);
-	if (XtWindow(w) != current) {
-		switch( policy ) {
-		  case XawFocusExplicit: break ;
-		  case XawFocusPointer:
-		  case XawFocusOld:
-		    XSetInputFocus(XtDisplay(w), PointerRoot, RevertToPointerRoot, tm);
-		    break ;
-		}
-	}
-}
-

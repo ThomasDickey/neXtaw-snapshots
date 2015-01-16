@@ -39,4 +39,6 @@
 
 #define LIBRARY_NAME	"neXtaw"
 
+#define SetPT(n,X,Y) pt[n].x = (short)(X); pt[n].y = (short)(Y)
+
 #endif /* _private_h */

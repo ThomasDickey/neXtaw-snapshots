@@ -837,8 +837,6 @@ Draw3DFrame(
 	    (XRectInRegion(region, 0, 0, w, s) != RectangleOut) ||
 	    (XRectInRegion(region, 0, 0, s, h) != RectangleOut)) {
 
-#define SetPT(n,X,Y) pt[n].x = (short)(X); pt[n].y = (short)(Y)
-
 	    SetPT(0, 0, h);
 	    SetPT(1, 0, 0);
 	    SetPT(2, w, 0);

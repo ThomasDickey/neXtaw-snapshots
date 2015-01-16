@@ -1,10 +1,6 @@
-/*
-* $XConsortium: TextSrcP.h,v 1.20 94/04/17 20:13:15 kaleb Exp $
-*/
-
-
 /***********************************************************
 
+Copyright 2015 by Thomas E. Dickey
 Copyright (c) 1987, 1988, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,7 +23,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 Except as contained in this notice, the name of the X Consortium shall not be
 used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from the X Consortium.
-
 
 Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
@@ -58,6 +53,7 @@ SOFTWARE.
 
 #ifndef _XawTextSrcP_h
 #define _XawTextSrcP_h
+/* *INDENT-OFF* */
 
 /***********************************************************************
  *
@@ -79,16 +75,16 @@ typedef struct {
   XrmQuark		record_type;
   long			version;
   Cardinal		record_size;
-  int			(*Input)();
+  int			(*Input)(void);
 } TextSrcExtRec, *TextSrcExt;
 
 typedef struct _TextSrcClassPart {
-  XawTextPosition	(*Read)();
-  int			(*Replace)();
-  XawTextPosition	(*Scan)();
-  XawTextPosition       (*Search)();
-  void                  (*SetSelection)();
-  Boolean		(*ConvertSelection)();
+  XawTextPosition	(*Read)(Widget, XawTextPosition, XawTextBlock *, int);
+  int			(*Replace)(Widget, XawTextPosition, XawTextPosition, XawTextBlock *);
+  XawTextPosition	(*Scan)(Widget, XawTextPosition, XawTextScanType, XawTextScanDirection, int, Boolean);
+  XawTextPosition       (*Search)(Widget, XawTextPosition, XawTextScanDirection, XawTextBlock *);
+  void                  (*SetSelection)(Widget, XawTextPosition, XawTextPosition, Atom selection);
+  Boolean		(*ConvertSelection)(Widget, Atom *, Atom *, Atom *, XtPointer *, unsigned long *, int *);
 } TextSrcClassPart;
 
 /* Full class record declaration */
@@ -142,19 +138,17 @@ wchar_t* _XawTextMBToWC(
  *
  ************************************************************/
 
-typedef Boolean (*_XawBooleanFunc)();
-typedef int (*_XawIntFunc)();
-typedef XawTextPosition (*_XawTextPositionFunc)();
-typedef void (*_XawTextVoidFunc)();
+#define XtInheritInput                ((int(*)(void)) _XtInherit)
+#define XtInheritRead                 ((XawTextPosition(*)(Widget, XawTextPosition, XawTextBlock *, int)) _XtInherit)
+#define XtInheritReplace              ((int(*)(Widget, XawTextPosition, XawTextPosition, XawTextBlock *)) _XtInherit)
+#define XtInheritScan                 ((XawTextPosition(*)(Widget, XawTextPosition, XawTextScanType, XawTextScanDirection, int, Boolean)) _XtInherit)
+#define XtInheritSearch               ((XawTextPosition(*)(Widget, XawTextPosition, XawTextScanDirection, XawTextBlock *)) _XtInherit)
+#define XtInheritSetSelection         ((void(*)(Widget, XawTextPosition, XawTextPosition, Atom selection)) _XtInherit)
+#define XtInheritConvertSelection     ((Boolean(*)(Widget, Atom *, Atom *, Atom *, XtPointer *, unsigned long *, int *)) _XtInherit)
 
-#define XtInheritInput                ((_XawTextPositionFunc) _XtInherit)
-#define XtInheritRead                 ((_XawTextPositionFunc) _XtInherit)
-#define XtInheritReplace              ((_XawIntFunc) _XtInherit)
-#define XtInheritScan                 ((_XawTextPositionFunc) _XtInherit)
-#define XtInheritSearch               ((_XawTextPositionFunc) _XtInherit)
-#define XtInheritSetSelection         ((_XawTextVoidFunc) _XtInherit)
-#define XtInheritConvertSelection     ((_XawBooleanFunc) _XtInherit)
 #define XtTextSrcExtVersion	      1
 #define XtTextSrcExtTypeString        "XT_TEXTSRC_EXT"
+
+/* *INDENT-ON* */
 
 #endif /* _XawTextSrcP_h */
