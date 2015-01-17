@@ -51,7 +51,7 @@ other dealings in this Software without prior written authorization.
 #include <stdio.h>
 #include <X11/IntrinsicP.h>
 #include <X11/StringDefs.h>
-#ifdef HAS_XMU_H
+#ifdef HAVE_XMU_H
 #include <X11/Xmu/Xmu.h>
 #endif
 
@@ -259,9 +259,11 @@ Redisplay(
 
     switch (mbw->menu_button.menubutton_style) {
     case XtMenuButtonSelect:
-	mbw->label.label_width -= INDICATOR_SPACE;
+	mbw->label.label_width
+	    = (Dimension) (mbw->label.label_width - INDICATOR_SPACE);
 	(*superclass->core_class.expose) (w, event, region);
-	mbw->label.label_width += INDICATOR_SPACE;
+	mbw->label.label_width
+	    = (Dimension) (mbw->label.label_width + INDICATOR_SPACE);
 
 	XFillRectangle(dpy, win, dark2, x + 2, y + 2, 9, 6);
 	XDrawLine(dpy, win, light, x, y, x + 8, y);
@@ -275,9 +277,11 @@ Redisplay(
 	break;
 
     case XtMenuButtonAction:
-	mbw->label.label_width -= INDICATOR_SPACE;
+	mbw->label.label_width
+	    = (Dimension) (mbw->label.label_width - INDICATOR_SPACE);
 	(*superclass->core_class.expose) (w, event, region);
-	mbw->label.label_width += INDICATOR_SPACE;
+	mbw->label.label_width
+	    = (Dimension) (mbw->label.label_width + INDICATOR_SPACE);
 
 	XDrawLine(dpy, win, dark2, x, y + 1, x + 3, y + 6);
 	XDrawLine(dpy, win, light, x + 7, y + 1, x + 4, y + 7);
@@ -286,9 +290,12 @@ Redisplay(
 
     case XtMenuButtonSimple:
     default:
-	mbw->label.label_width -= INDICATOR_SPACE;
+	mbw->label.label_width
+	    = (Dimension) (mbw->label.label_width - INDICATOR_SPACE);
 	(*superclass->core_class.expose) (w, event, region);
-	mbw->label.label_width += INDICATOR_SPACE;
+	mbw->label.label_width
+	    = (Dimension) (mbw->label.label_width + INDICATOR_SPACE);
+	break;
     }
 }
 

@@ -1410,12 +1410,14 @@ HJump(
 {
     TextWidget ctx = (TextWidget) closure;
     float *percent = (float *) callData;
+    Dimension widest;
     Position new_left, old_left = ctx->text.margin.left;
 
     long move;			/*difference of Positions can be bigger than Position; lint err */
 
     new_left = ctx->text.r_margin.left;
-    new_left -= (Position) (*percent * GetWidestLine(ctx));
+    widest = GetWidestLine(ctx);
+    new_left = (Position) (new_left - (Position) (*percent * (float) widest));
     move = old_left - new_left;
 
     if (labs(move) < (long) ctx->core.width) {
@@ -1493,7 +1495,8 @@ VScroll(
 	   XtPointer callData)
 {
     TextWidget ctx = (TextWidget) closure;
-    int height, lines = (long) callData;
+    int height;
+    int lines = (int) (intptr_t) callData;
 
     height = ctx->core.height - VMargins(ctx);
     if (height < 1)
@@ -2254,8 +2257,8 @@ DoSelection(
     if (motion)
 	newType = ctx->text.s.type;
     else {
-	if ((abs((long) time -
-		 (long) ctx->text.lasttime) < MULTI_CLICK_TIME) &&
+	if ((labs((long) time -
+		  (long) ctx->text.lasttime) < MULTI_CLICK_TIME) &&
 	    ((pos >= ctx->text.s.left) && (pos <= ctx->text.s.right))) {
 	    sarray = ctx->text.sarray;
 	    for (; *sarray != XawselectNull &&
@@ -2332,6 +2335,7 @@ DoSelection(
 	newLeft = SrcScan(src, pos, XawstAll, XawsdLeft, 1, FALSE);
 	newRight = SrcScan(src, pos, XawstAll, XawsdRight, 1, FALSE);
 	break;
+    case XawselectNull:
     default:
 	XtAppWarning(XtWidgetToApplicationContext((Widget) ctx),
 		     "Text Widget: empty selection array.");
@@ -2451,7 +2455,9 @@ ExtendSelection(
 	break;
     case XawselectAll:
 	pos = ctx->text.insertPos;
-    case XawselectPosition:	/* fall through. */
+    case XawselectChar:	/* FALLTHRU */
+    case XawselectPosition:	/* FALLTHRU */
+    case XawselectNull:	/* FALLTHRU */
     default:
 	break;
     }

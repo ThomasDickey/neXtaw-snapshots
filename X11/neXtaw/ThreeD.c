@@ -169,10 +169,10 @@ grayPixel(
 {
     static XColor Gray =
     {
-    /* pixel */ 0,
-    /* red, green, blue */ 0, 0, 0,
-    /* flags */ 0,
-    /* pad */ 0
+	0,			/* pixel */
+	0, 0, 0,		/* red, green, blue */
+	0,			/* flags */
+	0			/* pad */
     };
     if (!Gray.pixel) {
 	XColor exact;
@@ -259,11 +259,9 @@ AllocTopShadowPixmap(Widget new)
     unsigned int pm_size;
 
     /*
-     * I know, we're going to create two pixmaps for each and every
-     * shadow'd widget.  Yeuck.  I'm semi-relying on server side
-     * pixmap cacheing.
+     * I know, we're going to create two pixmaps for each and every shadow'd
+     * widget.  Yeuck.  I'm semi-relying on server side pixmap caching.
      */
-
     if (DefaultDepthOfScreen(scn) == 1) {
 	top_fg_pixel = top_half_fg_pixel = BlackPixelOfScreen(scn);
 	top_bg_pixel = top_half_bg_pixel = WhitePixelOfScreen(scn);
@@ -583,7 +581,7 @@ static void
 ClassInitialize(void)
 {
     XawInitializeWidgetSet();
-    /* fprintf(stderr, "ThreeD: ClassInitialize\n"); */
+
     XtQReliefSimple = XrmPermStringToQuark("simple");
     XtQReliefSunken = XrmPermStringToQuark("sunken");
     XtQReliefFlat = XrmPermStringToQuark("flat");
@@ -604,7 +602,7 @@ ClassInitialize(void)
 /* ARGSUSED */
 static void
 ClassPartInitialize(WidgetClass wc)
- {
+{
     ThreeDClassRec *tdwc = (ThreeDClassRec *) wc;
     ThreeDClassRec *super = (ThreeDClassRec *) tdwc->core_class.superclass;
 
@@ -623,17 +621,16 @@ Initialize(
     ThreeDWidget tdw = (ThreeDWidget) new;
     Screen *scr = XtScreen(new);
 
-    /* fprintf(stderr, "ThreeD: Initialize (%s)\n", XtClass(new)->core_class.class_name); */
     if (tdw->threeD.be_nice_to_cmap || DefaultDepthOfScreen(scr) == 1) {
 	AllocTopShadowPixmap(new);
 	AllocBotShadowPixmap(new);
     } else {
 	if (tdw->threeD.top_shadow_pixel == tdw->threeD.bot_shadow_pixel) {
 	    /*
-	       Eeek.  We're probably going to XQueryColor() twice
-	       for each widget.  Necessary because you can set the
-	       top and bottom shadows independent of each other in
-	       SetValues.  Some cacheing would certainly help...
+	     * Eeek.  We're probably going to XQueryColor() twice for each
+	     * widget.  Necessary because you can set the top and bottom
+	     * shadows independent of each other in SetValues.  Some caching
+	     * would certainly help...
 	     */
 	    AllocTopShadowPixel(new);
 	    AllocBotShadowPixel(new);
@@ -697,8 +694,9 @@ Redisplay(
     case XtReliefFlat:
 	Draw3DFrame(w, event, region, 2);
 	break;
+    case XtReliefNone:		/* FALLTHRU */
     default:
-	;			/* to make ANSI C happy :-) */
+	break;
     }
 }
 
@@ -802,12 +800,13 @@ Draw3DFrame(
     XPoint pt[6];
     ThreeDWidget tdw = (ThreeDWidget) gw;
     Dimension s = tdw->threeD.shadow_width;
+
     /*
-     * draw the frame using the core part width and height,
-     * and the threeD part shadow_width.
+     * Draw the frame using the core part width and height, and the threeD part
+     * shadow_width.
      *
-     *  no point to do anything if the shadow_width is 0 or the
-     *  widget has not been realized.
+     * There is no point to do anything if the shadow_width is 0 or the widget
+     * has not been realized.
      */
     if ((s > 0) && XtIsRealized(gw)) {
 
@@ -885,14 +884,14 @@ _Xaw3dDrawShadows(
     XPoint pt[6];
     ThreeDWidget tdw = (ThreeDWidget) gw;
     Dimension s = tdw->threeD.shadow_width;
-    /*
-     * draw the shadows using the core part width and height,
-     * and the threeD part shadow_width.
-     *
-     *  no point to do anything if the shadow_width is 0 or the
-     *  widget has not been realized.
-     */
 
+    /*
+     * Draw the shadows using the core part width and height, and the threeD
+     * part shadow_width.
+     *
+     * There is no point to do anything if the shadow_width is 0 or the widget
+     * has not been realized.
+     */
     if ((s > 0) && XtIsRealized(gw)) {
 
 	Dimension h = tdw->core.height;

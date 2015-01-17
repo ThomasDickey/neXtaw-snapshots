@@ -1419,6 +1419,7 @@ CreateDialog(
 		void (*func) (Widget, Widget, char *))
 {
     Widget popup, form;
+    Widget shell = GetShell(parent);
     Arg args[5];
     Cardinal num_args;
 
@@ -1429,7 +1430,7 @@ CreateDialog(
     num_args++;
     XtSetArg(args[num_args], XtNallowShellResize, TRUE);
     num_args++;
-    XtSetArg(args[num_args], XtNtransientFor, GetShell(parent));
+    XtSetArg(args[num_args], XtNtransientFor, shell);
     num_args++;
     popup = XtCreatePopupShell(name, transientShellWidgetClass,
 			       parent, args, num_args);
@@ -1442,14 +1443,13 @@ CreateDialog(
     return (popup);
 }
 
- /*     Function Name: GetShell
-  *   Description: Walks up the widget hierarchy to find the
-  *             nearest shell widget.
-  *     Arguments: w - the widget whose parent shell should be returned.
-  *     Returns: The shell widget among the ancestors of w that is the
-  *             fewest levels up in the widget hierarchy.
-  */
-
+/*     Function Name: GetShell
+ *   Description: Walks up the widget hierarchy to find the
+ *             nearest shell widget.
+ *     Arguments: w - the widget whose parent shell should be returned.
+ *     Returns: The shell widget among the ancestors of w that is the
+ *             fewest levels up in the widget hierarchy.
+ */
 static Widget
 GetShell(Widget w)
 {

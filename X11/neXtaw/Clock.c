@@ -224,10 +224,12 @@ Initialize(Widget request GCC_UNUSED,
 	(void) time(&time_value);
 	tm = *localtime(&time_value);
 	str = asctime(&tm);
-	if (w->clock.font == NULL)
-	    w->clock.font = XQueryFont(XtDisplay(w),
-				       XGContextFromGC(
-							  DefaultGCOfScreen(XtScreen(w))));
+	if (w->clock.font == NULL) {
+	    w->clock.font
+		= XQueryFont(XtDisplay(w),
+			     XGContextFromGC(
+						DefaultGCOfScreen(XtScreen(w))));
+	}
 	min_width = XTextWidth(w->clock.font, str,
 			       (int) strlen(str)) + 2 * w->clock.padding;
 	min_height = w->clock.font->ascent +
@@ -481,9 +483,9 @@ clock_tic(XtPointer client_data, XtIntervalId * id)
 	if (w->clock.show_second_hand == TRUE) {
 	    w->clock.segbuffptr = w->clock.sec;
 	    DrawSecond(w,
-		       w->clock.second_hand_length - 2,
+		       (Dimension) (w->clock.second_hand_length - 2),
 		       w->clock.second_hand_width,
-		       w->clock.minute_hand_length + 2,
+		       (Dimension) (w->clock.minute_hand_length + 2),
 		       tm.tm_sec * 12
 		);
 	    if (w->clock.Hdpixel != w->core.background_pixel)
@@ -799,9 +801,9 @@ DrawClockFace(ClockWidget w)
     w->clock.segbuffptr = w->clock.segbuff;
     w->clock.numseg = 0;
     for (i = 0; i < 60; i++)
-	DrawLine(w, ((i % 5) == 0)
-		 ? w->clock.second_hand_length
-		 : (w->clock.radius - delta),
+	DrawLine(w, (Dimension) (((i % 5) == 0)
+				 ? w->clock.second_hand_length
+				 : (w->clock.radius - delta)),
 		 w->clock.radius, i * 12);
     /*
      * Go ahead and draw it.

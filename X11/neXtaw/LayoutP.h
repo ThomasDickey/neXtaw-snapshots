@@ -1,6 +1,4 @@
 /*
- * $XConsortium: LayoutP.h,v 1.2 92/01/22 18:03:08 keith Exp $
- *
  * Copyright 1991 Massachusetts Institute of Technology
  *
  * Permission to use, copy, modify, distribute, and sell this software and its
@@ -17,7 +15,7 @@
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL M.I.T.
  * BE LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
  * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
- * OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN 
+ * OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * Author:  Keith Packard, MIT X Consortium
@@ -76,9 +74,9 @@
 
 #define QuarkToWidget(l,q)  XtNameToWidget((Widget) l, \
 					   (char *) XrmQuarkToString(q));
-					   
+
 typedef enum _BoxType { BoxBox, WidgetBox, GlueBox, VariableBox } BoxType;
-    
+
 typedef enum _LayoutDirection {
     LayoutHorizontal = 0, LayoutVertical = 1
 } LayoutDirection;
@@ -222,7 +220,19 @@ typedef struct _LayoutRec {
     ConstraintPart constraint;
 #ifdef MOTIF
     XmManagerPart  manager;
-#endif    
+#endif
     LayoutPart     layout;
 } LayoutRec;
+
+#define YY_STACK_USED 0
+
+/* laygram.y */
+extern int LayYYwrap (void);
+extern void LayYYerror (const char *);
+extern void LayYYsetsource (char *);
+extern void LayYYsetdest (LayoutPtr *c);
+
+/* laylex.l */
+extern int LayYYlex (void);
+
 #endif

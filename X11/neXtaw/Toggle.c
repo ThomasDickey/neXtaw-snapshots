@@ -49,7 +49,7 @@ other dealings in this Software without prior written authorization.
 #include <X11/Xmu/Misc.h>
 #include "ToggleP.h"
 #include "TraversalP.h"
-#ifdef HAS_XMU_H
+#ifdef HAVE_XMU_H
 #include <X11/Xmu/Xmu.h>
 #endif
 
@@ -100,8 +100,8 @@ static XtResource resources[] =
 #undef offset
 
 static void Toggle(Widget, XEvent *, String *, Cardinal *);
-static void Initialize(Widget, Widget, ArgList *, Cardinal *);
-static void Notify(Widget, XEvent *, String, Cardinal *);
+static void Initialize(Widget, Widget, ArgList, Cardinal *);
+static void Notify(Widget, XEvent *, String *, Cardinal *);
 static void ToggleSet(Widget, XEvent *, String *, Cardinal *);
 static void ToggleHighlight(Widget, XEvent *, String *, Cardinal *);
 static void ToggleUnhighlight(Widget, XEvent *, String *, Cardinal *);
@@ -266,7 +266,6 @@ ClassInit(void)
     /*
      * Find the set and unset actions in the command widget's action table.
      */
-
     XtGetActionList(commandWidgetClass, &actions, &num_actions);
 
     for (i = 0; i < num_actions; i++) {
@@ -290,7 +289,7 @@ ClassInit(void)
 static void
 Initialize(Widget request,
 	   Widget new,
-	   ArgList * args GCC_UNUSED,
+	   ArgList args GCC_UNUSED,
 	   Cardinal *num_args GCC_UNUSED)
 {
     ToggleWidget tw = (ToggleWidget) new;
@@ -319,7 +318,6 @@ Initialize(Widget request,
      * I want to set the toggle if the user set the state to "On" in
      * the resource group, reguardless of what my ancestors did.
      */
-
     if (tw_req->command.set)
 	ToggleSet(new, (XEvent *) NULL, (String *) NULL, (Cardinal *) 0);
 
@@ -579,7 +577,7 @@ Toggle(Widget w,
 static void
 Notify(Widget w,
        XEvent *event GCC_UNUSED,
-       String params GCC_UNUSED,
+       String *params GCC_UNUSED,
        Cardinal *num_params GCC_UNUSED)
 {
     ToggleWidget tw = (ToggleWidget) w;
@@ -742,7 +740,7 @@ TurnOffRadioSiblings(Widget w)
 
 	    Notify(group->widget,
 		   (XEvent *) NULL,
-		   (String) NULL,
+		   (String *) NULL,
 		   (Cardinal *) 0);
 	}
 	group = group->next;
@@ -792,7 +790,6 @@ XawToggleChangeRadioGroup(Widget w,
      * If the toggle that we are about to add is set then we will
      * unset all toggles in the new radio group.
      */
-
     if (tw->command.set && radio_group != NULL)
 	XawToggleUnsetCurrent(radio_group);
 
@@ -854,7 +851,7 @@ XawToggleSetCurrent(Widget radio_group,
 			  (Cardinal *) 0);
 		Notify((Widget) local_tog,
 		       (XEvent *) NULL,
-		       (String) NULL,
+		       (String *) NULL,
 		       (Cardinal *) 0);
 	    }
 	return;
@@ -863,13 +860,13 @@ XawToggleSetCurrent(Widget radio_group,
     /*
      * find top of radio_roup
      */
-
-    for (; group->prev != NULL; group = group->prev) ;
+    for (; group->prev != NULL; group = group->prev) {
+	;
+    }
 
     /*
      * search for matching radio data.
      */
-
     while (group != NULL) {
 	local_tog = (ToggleWidget) group->widget;
 	if ((local_tog->toggle.radio_data == radio_data)) {
@@ -880,7 +877,7 @@ XawToggleSetCurrent(Widget radio_group,
 			  (Cardinal *) 0);
 		Notify((Widget) local_tog,
 		       (XEvent *) NULL,
-		       (String) NULL,
+		       (String *) NULL,
 		       (Cardinal *) 0);
 	    }
 	    return;		/* found it, done */
@@ -905,7 +902,7 @@ XawToggleUnsetCurrent(Widget radio_group)
     if (local_tog->command.set) {
 	class = (ToggleWidgetClass) local_tog->core.widget_class;
 	class->toggle_class.Unset(radio_group, NULL, NULL, 0);
-	Notify(radio_group, (XEvent *) NULL, (String) NULL, (Cardinal *) 0);
+	Notify(radio_group, (XEvent *) NULL, (String *) NULL, (Cardinal *) 0);
     }
     if (GetRadioGroup(radio_group) == NULL)
 	return;

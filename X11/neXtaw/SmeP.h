@@ -95,9 +95,7 @@ typedef struct _SmeRec {
  *
  ************************************************************/
 
-typedef void (*_XawEntryVoidFunc) ();
-
-#define XtInheritHighlight   ((_XawEntryVoidFunc) _XtInherit)
+#define XtInheritHighlight   ((void(*)(Widget)) _XtInherit)
 #define XtInheritUnhighlight XtInheritHighlight
 #define XtInheritNotify      XtInheritHighlight
 

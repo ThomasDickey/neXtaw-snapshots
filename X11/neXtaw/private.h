@@ -33,6 +33,8 @@
 
 #include "config.h"
 
+#include <stdint.h>
+
 #ifndef	GCC_UNUSED
 #define	GCC_UNUSED		/* nothing */
 #endif

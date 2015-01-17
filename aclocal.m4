@@ -1,4 +1,4 @@
-dnl $XTermId: aclocal.m4,v 1.7 2015/01/08 01:02:07 tom Exp $
+dnl $XTermId: aclocal.m4,v 1.8 2015/01/17 01:43:01 tom Exp $
 dnl
 dnl ---------------------------------------------------------------------------
 dnl
@@ -1314,6 +1314,59 @@ AC_CHECK_PROGS(LINT, tdlint lint alint splint lclint)
 AC_SUBST(LINT_OPTS)
 ])dnl
 dnl ---------------------------------------------------------------------------
+dnl CF_PROG_YACC version: 2 updated: 1997/12/16 11:20:41
+dnl ------------
+dnl A better version of AC_PROC_YACC, verifies that we'll only choose bison if
+dnl we'll be able to compile with it.  Bison uses alloca, which isn't all that
+dnl portable.
+AC_DEFUN([CF_PROG_YACC],
+[
+AC_REQUIRE([AC_PROG_CC])
+AC_CACHE_VAL(cf_cv_prog_YACC,[
+if test -n "$YACC" ; then
+  cf_cv_prog_YACC="$YACC" # Let the user override the test.
+else
+cat >conftest.y <<EOF
+%{
+void yyerror(s) char *s; { }
+%}
+%token	NUMBER
+%%
+time	: NUMBER ':' NUMBER
+	;
+%%
+int yylex() { return NUMBER; }
+int main() { return yyparse(); }
+EOF
+  for cf_prog in 'bison -y' byacc yacc
+  do
+    rm -f y.tab.[ch]
+    AC_MSG_CHECKING(for $cf_prog)
+    cf_command="$cf_prog conftest.y"
+    cf_result=no
+    if AC_TRY_EVAL(cf_command) && test -s y.tab.c ; then
+      mv y.tab.c conftest.c
+      rm -f y.tab.h
+      if test "$cf_prog" = 'bison -y' ; then
+        if AC_TRY_EVAL(ac_link) && test -s conftest ; then
+          cf_result=yes
+        fi
+      else
+        cf_result=yes
+      fi
+    fi
+    AC_MSG_RESULT($cf_result)
+    if test $cf_result = yes ; then
+      cf_cv_prog_YACC="$cf_prog"
+      break
+    fi
+  done
+fi
+])
+YACC="$cf_cv_prog_YACC"
+AC_SUBST(YACC)dnl
+])dnl
+dnl ---------------------------------------------------------------------------
 dnl CF_REMOVE_DEFINE version: 3 updated: 2010/01/09 11:05:50
 dnl ----------------
 dnl Remove all -U and -D options that refer to the given symbol from a list
@@ -1448,7 +1501,7 @@ CF_VERBOSE(...checked $1 [$]$1)
 AC_SUBST(EXTRA_LDFLAGS)
 ])dnl
 dnl ---------------------------------------------------------------------------
-dnl CF_SHARED_OPTS version: 84 updated: 2013/11/03 06:26:10
+dnl CF_SHARED_OPTS version: 85 updated: 2015/01/10 13:38:03
 dnl --------------
 dnl --------------
 dnl Attempt to determine the appropriate CC/LD options for creating a shared
@@ -1711,7 +1764,7 @@ CF_EOF
 			EXTRA_LDFLAGS="${cf_ld_rpath_opt}\${RPATH_LIST} $EXTRA_LDFLAGS"
 		fi
 		CF_SHARED_SONAME
-		MK_SHARED_LIB='${LD} -shared -Bshareable -soname=`basename $[@]` -o $[@]'
+		MK_SHARED_LIB='${CC} ${CFLAGS} -shared -Wl,-soname,'$cf_cv_shared_soname',-stats,-lc -o $[@]'
 		;;
 	netbsd*) #(vi
 		CC_SHARED_OPTS="$CC_SHARED_OPTS -DPIC"
@@ -2115,6 +2168,51 @@ if test "$with_dmalloc" = yes ; then
 fi
 ])dnl
 dnl ---------------------------------------------------------------------------
+dnl CF_WITH_EXPORT_SYMS version: 3 updated: 2014/12/20 19:16:08
+dnl -------------------
+dnl Use this with libtool to specify the list of symbols that may be exported.
+dnl The input file contains one symbol per line; comments work with "#".
+dnl
+dnl $1 = basename of the ".sym" file (default $PACKAGE)
+AC_DEFUN([CF_WITH_EXPORT_SYMS],
+[
+AC_MSG_CHECKING(if exported-symbols file should be used)
+AC_ARG_WITH(export-syms,
+	[  --with-export-syms=XXX  limit exported symbols using libtool],
+	[with_export_syms=$withval],
+	[with_export_syms=no])
+if test "x$with_export_syms" = xyes
+then
+	with_export_syms='${top_srcdir}/package/ifelse($1,,${PACKAGE},[$1]).sym'
+	AC_SUBST(PACKAGE)
+fi
+AC_MSG_RESULT($with_export_syms)
+if test "x$with_export_syms" != xno
+then
+	EXPORT_SYMS="-export-symbols $with_export_syms"
+	AC_SUBST(EXPORT_SYMS)
+fi
+])dnl
+dnl ---------------------------------------------------------------------------
+dnl CF_WITH_INSTALL_PREFIX version: 4 updated: 2010/10/23 15:52:32
+dnl ----------------------
+dnl Configure-script option to give a default value for the poorly-chosen name
+dnl $(DESTDIR).
+AC_DEFUN([CF_WITH_INSTALL_PREFIX],
+[
+AC_MSG_CHECKING(for install-prefix)
+AC_ARG_WITH(install-prefix,
+	[  --with-install-prefix=XXX sets DESTDIR, useful for packaging],
+	[cf_opt_with_install_prefix=$withval],
+	[cf_opt_with_install_prefix=${DESTDIR:-no}])
+AC_MSG_RESULT($cf_opt_with_install_prefix)
+if test "$cf_opt_with_install_prefix" != no ; then
+	CF_PATH_SYNTAX(cf_opt_with_install_prefix)
+	DESTDIR=$cf_opt_with_install_prefix
+fi
+AC_SUBST(DESTDIR)
+])dnl
+dnl ---------------------------------------------------------------------------
 dnl CF_WITH_LIBTOOL version: 31 updated: 2014/11/15 19:05:29
 dnl ---------------
 dnl Provide a configure option to incorporate libtool.  Define several useful
@@ -2394,6 +2492,53 @@ AC_DEFUN([CF_WITH_VALGRIND],[
 CF_NO_LEAKS_OPTION(valgrind,
 	[  --with-valgrind         test: use valgrind],
 	[USE_VALGRIND])
+])dnl
+dnl ---------------------------------------------------------------------------
+dnl CF_WITH_VERSIONED_SYMS version: 3 updated: 2014/12/20 19:16:08
+dnl ----------------------
+dnl Use this when building shared library with ELF, to markup symbols with the
+dnl version identifier from the given input file.  Generally that identifier is
+dnl the same as the SONAME at which the symbol was first introduced.
+dnl
+dnl $1 = basename of the ".map" file (default $PACKAGE)
+AC_DEFUN([CF_WITH_VERSIONED_SYMS],
+[
+AC_MSG_CHECKING(if versioned-symbols file should be used)
+AC_ARG_WITH(versioned-syms,
+	[  --with-versioned-syms=X markup versioned symbols using ld],
+	[with_versioned_syms=$withval],
+	[with_versioned_syms=no])
+if test "x$with_versioned_syms" = xyes
+then
+	with_versioned_syms='${top_srcdir}/package/ifelse($1,,${PACKAGE},[$1]).map'
+	AC_SUBST(PACKAGE)
+fi
+AC_MSG_RESULT($with_versioned_syms)
+
+RESULTING_SYMS=
+VERSIONED_SYMS=
+
+if test "x$with_versioned_syms" != xno
+then
+	RESULTING_SYMS=$with_versioned_syms
+	case "x$MK_SHARED_LIB" in
+	*-Wl,*) #(vi
+		VERSIONED_SYMS="-Wl,--version-script,\$(RESULTING_SYMS)"
+		MK_SHARED_LIB=`echo "$MK_SHARED_LIB" | sed -e "s%-Wl,%\\[$]{VERSIONED_SYMS} -Wl,%"`
+		CF_VERBOSE(MK_SHARED_LIB:  $MK_SHARED_LIB)
+		;;
+	*-dy*) #(vi
+		VERSIONED_SYMS="-Wl,-M,\$(RESULTING_SYMS)"
+		MK_SHARED_LIB=`echo "$MK_SHARED_LIB" | sed -e "s%-dy%\\[$]{VERSIONED_SYMS} -dy%"`
+		CF_VERBOSE(MK_SHARED_LIB:  $MK_SHARED_LIB)
+		;;
+	*)
+		AC_MSG_WARN(this system does not support versioned-symbols)
+		;;
+	esac
+fi
+AC_SUBST(RESULTING_SYMS)
+AC_SUBST(VERSIONED_SYMS)
 ])dnl
 dnl ---------------------------------------------------------------------------
 dnl CF_WITH_XPM version: 3 updated: 2012/10/04 06:57:36
@@ -2851,120 +2996,4 @@ DFT_DEP_SUFFIX="$DFT_DEP_SUFFIX"
 RM_SHARED_OPTS="$RM_SHARED_OPTS"
 cf_cv_do_symlinks="$cf_cv_do_symlinks"
 cf_cv_shlib_version="$cf_cv_shlib_version"
-])
-dnl ---------------------------------------------------------------------------
-dnl CF_WITH_INSTALL_PREFIX version: 4 updated: 2010/10/23 15:52:32
-dnl ----------------------
-dnl Configure-script option to give a default value for the poorly-chosen name
-dnl $(DESTDIR).
-AC_DEFUN([CF_WITH_INSTALL_PREFIX],
-[
-AC_MSG_CHECKING(for install-prefix)
-AC_ARG_WITH(install-prefix,
-	[  --with-install-prefix=XXX sets DESTDIR, useful for packaging],
-	[cf_opt_with_install_prefix=$withval],
-	[cf_opt_with_install_prefix=${DESTDIR:-no}])
-AC_MSG_RESULT($cf_opt_with_install_prefix)
-if test "$cf_opt_with_install_prefix" != no ; then
-	CF_PATH_SYNTAX(cf_opt_with_install_prefix)
-	DESTDIR=$cf_opt_with_install_prefix
-fi
-AC_SUBST(DESTDIR)
-])dnl
-dnl ---------------------------------------------------------------------------
-dnl CF_WITH_VERSIONED_SYMS version: 3 updated: 2014/12/20 19:16:08
-dnl ----------------------
-dnl Use this when building shared library with ELF, to markup symbols with the
-dnl version identifier from the given input file.  Generally that identifier is
-dnl the same as the SONAME at which the symbol was first introduced.
-dnl
-dnl $1 = basename of the ".map" file (default $PACKAGE)
-AC_DEFUN([CF_WITH_VERSIONED_SYMS],
-[
-AC_MSG_CHECKING(if versioned-symbols file should be used)
-AC_ARG_WITH(versioned-syms,
-	[  --with-versioned-syms=X markup versioned symbols using ld],
-	[with_versioned_syms=$withval],
-	[with_versioned_syms=no])
-if test "x$with_versioned_syms" = xyes
-then
-	with_versioned_syms='${top_srcdir}/package/ifelse($1,,${PACKAGE},[$1]).map'
-	AC_SUBST(PACKAGE)
-fi
-AC_MSG_RESULT($with_versioned_syms)
-
-RESULTING_SYMS=
-VERSIONED_SYMS=
-
-if test "x$with_versioned_syms" != xno
-then
-	RESULTING_SYMS=$with_versioned_syms
-	case "x$MK_SHARED_LIB" in
-	*-Wl,*) #(vi
-		VERSIONED_SYMS="-Wl,--version-script,\$(RESULTING_SYMS)"
-		MK_SHARED_LIB=`echo "$MK_SHARED_LIB" | sed -e "s%-Wl,%\\[$]{VERSIONED_SYMS} -Wl,%"`
-		CF_VERBOSE(MK_SHARED_LIB:  $MK_SHARED_LIB)
-		;;
-	*-dy*) #(vi
-		VERSIONED_SYMS="-Wl,-M,\$(RESULTING_SYMS)"
-		MK_SHARED_LIB=`echo "$MK_SHARED_LIB" | sed -e "s%-dy%\\[$]{VERSIONED_SYMS} -dy%"`
-		CF_VERBOSE(MK_SHARED_LIB:  $MK_SHARED_LIB)
-		;;
-	*)
-		AC_MSG_WARN(this system does not support versioned-symbols)
-		;;
-	esac
-fi
-AC_SUBST(RESULTING_SYMS)
-AC_SUBST(VERSIONED_SYMS)
-])dnl
-dnl ---------------------------------------------------------------------------
-dnl CF_WITH_EXPORT_SYMS version: 3 updated: 2014/12/20 19:16:08
-dnl -------------------
-dnl Use this with libtool to specify the list of symbols that may be exported.
-dnl The input file contains one symbol per line; comments work with "#".
-dnl
-dnl $1 = basename of the ".sym" file (default $PACKAGE)
-AC_DEFUN([CF_WITH_EXPORT_SYMS],
-[
-AC_MSG_CHECKING(if exported-symbols file should be used)
-AC_ARG_WITH(export-syms,
-	[  --with-export-syms=XXX  limit exported symbols using libtool],
-	[with_export_syms=$withval],
-	[with_export_syms=no])
-if test "x$with_export_syms" = xyes
-then
-	with_export_syms='${top_srcdir}/package/ifelse($1,,${PACKAGE},[$1]).sym'
-	AC_SUBST(PACKAGE)
-fi
-AC_MSG_RESULT($with_export_syms)
-if test "x$with_export_syms" != xno
-then
-	EXPORT_SYMS="-export-symbols $with_export_syms"
-	AC_SUBST(EXPORT_SYMS)
-fi
-])dnl
-dnl ---------------------------------------------------------------------------
-AC_DEFUN(AC_CHECK_NEXTAW,
-[
-AC_ARG_ENABLE(obsolete_selections,
-	[  --enable-obsolete-selections    Use CUT_BUFFER stuff from X10],
-	[ if test "$withval" = yes; then
-		AC_DEFINE(OBSOLETE_SELECTIONS, 1, [#undef OBSOLETE_SELECTIONS])
-	fi ])
-
-dnl Check for wide chars
-AC_CHECK_HEADER(wctype.h, AC_DEFINE(HAS_WCTYPE_H))
-AC_CHECK_HEADER(widec.h, AC_DEFINE(HAS_WIDEC_H))
-AC_CHECK_HEADER(wchar.h, AC_DEFINE(HAS_WCHAR_H))
-AC_CHECK_HEADER(X11/Xmu/Xmu.h, AC_DEFINE(HAS_XMU_H))
-AC_CHECK_FUNC(wcslen, , AC_DEFINE(USE_XWCHAR_STRING))
-AC_CHECK_FUNC(mbtowc, , AC_DEFINE(USE_XMBTOWC))
-AC_CHECK_FUNCS(wslen wscpy wsncpy)
-
-LDFLAGS="$LDFLAGS $X_LIBS"
-dnl AC_CHECK_LIB(X11, main)
-dnl AC_CHECK_LIB(Xt, main)
-AC_CHECK_LIB(Xext, main)
-AC_CHECK_LIB(Xmu, main)
 ])
