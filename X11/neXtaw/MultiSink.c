@@ -102,7 +102,7 @@ static void SetTabs(Widget, int, short *);
 static void DisplayText(Widget, Position, Position,
 			XawTextPosition, XawTextPosition, Boolean);
 static void InsertCursor(Widget, Position, Position, XawTextInsertState);
-static void FindPosition(Widget, XawTextPosition, int, int, int,
+static void FindPosition(Widget, XawTextPosition, int, int, Boolean,
 			 XawTextPosition *, int *, int *);
 static void FindDistance(Widget, XawTextPosition, int,
 			 XawTextPosition, int *,
@@ -249,7 +249,6 @@ CharWidth(Widget w, int x, wchar_t c)
  * NOTE:  If this string attempts to paint past the end of the window
  *        then this function will return zero.
  */
-
 static Dimension
 PaintText(Widget w, GC gc, Position x, Position y, wchar_t *buf, int len)
 {
@@ -285,7 +284,6 @@ PaintText(Widget w, GC gc, Position x, Position y, wchar_t *buf, int len)
 /*
  * This function does not know about drawing more than one line of text.
  */
-
 static void
 DisplayText(
 	       Widget w,
@@ -308,12 +306,12 @@ DisplayText(
     if (!sink->multi_sink.echo)
 	return;
 
-    y += abs(ext->max_logical_extent.y);
+    y = (Position) (y + abs(ext->max_logical_extent.y));
     for (j = 0; pos1 < pos2;) {
 	pos1 = (int) XawTextSourceRead(source, pos1, &blk, (int) (pos2 - pos1));
 	for (k = 0; k < blk.length; k++) {
 	    if (j >= BUFSIZ) {	/* buffer full, dump the text. */
-		x += PaintText(w, gc, x, y, buf, j);
+		x = (Position) (x + PaintText(w, gc, x, y, buf, j));
 		j = 0;
 	    }
 	    buf[j] = ((wchar_t *) blk.ptr)[k];
@@ -329,14 +327,14 @@ DisplayText(
 			) == 0))
 		    return;
 
-		x += temp;
+		x = (Position) (x + temp);
 		width = (Dimension) CharWidth(w, x, _Xaw_atowc(XawTAB));
 		XFillRectangle(XtDisplayOfObject(w), XtWindowOfObject(w),
 			       invgc, (int) x,
 			       (int) y - abs(ext->max_logical_extent.y),
 			       (unsigned int) width,
 			       (unsigned int) ext->max_logical_extent.height);
-		x += width;
+		x = (Position) (x + width);
 		j = -1;
 	    } else if (XwcTextEscapement(sink->multi_sink.fontset,
 					 &buf[j], 1) == 0) {
@@ -360,7 +358,6 @@ DisplayText(
  * RETURNED        rect - an X rectangle to return the cursor bounds in.
  *	Returns: none.
  */
-
 static void
 GetCursorBounds(Widget w, XRectangle * rect)
 {
@@ -408,7 +405,6 @@ InsertCursor(
 /*
  * Given two positions, find the distance between them.
  */
-
 static void
 FindDistance(
 		Widget w,
@@ -451,8 +447,9 @@ FindPosition(
 		XawTextPosition fromPos,	/* Starting position. */
 		int fromx,	/* Horizontal location of starting position. */
 		int width,	/* Desired width. */
-		int stopAtWordBreak,	/* Whether the resulting position should be at
-					   a word break. */
+		Boolean stopAtWordBreak,	/* Whether the resulting
+						   position should be at a word
+						   break.  */
 		XawTextPosition * resPos,	/* Resulting position. */
 		int *resWidth,	/* Actual width used. */
 		int *resHeight)	/* Height required. */
@@ -568,7 +565,6 @@ GetGC(MultiSinkObject sink)
  *	Returns: none.
  *
  */
-
 /* ARGSUSED */
 static void
 Initialize(
@@ -603,7 +599,6 @@ Initialize(
  *	Arguments: w - the MultiSink Object.
  *	Returns: none.
  */
-
 static void
 Destroy(Widget w)
 {
@@ -625,7 +620,6 @@ Destroy(Widget w)
  *                 new - what the object will become.
  *	Returns: True if redisplay is needed.
  */
-
 /* ARGSUSED */
 static Boolean
 SetValues(
@@ -672,7 +666,6 @@ SetValues(
  *                 height - height to fit lines into.
  *	Returns: the number of lines that will fit.
  */
-
 /* ARGSUSED */
 static int
 MaxLines(Widget w, Dimension height)
@@ -692,7 +685,6 @@ MaxLines(Widget w, Dimension height)
  *                 lines - the number of lines.
  *	Returns: the height.
  */
-
 /* ARGSUSED */
 static int
 MaxHeight(Widget w, int lines)
@@ -710,7 +702,6 @@ MaxHeight(Widget w, int lines)
  *                 tabs - the text positions of the tabs.
  *	Returns: none
  */
-
 static void
 SetTabs(Widget w, int tab_count, short *tabs)
 {
@@ -778,5 +769,5 @@ _XawMultiSinkPosToXY(Widget w, XawTextPosition pos, Position * x, Position * y)
     XFontSetExtents *ext = XExtentsOfFontSet(sink->multi_sink.fontset);
 
     _XawTextPosToXY(w, pos, x, y);
-    *y += abs(ext->max_logical_extent.y);
+    *y = (Position) (*y + abs(ext->max_logical_extent.y));
 }

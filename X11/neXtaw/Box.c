@@ -166,7 +166,6 @@ WidgetClass boxWidgetClass = (WidgetClass) & boxClassRec;
  * Returns minimum width and height that will preserve the same layout.
  *
  */
-
 static void
 DoLayout(
 	    BoxWidget bbw,
@@ -193,7 +192,7 @@ DoLayout(
 	if (bbw->composite.children[i]->core.width > w)
 	    w = bbw->composite.children[i]->core.width;
     }
-    w += h_space;
+    w = (Dimension) (w + h_space);
     if (w > width)
 	width = w;
     h = bbw->box.v_space;
@@ -218,14 +217,18 @@ DoLayout(
 		     */
 		    AssignMax(w, lw);
 		    if (vbox) {
-			h += lh + bbw->box.v_space;
+			h = (Dimension) (h + lh + bbw->box.v_space);
 			lh = 0;
 			lw = h_space;
 		    }
 		} else if (!position) {
 		    /* too narrow for this widget; we'll assume we can grow */
-		    DoLayout(bbw, lw + bw, height, reply_width,
-			     reply_height, position);
+		    DoLayout(bbw,
+			     (Dimension) (lw + bw),
+			     height,
+			     reply_width,
+			     reply_height,
+			     position);
 		    return;
 		}
 	    }
@@ -246,10 +249,10 @@ DoLayout(
 		 */
 		if (XtIsRealized(widget) && widget->core.mapped_when_managed)
 		    XUnmapWindow(XtDisplay(widget), XtWindow(widget));
-		XtMoveWidget(widget, (int) lw, (int) h);
+		XtMoveWidget(widget, (Position) lw, (Position) h);
 	    }
-	    lw += bw;
-	    bh = widget->core.height + 2 * widget->core.border_width;
+	    lw = (Dimension) (lw + bw);
+	    bh = (Dimension) (widget->core.height + 2 * widget->core.border_width);
 	    AssignMax(lh, bh);
 	}			/* if managed */
     }				/* for */
@@ -262,7 +265,7 @@ DoLayout(
 	bbw->box.orientation = XtorientVertical;
 	while (sh < height && sw > width) {
 	    width_needed = sw;
-	    DoLayout(bbw, sw - 1, height, &sw, &sh, False);
+	    DoLayout(bbw, (Dimension) (sw - 1), height, &sw, &sh, False);
 	}
 	if (sh < height)
 	    width_needed = sw;
@@ -294,11 +297,11 @@ DoLayout(
     /* Finish off last line */
     if (lw > h_space) {
 	AssignMax(w, lw);
-	h += lh + bbw->box.v_space;
+	h = (Dimension) (h + lh + bbw->box.v_space);
     }
 
-    *reply_width = Max(w, 1);
-    *reply_height = Max(h, 1);
+    *reply_width = (Dimension) Max(w, 1);
+    *reply_height = (Dimension) Max(h, 1);
 }
 
 /*
@@ -306,7 +309,6 @@ DoLayout(
  * Calculate preferred size, given constraining box, caching it in the widget.
  *
  */
-
 static XtGeometryResult
 PreferredSize(Widget widget,
 	      XtWidgetGeometry * constraint,
@@ -372,7 +374,7 @@ PreferredSize(Widget widget,
 	} else {
 	    width = preferred_width;
 	    do {		/* find some width big enough to stay within this height */
-		width *= 2;
+		width = (Dimension) (width * 2);
 		if (width > constraint->width)
 		    width = constraint->width;
 		DoLayout(w, width, 0, &preferred_width, &preferred_height, FALSE);
@@ -381,7 +383,7 @@ PreferredSize(Widget widget,
 	    if (width != constraint->width) {
 		do {		/* find minimum width */
 		    width = preferred_width;
-		    DoLayout(w, preferred_width - 1, 0,
+		    DoLayout(w, (Dimension) (preferred_width - 1), 0,
 			     &preferred_width, &preferred_height, FALSE);
 		} while (preferred_height < constraint->height);
 		/* one last time */
@@ -408,7 +410,6 @@ PreferredSize(Widget widget,
  * Actually layout the box
  *
  */
-
 static void
 Resize(Widget w)
 {
@@ -426,7 +427,6 @@ Resize(Widget w)
  *
  * TryNewLayout just says if it's possible, and doesn't actually move the kids
  */
-
 static Boolean
 TryNewLayout(BoxWidget bbw)
 {
@@ -513,7 +513,6 @@ TryNewLayout(BoxWidget bbw)
  * 'reply' is unused; we say only yeay or nay, never almost.
  *
  */
-
 /*ARGSUSED*/
 static XtGeometryResult
 GeometryManager(Widget w,
@@ -553,14 +552,6 @@ GeometryManager(Widget w,
 
 	bbw = (BoxWidget) w->core.parent;
 
-/* whenever a child changes his geometry, we attempt to
- * change ours to be the minimum enclosing size...
-	if (((request->width + request->border_width <= width + borderWidth) &&
-	    (request->height + request->border_width <= height + borderWidth))
-	|| bbw->box.preferred_width < bbw->core.width
-	|| bbw->box.preferred_height < bbw->core.height
-	|| TryNewLayout(bbw)) {
- */
 	if (TryNewLayout(bbw)) {
 	    /* Fits in existing or new space, relayout */
 	    (*XtClass((Widget) bbw)->core_class.resize) ((Widget) bbw);

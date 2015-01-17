@@ -1,11 +1,13 @@
--- $XTermId: ChangeLog,v 1.21 2015/01/16 02:13:10 tom Exp $
+-- $XTermId: ChangeLog,v 1.24 2015/01/17 02:09:20 tom Exp $
 
-20150115
+20150116
 	+ update copyright notices.
 	+ reformat sources with ncu-indent.
-	+ convert to ANSI (4800 warnings -> 750 with gcc-normal)
+	+ convert to ANSI
+	+ drop archaic/obsolete sharedlib.c
 	+ eliminate NeedFunctionPrototypes and NeedWideFunctionPrototypes
 	  ifdefs
+	+ add configure checks for lex/yacc, drop the copy of generated source.
 	+ use shared-library autoconf macros from cdk/dialog/ncurses.
 	+ purge automake from build-scripts.
 	+ reformatted this file, to help with metrics-gathering.

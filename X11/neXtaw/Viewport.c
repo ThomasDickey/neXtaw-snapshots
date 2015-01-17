@@ -21,9 +21,9 @@ X CONSORTIUM BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN
 AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-Except as contained in this notice, the name of the X Consortium shall not be
-used in advertising or otherwise to promote the sale, use or other dealings
-in this Software without prior written authorization from the X Consortium.
+Except as contained in this notice, the name(s) of the above copyright holders
+shall not be used in advertising or otherwise to promote the sale, use or
+other dealings in this Software without prior written authorization. 
 
 Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
@@ -85,7 +85,7 @@ static void Realize(Widget, XtValueMask *, XSetWindowAttributes *);
 static void Resize(Widget);
 static void ChangeManaged(Widget);
 static Boolean SetValues(Widget, Widget, Widget, ArgList, Cardinal *);
-static Boolean Layout(FormWidget, Dimension, Dimension);
+static Boolean Layout(Widget, Dimension, Dimension, Boolean);
 static XtGeometryResult GeometryManager(Widget, XtWidgetGeometry *, XtWidgetGeometry *);
 static XtGeometryResult PreferredGeometry(Widget, XtWidgetGeometry *, XtWidgetGeometry *);
 /* *INDENT-ON* */
@@ -803,15 +803,15 @@ Resize(Widget widget)
 /* ARGSUSED */
 static Boolean
 Layout(
-	  FormWidget w,
+	  Widget w,
 	  Dimension width GCC_UNUSED,
-	  Dimension height GCC_UNUSED)
+	  Dimension height GCC_UNUSED,
+	  Boolean force_relayout GCC_UNUSED)
 {
-    ComputeLayout((Widget) w,
-    /*query= */ True,
-    /*destroy= */ True);
-    w->form.preferred_width = w->core.width;
-    w->form.preferred_height = w->core.height;
+    FormWidget fw = (FormWidget) w;
+    ComputeLayout(w, /*query= */ True, /*destroy= */ True);
+    fw->form.preferred_width = fw->core.width;
+    fw->form.preferred_height = fw->core.height;
     return False;
 }
 

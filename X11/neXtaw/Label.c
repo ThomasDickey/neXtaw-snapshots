@@ -275,7 +275,6 @@ _XawLabelDraw16(dpy, d, gc, x, y, str, n)
 /*
  * Calculate width and height of displayed text in pixels
  */
-
 static void
 SetTextWidthAndHeight(LabelWidget lw)
 {
@@ -314,9 +313,11 @@ SetTextWidthAndHeight(LabelWidget lw)
 		if (width > (int) lw->label.label_width)
 		    lw->label.label_width = (Dimension) width;
 		label = nl + 1;
-		if (*label)
-		    lw->label.label_height +=
-			ext->max_ink_extent.height;
+		if (*label) {
+		    lw->label.label_height
+			= (Dimension) (lw->label.label_height +
+				       ext->max_ink_extent.height);
+		}
 	    }
 	    if (*label) {
 		int width = XmbTextEscapement(fset, label, (int) strlen(label));
@@ -355,9 +356,12 @@ SetTextWidthAndHeight(LabelWidget lw)
 		if (width > (int) lw->label.label_width)
 		    lw->label.label_width = (Dimension) width;
 		label = nl + 1;
-		if (*label)
-		    lw->label.label_height +=
-			(Dimension) (fs->max_bounds.ascent + fs->max_bounds.descent);
+		if (*label) {
+		    lw->label.label_height
+			= (Dimension) (lw->label.label_height +
+				       fs->max_bounds.ascent +
+				       fs->max_bounds.descent);
+		}
 	    }
 	    if (*label) {
 		int width = XTextWidth(fs, label, (int) strlen(label));
@@ -473,10 +477,10 @@ compute_bitmap_offsets(LabelWidget lw)
      * (internal_width, internal_height + lbm_y)
      */
     if (lw->label.lbm_height != 0) {
-	lw->label.lbm_y = (lw->core.height -
-			   (lw->threeD.shadow_width * 2 +
-			    lw->label.internal_height * 2 +
-			    lw->label.lbm_height)) / 2;
+	lw->label.lbm_y = (int) ((lw->core.height -
+				  ((lw->threeD.shadow_width * 2) +
+				   (lw->label.internal_height * 2) +
+				   (Dimension) lw->label.lbm_height)) / 2);
     } else {
 	lw->label.lbm_y = 0;
     }
@@ -529,7 +533,7 @@ Initialize(Widget request GCC_UNUSED,
 	lw->core.width = (Dimension) (lw->label.label_width +
 				      (2 * lw->label.internal_width) +
 				      (2 * lw->threeD.shadow_width) +
-				      LEFT_OFFSET(lw));
+				      (Dimension) LEFT_OFFSET(lw));
     }
 
     lw->label.label_x = lw->label.label_y = 0;
@@ -540,7 +544,6 @@ Initialize(Widget request GCC_UNUSED,
 /*
  * Repaint the widget window
  */
-
 /* ARGSUSED */
 static void
 Redisplay(Widget gw, XEvent *event, Region region)
@@ -565,8 +568,9 @@ Redisplay(Widget gw, XEvent *event, Region region)
 	int x = w->label.label_x;
 	unsigned int width = w->label.label_width;
 	if (w->label.lbm_width) {
-	    if (w->label.label_x > (x = w->label.internal_width))
-		width += w->label.label_x - x;
+	    if (w->label.label_x > (x = w->label.internal_width)) {
+		width = (width + (unsigned) (w->label.label_x - x));
+	    }
 	}
 	if (XRectInRegion(region, x, w->label.label_y,
 			  width, w->label.label_height) == RectangleOut) {
@@ -602,7 +606,7 @@ Redisplay(Widget gw, XEvent *event, Region region)
 
 	    XFontSetExtents *ext = XExtentsOfFontSet(w->label.fontset);
 
-	    ksy += abs(ext->max_ink_extent.y);
+	    ksy = (Position) (ksy + abs(ext->max_ink_extent.y));
 
 	    if (len == MULTI_LINE_LABEL) {
 		char *nl;
@@ -615,7 +619,7 @@ Redisplay(Widget gw, XEvent *event, Region region)
 				  ksy,
 				  label,
 				  (int) (nl - label));
-		    ksy += ext->max_ink_extent.height;
+		    ksy = (Position) (ksy + ext->max_ink_extent.height);
 		    label = nl + 1;
 		}
 		len = (int) strlen(label);
@@ -636,8 +640,8 @@ Redisplay(Widget gw, XEvent *event, Region region)
 		    else
 			XDrawString(XtDisplay(gw), XtWindow(gw), gc,
 				    w->label.label_x, y, label, (int) (nl - label));
-		    y += w->label.font->max_bounds.ascent +
-			w->label.font->max_bounds.descent;
+		    y = (Position) (y + w->label.font->max_bounds.ascent +
+				    w->label.font->max_bounds.descent);
 		    label = nl + 1;
 		}
 		len = (int) strlen(label);
@@ -693,24 +697,27 @@ _Reposition(LabelWidget lw,
 	break;
 
     case XtJustifyRight:
-	newPos = width -
-	    (lw->label.label_width
-	     + lw->label.internal_width
-	     + lw->threeD.shadow_width);
+	newPos = (Position) (width -
+			     (lw->label.label_width
+			      + lw->label.internal_width
+			      + lw->threeD.shadow_width));
 	break;
 
     case XtJustifyCenter:
     default:
-	newPos = (int) (width - lw->label.label_width) / 2;
+	newPos = (Position) ((width - lw->label.label_width) / 2);
 	break;
     }
+
     if (newPos < (Position) leftedge)
 	newPos = leftedge;
-    *dx = newPos - lw->label.label_x;
+    *dx = (Position) (newPos - lw->label.label_x);
     lw->label.label_x = newPos;
-    *dy = (newPos = (int) (height - lw->label.label_height) / 2)
-	- lw->label.label_y;
+
+    newPos = (Position) ((height - lw->label.label_height) / 2);
+    *dy = (Position) (newPos - lw->label.label_y);
     lw->label.label_y = newPos;
+
     return;
 }
 
@@ -803,11 +810,13 @@ SetValues(Widget current,
 
 	set_bitmap_info(newlw);
 
-	if ((curlw->core.width == reqlw->core.width) && !checks[WIDTH])
-	    newlw->core.width = (Dimension) (newlw->label.label_width +
-					     LEFT_OFFSET(newlw) +
-					     2 * newlw->label.internal_width +
-					     2 * newlw->threeD.shadow_width);
+	if ((curlw->core.width == reqlw->core.width) && !checks[WIDTH]) {
+	    newlw->core.width
+		= (Dimension) (newlw->label.label_width +
+			       (Dimension) LEFT_OFFSET(newlw) +
+			       2 * newlw->label.internal_width +
+			       2 * newlw->threeD.shadow_width);
+	}
     }
 
     if (curlw->label.foreground != newlw->label.foreground
@@ -860,7 +869,7 @@ QueryGeometry(
     preferred->width = (Dimension) (lw->label.label_width +
 				    2 * lw->label.internal_width +
 				    2 * lw->threeD.shadow_width +
-				    LEFT_OFFSET(lw));
+				    (Dimension) LEFT_OFFSET(lw));
     preferred->height = (Dimension) (lw->label.label_height +
 				     2 * lw->label.internal_height +
 				     2 * lw->threeD.shadow_width);

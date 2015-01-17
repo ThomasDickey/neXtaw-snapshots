@@ -1,5 +1,3 @@
-/* $XConsortium: XawI18n.h,v 1.12 95/01/25 00:48:44 kaleb Exp $ */
-
 /************************************************************
 
 Copyright (c) 1993, 1994  X Consortium
@@ -27,11 +25,11 @@ in this Software without prior written authorization from the X Consortium.
 
 ********************************************************/
 
-#ifdef HAS_WCHAR_H
+#ifdef HAVE_WCHAR_H
 #include <wchar.h>
 #endif
 
-#ifdef HAS_WCTYPE_H
+#ifdef HAVE_WCTYPE_H
 #include <wctype.h>
 #if !defined(__linux__)
 #ifdef HAVE_WIDEC_H
@@ -77,10 +75,3 @@ extern int _Xaw_iswspace(wchar_t);
 extern wchar_t _Xaw_atowc (
     unsigned char	c
 );
-
-#ifndef HAS_ISW_FUNCS
-#include <ctype.h>
-#ifndef iswspace
-#define iswspace(c) (isascii(c) && isspace(toascii(c)))
-#endif
-#endif

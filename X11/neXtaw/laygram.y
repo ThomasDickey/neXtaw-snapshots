@@ -1,16 +1,19 @@
 %{
-#include    <X11/Xlib.h>
-#include    <X11/Xresource.h>
-#include    <stdio.h>
-#include    <X11/IntrinsicP.h>
-#include    <X11/cursorfont.h>
-#include    <X11/StringDefs.h>
 
-#include    <X11/Xmu/Misc.h>
-#include    <X11/Xmu/Converters.h>
-#include    "LayoutP.h"
+# include "private.h"
 
-static LayoutPtr    *dest;
+# include <X11/Xlib.h>
+# include <X11/Xresource.h>
+# include <stdio.h>
+# include <X11/IntrinsicP.h>
+# include <X11/cursorfont.h>
+# include <X11/StringDefs.h>
+
+# include <X11/Xmu/Misc.h>
+# include <X11/Xmu/Converters.h>
+# include "LayoutP.h"
+
+static LayoutPtr *dest;
 
 %}
 
@@ -234,7 +237,7 @@ expr		:   expr PLUS expr
 		|   expr PERCENTOF expr
 		    { goto binary; }
 		|   MINUS expr		    %prec UMINUS
-		    { unary: ;
+		    {
 			$$ = New(ExprRec);
 			$$->type = Unary;
 			$$->u.unary.op = $1;
@@ -251,13 +254,14 @@ orientation	:   VERTICAL
 		;
 %%
 
-int yywrap ()
+int
+yywrap(void)
 {
     return 1;
 }
 
-void yysetdest (c)
-    LayoutPtr	*c;
+void
+yysetdest(LayoutPtr * c)
 {
     dest = c;
 }

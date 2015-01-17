@@ -209,7 +209,6 @@ WidgetClass layoutWidgetClass = (WidgetClass) & layoutClassRec;
  *	Arguments: none.
  *	Returns: none.
  */
-
 /*ARGSUSED*/
 static Boolean
 CvtStringToLayout(
@@ -430,7 +429,6 @@ QueryGeometry(
  * Layout section.  Exports LayoutGetNaturalSize and
  * LayoutLayout to above section
  */
-
 static void
 PrintGlue(GlueRec g)
 {
@@ -646,6 +644,7 @@ ComputeNaturalSizes(LayoutWidget l, BoxPtr box, LayoutDirection dir)
     Widget w;
     SubInfoPtr info;
     int minStretchOrder, minShrinkOrder;
+    double tmp;
     LayoutDirection thisDir;
 
     DBUG_ENTER("ComputeNaturalSizes");
@@ -667,7 +666,7 @@ ComputeNaturalSizes(LayoutWidget l, BoxPtr box, LayoutDirection dir)
 	DoShrink(l, box, !dir);
 	break;
     case GlueBox:
-	box->natural[dir] = Evaluate(l, box, box->u.glue.expr, 0.0);
+	box->natural[dir] = (int) (tmp = Evaluate(l, box, box->u.glue.expr, 0.0));
 	box->natural[!dir] = 0;
 	DoStretch(l, box, dir);
 	DoShrink(l, box, dir);
@@ -752,7 +751,7 @@ ComputeNaturalSizes(LayoutWidget l, BoxPtr box, LayoutDirection dir)
     DBUG_VOID_RETURN;
 }
 
-/* given the boxs geometry, set the geometry of the pieces */
+/* given the box's geometry, set the geometry of the pieces */
 
 #define GluePart(a,b,dist)	((a) ? ((int) (((a) * (dist)) / (b) + \
 					((dist >= 0) ? 0.5 : -0.5))) : 0)
@@ -904,9 +903,9 @@ SetSizes(BoxPtr box, Position x, Position y)
 	for (child = box->u.box.firstChild; child; child = child->nextSibling) {
 	    SetSizes(child, x, y);
 	    if (box->u.box.dir == LayoutHorizontal) {
-		x += child->size[LayoutHorizontal];
+		x = (Position) (x + child->size[LayoutHorizontal]);
 	    } else {
-		y += child->size[LayoutVertical];
+		y = (Position) (y + child->size[LayoutVertical]);
 	    }
 	}
 	break;

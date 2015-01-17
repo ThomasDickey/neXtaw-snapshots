@@ -389,8 +389,8 @@ DrawArrow(
 
     core = sbw->threeD.bot_half_shadow_GC;
     border = sbw->threeD.bot_shadow_GC;
-    x += w / 2;
-    y += h / 2;
+    x = (Position) (x + w / 2);
+    y = (Position) (y + h / 2);
     if (h < 3)
 	h = 3;
     if (w < 3)
@@ -398,11 +398,11 @@ DrawArrow(
     if (vert) {			/* vertical */
 	hw = w / 2;
 	d = ((float) w / 2) / (float) h;
-	y -= h / 2;
+	y = (Position) (y - (h / 2));
     } else {
 	hw = h / 2;
 	d = ((float) h / 2) / (float) w;
-	x -= w / 2;
+	x = (Position) (x - (w / 2));
     }
 
     if (up) {			/* up/left */
@@ -561,10 +561,10 @@ PaintThumb(
 
     if (sbw->scrollbar.orientation == XtorientHorizontal) {
 	start = (Dimension) (bsize * 2 + 1);
-	floor -= 1;
+	floor = (Position) (floor - 1);
     } else {
 	start = 1;
-	floor -= (bsize * 2);
+	floor = (Position) (floor - (bsize * 2));
     }
 
     newtop = (Position) (start + (int) ((float) tzl * sbw->scrollbar.top));
@@ -1082,7 +1082,7 @@ RepeatNotify(
 {
 #define A_FEW_PIXELS 5
     ScrollbarWidget sbw = (ScrollbarWidget) client_data;
-    int call_data;
+    intptr_t call_data;
     if (sbw->scrollbar.scroll_mode != 1 && sbw->scrollbar.scroll_mode != 3) {
 	sbw->scrollbar.timer_id = (XtIntervalId) 0;
 	return;
@@ -1116,7 +1116,7 @@ NotifyScroll(
 		Cardinal *num_params GCC_UNUSED)
 {
     ScrollbarWidget sbw = (ScrollbarWidget) w;
-    int call_data;
+    intptr_t call_data;
     Position x, y;
     Dimension bsize = (Dimension) (sbw->scrollbar.draw_arrows
 				   ? (sbw->scrollbar.thickness)
@@ -1217,7 +1217,7 @@ ScrollOneLineUp(
 		   Cardinal *num_params GCC_UNUSED)
 {
     ScrollbarWidget sbw = (ScrollbarWidget) w;
-    int call_data;
+    intptr_t call_data;
 
     if (sbw->scrollbar.scroll_mode == 2		/* if scroll continuous */
 	|| LookAhead(w, event))
@@ -1240,7 +1240,7 @@ ScrollPageUp(
 		Cardinal *num_params GCC_UNUSED)
 {
     ScrollbarWidget sbw = (ScrollbarWidget) w;
-    int call_data;
+    intptr_t call_data;
 
     if (sbw->scrollbar.scroll_mode == 2		/* if scroll continuous */
 	|| LookAhead(w, event))
@@ -1263,7 +1263,7 @@ ScrollOneLineDown(
 		     Cardinal *num_params GCC_UNUSED)
 {
     ScrollbarWidget sbw = (ScrollbarWidget) w;
-    int call_data;
+    intptr_t call_data;
 
     if (sbw->scrollbar.scroll_mode == 2		/* if scroll continuous */
 	|| LookAhead(w, event))
@@ -1286,7 +1286,7 @@ ScrollPageDown(
 		  Cardinal *num_params GCC_UNUSED)
 {
     ScrollbarWidget sbw = (ScrollbarWidget) w;
-    int call_data;
+    intptr_t call_data;
 
     if (sbw->scrollbar.scroll_mode == 2		/* if scroll continuous */
 	|| LookAhead(w, event))

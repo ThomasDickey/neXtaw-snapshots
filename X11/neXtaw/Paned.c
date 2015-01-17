@@ -298,7 +298,6 @@ WidgetClass vPanedWidgetClass = (WidgetClass) & panedClassRec;
  *                 off_size_ret - the new off_size ** RETURNED **
  *	Returns: the amount of change in size.
  */
-
 static void
 AdjustPanedSize(
 		   PanedWidget pw,
@@ -316,9 +315,9 @@ AdjustPanedSize(
     ForAllPanes(pw, childP) {
 	int size = Max(PaneInfo(*childP)->size, (int) PaneInfo(*childP)->min);
 	AssignMin(size, (int) PaneInfo(*childP)->max);
-	newsize += size + pw->paned.internal_bw;
+	newsize = (Dimension) (newsize + size + pw->paned.internal_bw);
     }
-    newsize -= pw->paned.internal_bw;
+    newsize = (Dimension) (newsize - pw->paned.internal_bw);
 
     if (newsize < 1)
 	newsize = 1;
@@ -370,7 +369,6 @@ AdjustPanedSize(
  *      vertical  - return height
  *      !vertical - return width
  */
-
 static Dimension
 PaneSize(Widget w, Boolean vertical)
 {
@@ -385,7 +383,6 @@ PaneSize(Widget w, Boolean vertical)
  *                  vert - TRUE if this is a vertical paned widget.
  *	Returns: the request information.
  */
-
 static Dimension
 GetRequestInfo(XtWidgetGeometry * geo_struct, Boolean vert)
 {
@@ -417,7 +414,6 @@ GetRequestInfo(XtWidgetGeometry * geo_struct, Boolean vert)
  *                 shrink - TRUE if we need to shrink a pane, FALSE otherwise.
  *	Returns: pane to resize or NULL.
  */
-
 static Pane
 ChoosePaneToResize(
 		      PanedWidget pw,
@@ -447,21 +443,21 @@ ChoosePaneToResize(
 	    ((paneindex != PaneIndex(*childP)) || (dir == AnyPane)))
 	    return (pane);
 
-/*
- * This is counter-intuitive, but if we are resizing the pane
- * above the grip we want to choose a pane below the grip to lose,
- * and visa-versa.
- */
+	/*
+	 * This is counter-intuitive, but if we are resizing the pane
+	 * above the grip we want to choose a pane below the grip to lose,
+	 * and visa-versa.
+	 */
 
 	if (_dir == LowRightPane)
 	    --childP;
 	else
 	    ++childP;
 
-/*
- * If we have come to and edge then reduce the rule set, and try again.
- * If we are reduced the rules to none, then return NULL.
- */
+	/*
+	 * If we have come to and edge then reduce the rule set, and try again.
+	 * If we are reduced the rules to none, then return NULL.
+	 */
 
 	if ((childP - pw->composite.children < 0) ||
 	    (childP - pw->composite.children >= pw->paned.num_panes)) {
@@ -478,7 +474,6 @@ ChoosePaneToResize(
  *                 shrink -TRUE if we want to shrink this pane, FALSE otherwise
  *	Returns: TRUE if the rule is satisfied.
  */
-
 static Boolean
 SatisfiesRule1(Pane pane, Boolean shrink)
 {
@@ -491,7 +486,6 @@ SatisfiesRule1(Pane pane, Boolean shrink)
  *	Arguments: pane - the pane to check.
  *	Returns: TRUE if the rule is satisfied.
  */
-
 static Boolean
 SatisfiesRule2(Pane pane)
 {
@@ -504,7 +498,6 @@ SatisfiesRule2(Pane pane)
  *                 shrink -TRUE if we want to shrink this pane, FALSE otherwise
  *	Returns: TRUE if the rule is satisfied.
  */
-
 static Boolean
 SatisfiesRule3(Pane pane, Boolean shrink)
 {
@@ -524,7 +517,6 @@ SatisfiesRule3(Pane pane, Boolean shrink)
  *                            THIS VALUE IS USED AND RETURNED.
  *	Returns: none.
  */
-
 static void
 LoopAndRefigureChildren(
 			   PanedWidget pw,
@@ -608,7 +600,6 @@ LoopAndRefigureChildren(
  *      the choosing of panes procedes in reverse order starting with the
  *      last child.
  */
-
 static void
 RefigureLocations(
 		     PanedWidget pw,
@@ -638,10 +629,10 @@ RefigureLocations(
     if ((dir != ThisBorderOnly) && (sizeused != pane_size))
 	LoopAndRefigureChildren(pw, paneindex, dir, &sizeused);
 
-/*
- * If we still are not the right size, then tell the pane that
- * wanted to resize that it can't.
- */
+    /*
+     * If we still are not the right size, then tell the pane that
+     * wanted to resize that it can't.
+     */
 
     if ((paneindex != NO_INDEX) && (dir != AnyPane)) {
 	Pane pane = PaneInfo(*(pw->composite.children + paneindex));
@@ -662,7 +653,7 @@ RefigureLocations(
 
     ForAllPanes(pw, childP) {
 	PaneInfo(*childP)->delta = loc;
-	loc += PaneInfo(*childP)->size + pw->paned.internal_bw;
+	loc = (Position) (loc + PaneInfo(*childP)->size + pw->paned.internal_bw);
     }
 }
 
@@ -671,7 +662,6 @@ RefigureLocations(
  *	Arguments: pw - the paned widget.
  *	Returns: none.
  */
-
 static void
 CommitNewLocations(PanedWidget pw)
 {
@@ -740,7 +730,6 @@ CommitNewLocations(PanedWidget pw)
  *
  *      NOTE: This is the resize Procedure for the Paned widget.
  */
-
 static void
 RefigureLocationsAndCommit(Widget w)
 {
@@ -760,7 +749,6 @@ RefigureLocationsAndCommit(Widget w)
  *                 on_size, off_size - size of rectangle.
  *	Returns: none
  */
-
 static void
 _DrawRect(
 	     PanedWidget pw,
@@ -783,7 +771,6 @@ _DrawRect(
  *                 gc - the GC to use to draw the borders.
  *	Returns: none.
  */
-
 static void
 _DrawInternalBorders(PanedWidget pw, GC gc)
 {
@@ -826,7 +813,6 @@ _DrawInternalBorders(PanedWidget pw, GC gc)
  *                         draw them in.
  *	Returns: none.
  */
-
 static void
 _DrawTrackLines(PanedWidget pw, Boolean erase)
 {
@@ -872,7 +858,6 @@ _DrawTrackLines(PanedWidget pw, Boolean erase)
  *                 event - a pointer to an event.
  *	Returns: if this is a vertical pane then (y) else (x).
  */
-
 static int
 GetEventLocation(PanedWidget pw, XEvent *event)
 {
@@ -909,7 +894,6 @@ GetEventLocation(PanedWidget pw, XEvent *event)
  *                 dir - the direction that we are to be moving.
  *	Returns: none.
  */
-
 static void
 StartGripAdjustment(
 		       PanedWidget pw,
@@ -972,7 +956,6 @@ StartGripAdjustment(
  *                 loc - location of pointer in proper direction.
  *	Returns: none.
  */
-
 static void
 MoveGripAdjustment(
 		      PanedWidget pw,
@@ -1023,7 +1006,6 @@ MoveGripAdjustment(
  *	Arguments: pw - the paned widget.
  *	Returns: none
  */
-
 static void
 CommitGripAdjustment(PanedWidget pw)
 {
@@ -1052,7 +1034,6 @@ CommitGripAdjustment(PanedWidget pw)
  *                 call_data - data passed to us from the grip widget.
  *	Returns: none.
  */
-
 /* ARGSUSED */
 static void
 HandleGrip(
@@ -1116,7 +1097,6 @@ HandleGrip(
  *	Arguments: pw - the paned widget.
  *	Returns: none.
  */
-
 static void
 ResortChildren(PanedWidget pw)
 {
@@ -1151,7 +1131,6 @@ ResortChildren(PanedWidget pw)
  *	Arguments: pw - the paned widget.
  *	Returns: none.
  */
-
 static void
 ManageAndUnmanageGrips(PanedWidget pw)
 {
@@ -1189,7 +1168,6 @@ ManageAndUnmanageGrips(PanedWidget pw)
  *	Arguments: child - the child that wants a grip to be created for it.
  *	Returns: none.
  */
-
 static void
 CreateGrip(Widget child)
 {
@@ -1221,7 +1199,6 @@ CreateGrip(Widget child)
  *	Arguments: w - the paned widget.
  *	Returns: none.
  */
-
 static void
 GetGCs(Widget w)
 {
@@ -1261,7 +1238,6 @@ GetGCs(Widget w)
  *	Arguments: pw - the paned widget.
  *	Returns: none.
  */
-
 static void
 SetChildrenPrefSizes(
 			PanedWidget pw,
@@ -1304,7 +1280,6 @@ SetChildrenPrefSizes(
  *	Arguments: pw - the paned widget.
  *	Returns: none
  */
-
 static void
 ChangeAllGripCursors(PanedWidget pw)
 {
@@ -1340,7 +1315,6 @@ ChangeAllGripCursors(PanedWidget pw)
  *                 pane - the pane that we are pushing.
  *	Returns: none.
  */
-
 static void
 PushPaneStack(PanedWidget pw, Pane pane)
 {
@@ -1362,7 +1336,6 @@ PushPaneStack(PanedWidget pw, Pane pane)
  * ** RETURNED **  start_size - the size that this pane started at.
  *	Returns: none.
  */
-
 static void
 GetPaneStack(PanedWidget pw, Boolean shrink, Pane * pane, int *start_size)
 {
@@ -1383,7 +1356,6 @@ GetPaneStack(PanedWidget pw, Boolean shrink, Pane * pane, int *start_size)
  *	Arguments: pw - the paned widget.
  *	Returns: TRUE if this is not the last element on the stack.
  */
-
 static Boolean
 PopPaneStack(PanedWidget pw)
 {
@@ -1405,7 +1377,6 @@ PopPaneStack(PanedWidget pw)
  *	Arguments: pw - the paned widget.
  *	Returns: none
  */
-
 static void
 ClearPaneStack(PanedWidget pw)
 {
@@ -1423,7 +1394,6 @@ ClearPaneStack(PanedWidget pw)
  *	Arguments: none.
  *	Returns: none.
  */
-
 static void
 ClassInitialize(void)
 {
@@ -1445,7 +1415,6 @@ ClassInitialize(void)
  * request will have no effect; i.e. when the requestor is already
  * of the desired geometry.
  */
-
 static XtGeometryResult
 GeometryManager(
 		   Widget w,
@@ -1461,14 +1430,14 @@ GeometryManager(
     XtGeometryResult result;
     Boolean almost = FALSE;
 
-/*
- * If any of the following is true, disallow the geometry change.
- *
- * o The paned widget is realized and allow_resize is false for the pane.
- * o The child did not ask to change the on_size.
- * o The request is not a width or height request.
- * o The requested size is the same as the current size.
- */
+    /*
+     * If any of the following is true, disallow the geometry change.
+     *
+     * o The paned widget is realized and allow_resize is false for the pane.
+     * o The child did not ask to change the on_size.
+     * o The request is not a width or height request.
+     * o The requested size is the same as the current size.
+     */
 
     if ((XtIsRealized((Widget) pw) && !pane->allow_resize) ||
 	!(mask & ((vert) ? CWHeight : CWWidth)) ||
@@ -1487,10 +1456,10 @@ GeometryManager(
     AdjustPanedSize(pw, PaneSize((Widget) pw, !vert), &result, &on_size,
 		    &off_size);
 
-/*
- * Fool the Refigure Locations proc to thinking that we are
- * a different on_size;
- */
+    /*
+     * Fool the Refigure Locations proc to thinking that we are
+     * a different on_size;
+     */
 
     if (result != XtGeometryNo) {
 	if (vert)
@@ -1501,9 +1470,9 @@ GeometryManager(
 
     RefigureLocations(pw, PaneIndex(w), AnyPane);
 
-/*
- * Set up reply struct and reset core on_size.
- */
+    /*
+     * Set up reply struct and reset core on_size.
+     */
 
     if (vert) {
 	pw->core.height = old_paned_size;
@@ -1515,17 +1484,17 @@ GeometryManager(
 	reply->width = (Dimension) pane->size;
     }
 
-/*
- * IF either of the following is true.
- *
- * o There was a "off_size" request and the new "off_size" is different
- *   from that requested.
- * o There was no "off_size" request and the new "off_size" is different
- *
- * o The "on_size" we will allow is different from that requested.
- *
- * THEN: set almost
- */
+    /*
+     * IF either of the following is true.
+     *
+     * o There was a "off_size" request and the new "off_size" is different
+     *   from that requested.
+     * o There was no "off_size" request and the new "off_size" is different
+     *
+     * o The "on_size" we will allow is different from that requested.
+     *
+     * THEN: set almost
+     */
 
     if (!((vert ? CWWidth : CWHeight) & mask)) {
 	if (vert)
@@ -1535,7 +1504,7 @@ GeometryManager(
     }
 
     almost = GetRequestInfo(request, !vert) != GetRequestInfo(reply, !vert);
-    almost |= (GetRequestInfo(request, vert) != GetRequestInfo(reply, vert));
+    almost |= GetRequestInfo(request, vert) != GetRequestInfo(reply, vert);
 
     if ((mask & XtCWQueryOnly) || almost) {
 	pane->wp_size = old_wpsize;
@@ -1585,10 +1554,10 @@ Realize(
 
     (*SuperClass->core_class.realize) (w, valueMask, attributes);
 
-/*
- * Before we commit the new locations we need to realize all the panes and
- * their grips.
- */
+    /*
+     * Before we commit the new locations we need to realize all the panes and
+     * their grips.
+     */
 
     ForAllPanes(pw, childP) {
 	XtRealizeWidget(*childP);
@@ -1664,9 +1633,9 @@ ChangeManaged(Widget w)
     if (pw->paned.recursively_called++)
 	return;
 
-/*
- * If the size is zero then set it to the size of the widest or tallest pane.
- */
+    /*
+     * If the size is zero then set it to the size of the widest or tallest pane.
+     */
 
     if ((size = PaneSize((Widget) pw, !vert)) == 0) {
 	size = 1;
@@ -1694,9 +1663,9 @@ ChangeManaged(Widget w)
 
     SetChildrenPrefSizes((PanedWidget) w, size);
 
-/*
- * ForAllPanes can now be used.
- */
+    /*
+     * ForAllPanes can now be used.
+     */
 
     if (PaneSize((Widget) pw, vert) == 0)
 	AdjustPanedSize(pw, size, (XtGeometryResult *) NULL,
@@ -1712,7 +1681,6 @@ ChangeManaged(Widget w)
  *	Arguments: w - the paned widget.
  *	Returns: none.
  */
-
 static void
 Resize(Widget w)
 {
@@ -1761,10 +1729,10 @@ SetValues(
     }
 
     if (IsVert(old_pw) != IsVert(new_pw)) {
-/*
- * We are fooling the paned widget into thinking that is needs to
- * fully refigure everything, which is what we want.
- */
+	/*
+	 * We are fooling the paned widget into thinking that is needs to
+	 * fully refigure everything, which is what we want.
+	 */
 	if (IsVert(new_pw))
 	    new_pw->core.width = 0;
 	else
@@ -1849,7 +1817,6 @@ PaneSetValues(
  *                 min, max - the new min and max size for the pane.
  *	Returns: none.
  */
-
 void
 XawPanedSetMinMax(Widget widget, int min, int max)
 {
@@ -1866,7 +1833,6 @@ XawPanedSetMinMax(Widget widget, int min, int max)
  ** RETURNED **    min, max - the current min and max size for the pane.
  *	Returns: none.
  */
-
 void
 XawPanedGetMinMax(Widget widget, int *min, int *max)
 {
@@ -1883,7 +1849,6 @@ XawPanedGetMinMax(Widget widget, int *min, int *max)
  *                 mode - if FALSE then inhibit refigure.
  *	Returns: none.
  */
-
 void
 XawPanedSetRefigureMode(Widget w,
 			Boolean mode)
@@ -1897,7 +1862,6 @@ XawPanedSetRefigureMode(Widget w,
  *	Arguments: w - the paned widget.
  *	Returns: the number of panes in the paned widget.
  */
-
 int
 XawPanedGetNumSub(Widget w)
 {
@@ -1910,7 +1874,6 @@ XawPanedGetNumSub(Widget w)
  *	Arguments: widget - a child of the paned widget.
  *	Returns: none.
  */
-
 void
 XawPanedAllowResize(Widget widget,
 		    Boolean allow_resize)

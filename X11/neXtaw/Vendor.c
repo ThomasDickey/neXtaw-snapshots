@@ -88,7 +88,7 @@ static XtResource resources[] =
 static void XawVendorShellClassInitialize(void);
 static void XawVendorShellClassPartInit(WidgetClass);
 static void XawVendorShellInitialize(Widget, Widget, ArgList, Cardinal*);
-static Boolean XawVendorShellSetValues(Widget, Widget, Widget);
+static Boolean XawVendorShellSetValues(Widget, Widget, Widget, ArgList, Cardinal*);
 static void Realize(Widget, Mask *, XSetWindowAttributes *);
 static void ChangeManaged(Widget);
 static XtGeometryResult GeometryManager(Widget, XtWidgetGeometry *, XtWidgetGeometry *);
@@ -106,11 +106,10 @@ static CompositeClassExtensionRec vendorCompositeExt =
 };
 
 #define SuperClass (&wmShellClassRec)
-externaldef(vendorshellclassrec)
-     VendorShellClassRec vendorShellClassRec =
-     {
-	 {
-     /* superclass         */ (WidgetClass) SuperClass,
+VendorShellClassRec vendorShellClassRec =
+{
+    {
+    /* superclass         */ (WidgetClass) SuperClass,
     /* class_name         */ "VendorShell",
     /* size               */ sizeof(VendorShellRec),
     /* class_initialize   */ XawVendorShellClassInitialize,
@@ -142,28 +141,27 @@ externaldef(vendorshellclassrec)
     /* query_geometry     */ NULL,
     /* display_accelerator */ NULL,
     /* extension          */ NULL
-	 },
-	 {
+    },
+    {
     /* geometry_manager   */ GeometryManager,
     /* change_managed     */ ChangeManaged,
     /* insert_child       */ XtInheritInsertChild,
     /* delete_child       */ XtInheritDeleteChild,
     /* extension          */ (XtPointer) &vendorCompositeExt
-	 },
-	 {
+    },
+    {
     /* extension          */ NULL
-	 },
-	 {
+    },
+    {
     /* extension          */ NULL
-	 },
-	 {
+    },
+    {
     /* extension          */ NULL
-	 }
+    }
 };
 
-externaldef(vendorshellwidgetclass)
-     WidgetClass vendorShellWidgetClass =
-     (WidgetClass) (&vendorShellClassRec);
+WidgetClass vendorShellWidgetClass =
+(WidgetClass) (&vendorShellClassRec);
 
 /***************************************************************************
  *
@@ -171,28 +169,28 @@ externaldef(vendorshellwidgetclass)
  *
  ***************************************************************************/
 
-     static XtResource ext_resources[] =
-     {
-	 {XtNinputMethod, XtCInputMethod, XtRString, sizeof(String),
-	  XtOffsetOf(XawVendorShellExtRec, vendor_ext.im.input_method),
-	  XtRString, (XtPointer) NULL},
-	 {XtNpreeditType, XtCPreeditType, XtRString, sizeof(String),
-	  XtOffsetOf(XawVendorShellExtRec, vendor_ext.im.preedit_type),
-	  XtRString, (XtPointer) "OverTheSpot,OffTheSpot,Root"},
-	 {XtNopenIm, XtCOpenIm, XtRBoolean, sizeof(Boolean),
-	  XtOffsetOf(XawVendorShellExtRec, vendor_ext.im.open_im),
-	  XtRImmediate, (XtPointer) TRUE},
-	 {XtNsharedIc, XtCSharedIc, XtRBoolean, sizeof(Boolean),
-	  XtOffsetOf(XawVendorShellExtRec, vendor_ext.ic.shared_ic),
-	  XtRImmediate, (XtPointer) FALSE}
+static XtResource ext_resources[] =
+{
+    {XtNinputMethod, XtCInputMethod, XtRString, sizeof(String),
+     XtOffsetOf(XawVendorShellExtRec, vendor_ext.im.input_method),
+     XtRString, (XtPointer) NULL},
+    {XtNpreeditType, XtCPreeditType, XtRString, sizeof(String),
+     XtOffsetOf(XawVendorShellExtRec, vendor_ext.im.preedit_type),
+     XtRString, (XtPointer) "OverTheSpot,OffTheSpot,Root"},
+    {XtNopenIm, XtCOpenIm, XtRBoolean, sizeof(Boolean),
+     XtOffsetOf(XawVendorShellExtRec, vendor_ext.im.open_im),
+     XtRImmediate, (XtPointer) TRUE},
+    {XtNsharedIc, XtCSharedIc, XtRBoolean, sizeof(Boolean),
+     XtOffsetOf(XawVendorShellExtRec, vendor_ext.ic.shared_ic),
+     XtRImmediate, (XtPointer) FALSE}
 };
 
-     static void XawVendorShellExtClassInitialize(void);
-     static void XawVendorShellExtInitialize(Widget, Widget);
-     static void XawVendorShellExtDestroy(Widget);
-     static Boolean XawVendorShellExtSetValues(Widget, Widget, Widget);
+static void XawVendorShellExtClassInitialize(void);
+static void XawVendorShellExtInitialize(Widget, Widget GCC_UNUSED, ArgList, Cardinal *);
+static void XawVendorShellExtDestroy(Widget);
+static Boolean XawVendorShellExtSetValues(Widget, Widget, Widget, ArgList, Cardinal *);
 
-externaldef(vendorshellextclassrec) XawVendorShellExtClassRec
+XawVendorShellExtClassRec
 xawvendorShellExtClassRec =
 {
     {
@@ -234,18 +232,18 @@ xawvendorShellExtClassRec =
     }
 };
 
-externaldef(xawvendorshellwidgetclass) WidgetClass
+WidgetClass
 xawvendorShellExtWidgetClass = (WidgetClass) (&xawvendorShellExtClassRec);
 
 /*ARGSUSED*/
-     static Boolean
-       XawCvtCompoundTextToString(
-				     Display *dpy,
-				     XrmValuePtr args GCC_UNUSED,
-				     Cardinal *num_args GCC_UNUSED,
-				     XrmValue * fromVal,
-				     XrmValue * toVal,
-				     XtPointer *cvt_data GCC_UNUSED)
+static Boolean
+XawCvtCompoundTextToString(
+			      Display *dpy,
+			      XrmValuePtr args GCC_UNUSED,
+			      Cardinal *num_args GCC_UNUSED,
+			      XrmValue * fromVal,
+			      XrmValue * toVal,
+			      XtPointer *cvt_data GCC_UNUSED)
 {
     XTextProperty prop;
     char **list;
@@ -349,7 +347,9 @@ static Boolean
 XawVendorShellSetValues(
 			   Widget old GCC_UNUSED,
 			   Widget ref GCC_UNUSED,
-			   Widget new GCC_UNUSED)
+			   Widget new GCC_UNUSED,
+			   ArgList args GCC_UNUSED,
+			   Cardinal *num_args GCC_UNUSED)
 {
     return FALSE;
 }
@@ -377,7 +377,9 @@ XawVendorShellExtClassInitialize(void)
 static void
 XawVendorShellExtInitialize(
 			       Widget req GCC_UNUSED,
-			       Widget new)
+			       Widget new GCC_UNUSED,
+			       ArgList arg GCC_UNUSED,
+			       Cardinal *num GCC_UNUSED)
 {
     _XawImInitialize(new->core.parent, new);
 }
@@ -394,7 +396,9 @@ static Boolean
 XawVendorShellExtSetValues(
 			      Widget old GCC_UNUSED,
 			      Widget ref GCC_UNUSED,
-			      Widget new GCC_UNUSED)
+			      Widget new GCC_UNUSED,
+			      ArgList args GCC_UNUSED,
+			      Cardinal *num GCC_UNUSED)
 {
     return FALSE;
 }

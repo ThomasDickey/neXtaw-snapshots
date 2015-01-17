@@ -138,7 +138,7 @@ static void Destroy(Widget);
 static void GetValuesHook(Widget, ArgList, Cardinal *);
 static String StorePiecesInString(MultiSrcObject);
 static Boolean SetValues(Widget, Widget, Widget, ArgList, Cardinal *);
-static Boolean WriteToFile(String, String);
+static Boolean WriteToFile(char *, _Xconst char *);
 
 #define MyWStrncpy( t,s,wcnt ) (void) memmove( (t), (s), (wcnt)*sizeof(wchar_t))
 
@@ -209,7 +209,6 @@ WidgetClass multiSrcObjectClass = (WidgetClass) & multiSrcClassRec;
  *      Arguments: none.
  *      Returns: none.
  */
-
 static void
 ClassInitialize(void)
 {
@@ -225,7 +224,6 @@ ClassInitialize(void)
  *                           resource values.
  *      Returns: none.
  */
-
 /* ARGSUSED */
 static void
 Initialize(
@@ -261,7 +259,6 @@ Initialize(
  *                length - maximum number of characters to read.
  *	Returns: The number of characters read into the buffer.
  */
-
 static XawTextPosition
 ReadText(
 	    Widget w,
@@ -288,7 +285,6 @@ ReadText(
  *                 text - new text to be inserted into buffer at startPos.
  *	Returns: XawEditError or XawEditDone.
  */
-
 /*ARGSUSED*/
 static int
 ReplaceText(
@@ -466,7 +462,6 @@ ReplaceText(
  *       possible cursor positions (one before the first character and
  *       one after the last character.
  */
-
 static
   XawTextPosition
 Scan(
@@ -592,7 +587,6 @@ Scan(
  *                 text - the text block to search for.
  *	Returns: the position of the item found.
  */
-
 static XawTextPosition
 Search(
 	  Widget w,
@@ -699,7 +693,6 @@ Search(
  *                 new - what the widget will become.
  *	Returns: True if redisplay is needed.
  */
-
 /* ARGSUSED */
 static Boolean
 SetValues(
@@ -780,7 +773,6 @@ SetValues(
  *                 num_args - the number of args.
  *	Returns: none.
  */
-
 static void
 GetValuesHook(Widget w, ArgList args, Cardinal *num_args)
 {
@@ -807,7 +799,6 @@ GetValuesHook(Widget w, ArgList args, Cardinal *num_args)
  *	Arguments: src - the Multi source Widget to free.
  *	Returns: none.
  */
-
 static void
 Destroy(Widget w)
 {
@@ -828,7 +819,6 @@ Destroy(Widget w)
  *
  * The public interface is XawAsciiSourceFreeString!
  */
-
 void
 _XawMultiSourceFreeString(Widget w)
 {
@@ -850,7 +840,6 @@ _XawMultiSourceFreeString(Widget w)
  *
  * The public interface is XawAsciiSave(w)!
  */
-
 Boolean
 _XawMultiSave(Widget w)
 {
@@ -924,12 +913,11 @@ _XawMultiSave(Widget w)
  *
  * The public interface is XawAsciiSaveAsFile!
  */
-
 Boolean
 _XawMultiSaveAsFile(Widget w, _Xconst char *name)
 {
     MultiSrcObject src = (MultiSrcObject) w;
-    String mb_string;
+    char *mb_string;
     Boolean ret;
 
     mb_string = StorePiecesInString(src);
@@ -972,9 +960,8 @@ RemoveOldStringOrFile(MultiSrcObject src, Boolean checkString)
  *                 name - the name of the file
  *	Returns: returns TRUE if sucessful, FALSE otherwise.
  */
-
 static Boolean
-WriteToFile(String string, String name)
+WriteToFile(char *string, _Xconst char *name)
 {
     int fd;
 
@@ -994,7 +981,6 @@ WriteToFile(String string, String name)
  *	Returns:       char *mb_string.     Caller must free.
  *                  or 0: conversion error. Caller must panic!
  */
-
 static String
 StorePiecesInString(MultiSrcObject src)
 {
@@ -1037,7 +1023,6 @@ StorePiecesInString(MultiSrcObject src)
  *	Arguments: src - the MultiSource.
  *	Returns: none - May exit though.
  */
-
 static FILE *
 InitStringOrFile(MultiSrcObject src, Boolean newString)
 {
@@ -1261,7 +1246,6 @@ LoadPieces(MultiSrcObject src, FILE *file, char *string)
  *                 prev - the piece just before this one, or NULL.
  *	Returns: the allocated piece.
  */
-
 static MultiPiece *
 AllocNewPiece(MultiSrcObject src, MultiPiece * prev)
 {
@@ -1287,7 +1271,6 @@ AllocNewPiece(MultiSrcObject src, MultiPiece * prev)
  *	Arguments: src - The MultiSrc Widget.
  *	Returns: none.
  */
-
 static void
 FreeAllPieces(MultiSrcObject src)
 {
@@ -1309,7 +1292,6 @@ FreeAllPieces(MultiSrcObject src)
  *                 piece - the piece to remove.
  *	Returns: none.
  */
-
 static void
 RemovePiece(
 	       MultiSrcObject src,
@@ -1336,7 +1318,6 @@ RemovePiece(
  * RETURNED        first - the position of the first character in this piece.
  *	Returns: piece - the piece that contains this position.
  */
-
 static MultiPiece *
 FindPiece(
 	     MultiSrcObject src,
@@ -1362,7 +1343,6 @@ FindPiece(
  *                 piece - the piece to break.
  *	Returns: none.
  */
-
 #define HALF_PIECE (src->multi_src.piece_size/2)
 
 static void

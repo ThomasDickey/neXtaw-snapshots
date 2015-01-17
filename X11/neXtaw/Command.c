@@ -311,13 +311,18 @@ HighlightRegion(CommandWidget cbw)
     }
 
     rect.x = rect.y = (short) s;
-    rect.width = cbw->core.width - 2 * s;
-    rect.height = cbw->core.height - 2 * s;
+    rect.width = (unsigned short) (cbw->core.width - 2 * s);
+    rect.height = (unsigned short) (cbw->core.height - 2 * s);
     XUnionRectWithRegion(&rect, emptyRegion, outerRegion);
-    rect.x = rect.y += cbw->command.highlight_thickness;
-    rect.width -= cbw->command.highlight_thickness * 2;
-    rect.height -= cbw->command.highlight_thickness * 2;
+
+    rect.y = (short) (rect.y + cbw->command.highlight_thickness);
+    rect.x = rect.y;
+    rect.width = (unsigned short) (rect.width -
+				   cbw->command.highlight_thickness * 2);
+    rect.height = (unsigned short) (rect.height -
+				    cbw->command.highlight_thickness * 2);
     XUnionRectWithRegion(&rect, emptyRegion, innerRegion);
+
     XSubtractRegion(outerRegion, innerRegion, outerRegion);
     return outerRegion;
 }
@@ -436,13 +441,6 @@ Notify(Widget w,
 /*
  * Repaint the widget window
  */
-
-/************************
-*
-*  REDISPLAY (DRAW)
-*
-************************/
-
 /* ARGSUSED */
 static void
 Redisplay(Widget w, XEvent *event, Region region)
@@ -457,7 +455,6 @@ Redisplay(Widget w, XEvent *event, Region region)
  *                 change - did it change either set or highlight state?
  *	Returns: none
  */
-
 static void
 PaintCommandWidget(Widget w, XEvent *event, Region region, Boolean change)
 {
@@ -471,8 +468,10 @@ PaintCommandWidget(Widget w, XEvent *event, Region region, Boolean change)
     very_thick = cbw->command.highlight_thickness >
 	(Dimension) ((Dimension) Min(cbw->core.width, cbw->core.height) / 2);
 
-    XClearArea(XtDisplay(w), XtWindow(w), s, s, cbw->core.width - 2 * s,
-	       cbw->core.height - 2 * s, False);
+    XClearArea(XtDisplay(w), XtWindow(w), s, s,
+	       (unsigned) (cbw->core.width - 2 * s),
+	       (unsigned) (cbw->core.height - 2 * s),
+	       False);
     region = NULL;
 
     /* this ugly hack shifts the text one pixel if we are set */
@@ -485,13 +484,13 @@ PaintCommandWidget(Widget w, XEvent *event, Region region, Boolean change)
     if (cbw->label.pixmap == None) {
 	if (cbw->command.set) {
 	    if (!cbw->command.was_set) {
-		cbw->label.label_x += 1 /*s */ ;
-		cbw->label.label_y += 1 /*s */ ;
+		cbw->label.label_x = (Position) (cbw->label.label_x + 1);
+		cbw->label.label_y = (Position) (cbw->label.label_y + 1);
 		cbw->command.was_set = True;
 	    }
 	} else if (cbw->command.was_set) {
-	    cbw->label.label_x -= 1 /*s */ ;
-	    cbw->label.label_y -= 1 /*s */ ;
+	    cbw->label.label_x = (Position) (cbw->label.label_x - 1);
+	    cbw->label.label_y = (Position) (cbw->label.label_y - 1);
 	    cbw->command.was_set = False;
 	}
     }
@@ -504,9 +503,9 @@ PaintCommandWidget(Widget w, XEvent *event, Region region, Boolean change)
 	return;
     }
 
-/*
- * If we are set then use the same colors as if we are not highlighted.
- */
+    /*
+     * If we are set then use the same colors as if we are not highlighted.
+     */
 
     if (cbw->command.set == (cbw->command.highlighted == HighlightNone)) {
 	norm_gc = cbw->command.inverse_GC;
@@ -523,8 +522,8 @@ PaintCommandWidget(Widget w, XEvent *event, Region region, Boolean change)
 	    cbw->label.normal_GC = norm_gc;	/* Give the label the right GC. */
 	    XFillRectangle(XtDisplay(w), XtWindow(w), rev_gc,
 			   s, s,
-			   cbw->core.width - 2 * s,
-			   cbw->core.height - 2 * s);
+			   (unsigned) (cbw->core.width - 2 * s),
+			   (unsigned) (cbw->core.height - 2 * s));
 	} else {
 	    /* wide lines are centered on the path, so indent it */
 #if 0				/* Temporarily out */
@@ -546,11 +545,14 @@ PaintCommandWidget(Widget w, XEvent *event, Region region, Boolean change)
 	cbw->command.highlight_thickness > 0) {
 	int offset = cbw->command.highlight_thickness / 2;
 	XDrawRectangle(XtDisplay(w), XtWindow(w), cbw->command.normal_GC,
-		       s + offset + 1, s + offset + 1,
-		       cbw->core.width -
-		       cbw->command.highlight_thickness - 2 * s - 2,
-		       cbw->core.height -
-		       cbw->command.highlight_thickness - 2 * s - 2);
+		       s + offset + 1,
+		       s + offset + 1,
+		       (unsigned) (cbw->core.width -
+				   cbw->command.highlight_thickness - 2 * s
+				   - 2),
+		       (unsigned) (cbw->core.height -
+				   cbw->command.highlight_thickness - 2 * s
+				   - 2));
     }
 
     (*SuperClass->core_class.expose) (w, event, region);
@@ -572,7 +574,6 @@ Destroy(Widget w)
 /*
  * Set specified arguments into widget
  */
-
 /* ARGSUSED */
 static Boolean
 SetValues(Widget current,
