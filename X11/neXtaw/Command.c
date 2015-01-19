@@ -640,7 +640,7 @@ ShapeButton(CommandWidget cbw, Boolean checkRectangular)
 {
     Dimension corner_size = 0;
 
-    if ((cbw->command.shape_style == XawShapeRoundedRectangle)) {
+    if (cbw->command.shape_style == XawShapeRoundedRectangle) {
 	corner_size = (cbw->core.width < cbw->core.height) ? cbw->core.width
 	    : cbw->core.height;
 	corner_size = (Dimension) (corner_size * cbw->command.corner_round)

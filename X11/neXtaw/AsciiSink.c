@@ -696,11 +696,11 @@ SetTabs(
     }
 
     if (tab_count > sink->text_sink.tab_count) {
-	sink->text_sink.tabs = (Position *)
-	    XtRealloc((char *) sink->text_sink.tabs,
+	sink->text_sink.tabs = (Position *) (void *)
+	    XtRealloc((void *) sink->text_sink.tabs,
 		      (Cardinal) ((size_t) tab_count * sizeof(Position)));
-	sink->text_sink.char_tabs = (short *)
-	    XtRealloc((char *) sink->text_sink.char_tabs,
+	sink->text_sink.char_tabs = (short *) (void *)
+	    XtRealloc((void *) sink->text_sink.char_tabs,
 		      (Cardinal) ((size_t) tab_count * sizeof(short)));
     }
 

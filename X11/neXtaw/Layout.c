@@ -224,7 +224,7 @@ CvtStringToLayout(
     LayYYsetsource((char *) from->addr);
     if (!to->addr)
 	to->addr = (XtPointer) &tmp;
-    LayYYsetdest((BoxPtr *) to->addr);
+    LayYYsetdest((void *) to->addr);
     to->size = sizeof(BoxPtr *);
     return LayYYparse()? FALSE : TRUE;
 }

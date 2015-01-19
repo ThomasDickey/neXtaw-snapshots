@@ -1043,7 +1043,7 @@ Replace(
 	if (count != 0) {
 	    new_pos = XawTextSearch(tw, dir, &find);
 
-	    if ((new_pos == XawTextSearchError)) {
+	    if (new_pos == XawTextSearchError) {
 		if (count == 0) {
 		    char msg[BUFSIZ];
 		    char *pmsg;

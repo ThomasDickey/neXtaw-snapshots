@@ -917,7 +917,7 @@ arrange_subtree(TreeWidget tree,
     /*
      * now layout parent between first and last children
      */
-    if (relayout) {
+    if (relayout && child != NULL) {
 	Position adjusted;
 	firstcc = TREE_CONSTRAINT(tc->tree.children[0]);
 	lastcc = TREE_CONSTRAINT(child);

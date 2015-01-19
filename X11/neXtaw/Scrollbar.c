@@ -383,7 +383,7 @@ DrawArrow(
 	     char vert,
 	     char up)
 {
-    int i, hw;
+    int i;
     float d, s;
     GC core, border;
 
@@ -396,11 +396,9 @@ DrawArrow(
     if (w < 3)
 	w = 3;
     if (vert) {			/* vertical */
-	hw = w / 2;
 	d = ((float) w / 2) / (float) h;
 	y = (Position) (y - (h / 2));
     } else {
-	hw = h / 2;
 	d = ((float) h / 2) / (float) w;
 	x = (Position) (x - (w / 2));
     }

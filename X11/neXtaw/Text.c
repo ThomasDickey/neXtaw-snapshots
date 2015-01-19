@@ -1896,7 +1896,7 @@ _XawTextSaltAwaySelection(
 	XtMalloc((unsigned) sizeof(XawTextSelectionSalt));
     if (!salt)
 	return;
-    salt->s.selections = (Atom *)
+    salt->s.selections = (Atom *) (void *)
 	XtMalloc((unsigned) num_atoms * (unsigned) sizeof(Atom));
     if (!salt->s.selections) {
 	XtFree((char *) salt);
@@ -2092,7 +2092,7 @@ _XawTextReplace(
     delta = text->length - (int) (pos2 - pos1);
 
     if (delta < ctx->text.lastPos) {
-	for (pos2 += delta, i = 0; i < ctx->text.numranges; i++) {
+	for (i = 0; i < ctx->text.numranges; i++) {
 	    if (ctx->text.updateFrom[i] > pos1)
 		ctx->text.updateFrom[i] += delta;
 	    if (ctx->text.updateTo[i] >= pos1)

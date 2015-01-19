@@ -479,7 +479,7 @@ OpenIM(XawVendorShellExtPart * ve)
 	return;
     }
     found = False;
-    for (ns = s = ve->im.preedit_type; s && !found;) {
+    for (s = ve->im.preedit_type; s && !found;) {
 	while (*s && isspace(*s))
 	    s++;
 	if (!*s)
@@ -715,6 +715,7 @@ SizeNegotiation(
     XRectangle *pe_area_needed = NULL, *st_area_needed = NULL;
     XPointer ic_a[5];
 
+    memset(ic_a, 0, sizeof(ic_a));
     if (p->input_style & XIMPreeditArea) {
 	pe_attr = XVaCreateNestedList(0, XNAreaNeeded, &pe_area_needed, NULL);
 	SetVaArg(&ic_a[ic_cnt], (XPointer) XNPreeditAttributes);
@@ -809,6 +810,10 @@ CreateIC(
     if (((ve->im.xim == NULL) || (p = GetIcTableShared(w, ve)) == NULL) ||
 	p->xic || (p->openic_error != FALSE))
 	return;
+
+    memset(ic_a, 0, sizeof(ic_a));
+    memset(pe_a, 0, sizeof(pe_a));
+    memset(st_a, 0, sizeof(st_a));
 
     p->input_style = GetInputStyleOfIC(ve);
 
@@ -1001,7 +1006,6 @@ SetICValues(
     XPointer ic_a[20], pe_a[20], st_a[20];
     int ic_cnt = 0, pe_cnt = 0, st_cnt = 0;
     XawTextMargin *margin;
-    int height;
 
     if ((ve->im.xim == NULL) || ((p = GetIcTableShared(w, ve)) == NULL) ||
 	(p->xic == NULL))
@@ -1025,6 +1029,10 @@ SetICValues(
     }
 #endif
 
+    memset(ic_a, 0, sizeof(ic_a));
+    memset(pe_a, 0, sizeof(pe_a));
+    memset(st_a, 0, sizeof(st_a));
+
     if (p->input_style & (XIMPreeditArea | XIMPreeditPosition | XIMStatusArea)) {
 	if (p->flg & CIFontSet) {
 	    SetVaArg(&pe_a[pe_cnt], (XPointer) XNFontSet);
@@ -1035,9 +1043,6 @@ SetICValues(
 	    st_cnt++;
 	    SetVaArg(&st_a[st_cnt], (XPointer) p->font_set);
 	    st_cnt++;
-	    height = maxAscentOfFontSet(p->font_set)
-		+ maxDescentOfFontSet(p->font_set);
-	    height = SetVendorShellHeight(ve, (Dimension) height);
 	}
 	if (p->flg & CIFg) {
 	    SetVaArg(&pe_a[pe_cnt], (XPointer) XNForeground);

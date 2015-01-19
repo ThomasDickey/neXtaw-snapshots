@@ -239,7 +239,6 @@ WidgetClass simpleMenuWidgetClass = (WidgetClass) & simpleMenuClassRec;
  *      Arguments: none.
  *      Returns: none.
  */
-
 static void
 ClassInitialize(void)
 {
@@ -256,15 +255,14 @@ ClassInitialize(void)
  *      Arguments: wc - the widget class of the subclass.
  *      Returns: none.
  */
-
 static void
 ClassPartInitialize(WidgetClass wc)
 {
     SimpleMenuWidgetClass smwc = (SimpleMenuWidgetClass) wc;
 
-/*
- * Make sure that our subclass gets the extension rec too.
- */
+    /*
+     * Make sure that our subclass gets the extension rec too.
+     */
 
     extension_rec.next_extension = smwc->composite_class.extension;
     smwc->composite_class.extension = (XtPointer) &extension_rec;
@@ -277,7 +275,6 @@ ClassPartInitialize(WidgetClass wc)
  *                           resource values.
  *      Returns: none.
  */
-
 /* ARGSUSED */
 static void
 Initialize(
@@ -321,9 +318,9 @@ Initialize(
 					       XtNwidth, 10, XtNheight, 10,	/* dummy */
 					       NULL);
 
-/*
- * Add a popup_callback routine for changing the cursor.
- */
+    /*
+     * Add a popup_callback routine for changing the cursor.
+     */
 
     XtAddCallback(new, XtNpopupCallback, ChangeCursorOnGrab, (XtPointer) NULL);
 }
@@ -335,7 +332,6 @@ Initialize(
  *                 region - the region the needs to be repainted.
  *      Returns: none.
  */
-
 /* ARGSUSED */
 static void
 Redisplay(
@@ -459,7 +455,6 @@ Redisplay(
  *                 attrs - attributes for the window to create.
  *      Returns: none
  */
-
 static void
 Realize(
 	   Widget w,
@@ -491,7 +486,6 @@ Realize(
  *      Arguments: w - the simple menu widget.
  *      Returns: none.
  */
-
 static void
 Resize(Widget w)
 {
@@ -515,7 +509,6 @@ Resize(Widget w)
  *                 new - what the widget will become.
  *      Returns: none
  */
-
 /* ARGSUSED */
 static Boolean
 SetValues(
@@ -591,7 +584,6 @@ SetValues(
  * then this MUST be used, rather than our newly calculated width and
  * height.
  */
-
 static Boolean
 SetValuesHook(
 		 Widget w,
@@ -629,7 +621,6 @@ SetValuesHook(
  *                 reply - the allowed geometry.
  *	Returns: XtGeometry{Yes, No, Almost}.
  */
-
 static XtGeometryResult
 GeometryManager(
 		   Widget w,
@@ -653,14 +644,14 @@ GeometryManager(
 
     Layout(w, &(reply->width), &(reply->height));
 
-/*
- * Since we are an override shell and have no parent there is no one to
- * ask to see if this geom change is okay, so I am just going to assume
- * we can do whatever we want.  If you subclass be very careful with this
- * assumption, it could bite you.
- *
- * Chris D. Peterson - Sept. 1989.
- */
+    /*
+     * Since we are an override shell and have no parent there is no one to
+     * ask to see if this geom change is okay, so I am just going to assume
+     * we can do whatever we want.  If you subclass be very careful with this
+     * assumption, it could bite you.
+     *
+     * Chris D. Peterson - Sept. 1989.
+     */
 
     if ((reply->width == request->width) &&
 	(reply->height == request->height)) {
@@ -698,7 +689,6 @@ GeometryManager(
  *	Arguments: w - the simple menu widget.
  *	Returns: none.
  */
-
 static void
 ChangeManaged(Widget w)
 {
@@ -722,7 +712,6 @@ ChangeManaged(Widget w)
  *                                      we expect the name of the menu here.
  *      Returns: none
  */
-
 /* ARGSUSED */
 static void
 PositionMenuAction(
@@ -796,7 +785,6 @@ PositionMenuAction(
  *                 params, num_params - ** NOT USED **
  *      Returns: none
  */
-
 /* ARGSUSED */
 static void
 Unhighlight(
@@ -831,7 +819,6 @@ Unhighlight(
  *                 params, num_params - ** NOT USED **
  *      Returns: none
  */
-
 /* ARGSUSED */
 static void
 Highlight(
@@ -881,7 +868,6 @@ Highlight(
  *                 params, num_params - ** NOT USED **
  *      Returns: none
  */
-
 /* ARGSUSED */
 static void
 Notify(
@@ -912,7 +898,6 @@ Notify(
  *	Arguments: app_con - the appcontext.
  *	Returns: none.
  */
-
 void
 XawSimpleMenuAddGlobalActions(XtAppContext app_con)
 {
@@ -925,7 +910,6 @@ XawSimpleMenuAddGlobalActions(XtAppContext app_con)
  *	Arguments: w - the smw widget.
  *	Returns: the currently set entry or NULL if none is set.
  */
-
 Widget
 XawSimpleMenuGetActiveEntry(Widget w)
 {
@@ -939,7 +923,6 @@ XawSimpleMenuGetActiveEntry(Widget w)
  *	Arguments: w - the smw widget.
  *	Returns: none.
  */
-
 void
 XawSimpleMenuClearActiveEntry(Widget w)
 {
@@ -962,7 +945,6 @@ XawSimpleMenuClearActiveEntry(Widget w)
  * Creates the label object and makes sure it is the first child in
  * in the list.
  */
-
 static void
 CreateLabel(Widget w)
 {
@@ -1015,7 +997,6 @@ CreateLabel(Widget w)
  *
  * +++ "w" can be the simple menu widget or any of its object children.
  */
-
 static void
 Layout(
 	  Widget w,
@@ -1098,7 +1079,6 @@ Layout(
  *                 data - NOT USED.
  *	Returns: none.
  */
-
 /* ARGSUSED */
 static void
 AddPositionAction(
@@ -1119,7 +1099,6 @@ AddPositionAction(
  *                 name   - the menu widget's name.
  *	Returns: the menu widget or NULL.
  */
-
 static Widget
 FindMenu(
 	    Widget widget,
@@ -1139,7 +1118,6 @@ FindMenu(
  *                 location - a pointer the the position or NULL.
  *	Returns: none.
  */
-
 static void
 PositionMenu(
 		Widget w,
@@ -1197,7 +1175,6 @@ PositionMenu(
  *                 x, y - the current location of the widget.
  *	Returns: none
  */
-
 static void
 MoveMenu(
 	    Widget w,
@@ -1243,7 +1220,6 @@ MoveMenu(
  *                 junk, garbage - ** NOT USED **.
  *	Returns: None.
  */
-
 /* ARGSUSED */
 static void
 ChangeCursorOnGrab(
@@ -1271,7 +1247,6 @@ ChangeCursorOnGrab(
  *                 width, height - the size of the ask for.
  *      Returns: none
  */
-
 static void
 MakeSetValuesRequest(
 			Widget w,
@@ -1301,7 +1276,6 @@ MakeSetValuesRequest(
  *      Arguments: w - the simple menu widget.
  *      Returns: width of menu.
  */
-
 static Dimension
 GetMenuWidth(
 		Widget w,
@@ -1343,7 +1317,6 @@ GetMenuWidth(
  *      Arguments: w - the simple menu widget.
  *      Returns: width of menu.
  */
-
 static Dimension
 GetMenuHeight(Widget w)
 {
@@ -1375,7 +1348,6 @@ GetMenuHeight(Widget w)
  *                 event - the event.
  *      Returns: the entry that this point is in.
  */
-
 static SmeObject
 GetEventEntry(
 		 Widget w,
@@ -1411,7 +1383,9 @@ GetEventEntry(
 	break;
     }
 
-    if ((x_loc < 0) || (x_loc >= (int) smw->core.width) || (y_loc < 0) ||
+    if ((x_loc < 0) ||
+	(x_loc >= (int) smw->core.width) ||
+	(y_loc < 0) ||
 	(y_loc >= (int) smw->core.height))
 	return (NULL);
 

@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.5 2015/01/08 00:19:28 tom Exp $
+# $Id: Makefile.in,v 1.6 2015/01/18 19:54:06 tom Exp $
 ##############################################################################
 # Copyright 2015 Thomas E. Dickey                                            #
 #                                                                            #
@@ -61,6 +61,8 @@ DOCS = \
 	Xmessage \
 	Xmh \
 	Xvidtune
+
+RM	= rm -f
 
 all \
 clean \

@@ -640,6 +640,8 @@ Search(
     buf = (wchar_t *) XtMalloc((unsigned) sizeof(wchar_t) * (unsigned) wtarget_len);
     (void) wcsncpy(buf, wtarget, (size_t) wtarget_len);
     piece = FindPiece(src, position, &first);
+    if (piece == NULL)
+	return (XawTextSearchError);
     ptr = (position - first) + piece->text;
 
     /* CONSTCOND */
@@ -1276,13 +1278,15 @@ FreeAllPieces(MultiSrcObject src)
 {
     MultiPiece *next, *first = src->multi_src.first_piece;
 
-    if (first->prev != NULL)
-	printf(LIBRARY_NAME
-	       " MultiSrc Object: possible memory leak in FreeAllPieces().\n");
+    if (first != NULL) {
+	if (first->prev != NULL)
+	    printf(LIBRARY_NAME
+		   " MultiSrc Object: possible memory leak in FreeAllPieces().\n");
 
-    for (; first != NULL; first = next) {
-	next = first->next;
-	RemovePiece(src, first);
+	for (; first != NULL; first = next) {
+	    next = first->next;
+	    RemovePiece(src, first);
+	}
     }
 }
 

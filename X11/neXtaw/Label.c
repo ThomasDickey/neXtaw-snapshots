@@ -364,7 +364,7 @@ SetTextWidthAndHeight(LabelWidget lw)
 		}
 	    }
 	    if (*label) {
-		int width = XTextWidth(fs, label, (int) strlen(label));
+		int width;
 
 		if (lw->label.encoding) {
 		    width = XTextWidth16(fs,
