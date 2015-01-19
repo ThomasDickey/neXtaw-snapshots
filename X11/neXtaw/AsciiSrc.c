@@ -178,7 +178,6 @@ WidgetClass asciiSrcObjectClass = (WidgetClass) & asciiSrcClassRec;
  *      Arguments: none.
  *      Returns: none.
  */
-
 static void
 ClassInitialize(void)
 {
@@ -194,7 +193,6 @@ ClassInitialize(void)
  *                           resource values.
  *      Returns: none.
  */
-
 /* ARGSUSED */
 static void
 Initialize(
@@ -205,9 +203,9 @@ Initialize(
     AsciiSrcObject src = (AsciiSrcObject) new;
     FILE *file;
 
-/*
- * Set correct flags (override resources) depending upon widget class.
- */
+    /*
+     * Set correct flags (override resources) depending upon widget class.
+     */
 
     src->text_src.text_format = (XrmQuark) XawFmt8Bit;	/* data format. */
 
@@ -243,7 +241,6 @@ Initialize(
  *                 length - maximum number of characters to read.
  *	Returns: The number of characters read into the buffer.
  */
-
 static XawTextPosition
 ReadText(
 	    Widget w,
@@ -269,7 +266,6 @@ ReadText(
  *                 text - new text to be inserted into buffer at startPos.
  *	Returns: XawEditError or XawEditDone.
  */
-
 /*ARGSUSED*/
 static int
 ReplaceText(
@@ -282,9 +278,9 @@ ReplaceText(
     XawTextPosition start_first, end_first;
     int length, firstPos;
 
-/*
- * Editing a read only source is not allowed.
- */
+    /*
+     * Editing a read only source is not allowed.
+     */
 
     if (src->text_src.edit_mode == XawtextRead)
 	return (XawEditError);
@@ -294,16 +290,16 @@ ReplaceText(
 
     src->ascii_src.changes = TRUE;	/* We have changed the buffer. */
 
-/*
- * Remove Old Stuff.
- */
+    /*
+     * Remove Old Stuff.
+     */
 
     if (start_piece != end_piece) {
 	temp_piece = start_piece->next;
 
-/*
- * If empty and not the only piece then remove it.
- */
+	/*
+	 * If empty and not the only piece then remove it.
+	 */
 
 	if (((start_piece->used = startPos - start_first) == 0) &&
 	    !((start_piece->next == NULL) && (start_piece->prev == NULL)))
@@ -408,7 +404,6 @@ ReplaceText(
  *       possible cursor positions (one before the first character and
  *       one after the last character.
  */
-
 static
   XawTextPosition
 Scan(
@@ -436,9 +431,9 @@ Scan(
 
     if (dir == XawsdRight) {
 	if (position == src->ascii_src.length)
-/*
- * Scanning right from src->ascii_src.length???
- */
+	    /*
+	     * Scanning right from src->ascii_src.length???
+	     */
 	    return (src->ascii_src.length);
 	inc = 1;
     } else {
@@ -450,9 +445,9 @@ Scan(
 
     piece = FindPiece(src, position, &first);
 
-/*
- * If the buffer is empty then return 0.
- */
+    /*
+     * If the buffer is empty then return 0.
+     */
 
     if (piece->used == 0)
 	return (0);
@@ -539,7 +534,6 @@ Scan(
  *                 text - the text block to search for.
  *	Returns: the position of the item found.
  */
-
 static XawTextPosition
 Search(
 	  Widget w,
@@ -554,9 +548,9 @@ Search(
     char *buf;
     XawTextPosition first;
 
-    if (dir == XawsdRight)
+    if (dir == XawsdRight) {
 	inc = 1;
-    else {
+    } else {
 	inc = -1;
 	if (position == 0)
 	    return (XawTextSearchError);	/* scanning left from 0??? */
@@ -566,6 +560,8 @@ Search(
     buf = XtMalloc((unsigned) sizeof(unsigned char) * (unsigned) text->length);
     strncpy(buf, (text->ptr + text->firstPos), (size_t) text->length);
     piece = FindPiece(src, position, &first);
+    if (piece == NULL)
+	return XawTextSearchError;
     ptr = (position - first) + piece->text;
 
     /* CONSTCOND */
@@ -619,7 +615,6 @@ Search(
  *                 new - what the widget will become.
  *	Returns: True if redisplay is needed.
  */
-
 /* ARGSUSED */
 static Boolean
 SetValues(
@@ -681,7 +676,6 @@ SetValues(
  *                 num_args - the number of args.
  *	Returns: none.
  */
-
 static void
 GetValuesHook(Widget w, ArgList args, Cardinal *num_args)
 {
@@ -707,7 +701,6 @@ GetValuesHook(Widget w, ArgList args, Cardinal *num_args)
  *	Arguments: src - the Ascii source Widget to free.
  *	Returns: none.
  */
-
 static void
 Destroy(Widget w)
 {
@@ -726,7 +719,6 @@ Destroy(Widget w)
  *	Arguments: w - the AsciiSrc widget.
  *	Returns: none.
  */
-
 void
 XawAsciiSourceFreeString(Widget w)
 {
@@ -757,7 +749,6 @@ XawAsciiSourceFreeString(Widget w)
  *	Arguments: w - the asciiSrc Widget.
  *	Returns: TRUE if the save was successful.
  */
-
 Boolean
 XawAsciiSave(Widget w)
 {
@@ -774,10 +765,10 @@ XawAsciiSave(Widget w)
 		   NULL, NULL);
     }
 
-/*
- * If using the string in place then there is no need to play games
- * to get the internal info into a readable string.
- */
+    /*
+     * If using the string in place then there is no need to play games
+     * to get the internal info into a readable string.
+     */
 
     if (src->ascii_src.use_string_in_place)
 	return (TRUE);
@@ -813,7 +804,6 @@ XawAsciiSave(Widget w)
  *                 name - name of the file to save this file into.
  *	Returns: True if the save was sucessful.
  */
-
 Boolean
 XawAsciiSaveAsFile(
 		      Widget w,
@@ -846,7 +836,6 @@ XawAsciiSaveAsFile(
  *	Arguments: w - the ascii source widget.
  *	Returns: a Boolean (see description).
  */
-
 Boolean
 XawAsciiSourceChanged(Widget w)
 {
@@ -888,7 +877,6 @@ RemoveOldStringOrFile(AsciiSrcObject src, Boolean checkString)
  *                 name - the name of the file
  *	Returns: returns TRUE if sucessful, FALSE otherwise.
  */
-
 static Boolean
 WriteToFile(String string, String name)
 {
@@ -909,7 +897,6 @@ WriteToFile(String string, String name)
  *	Arguments: data - the ascii pointer data.
  *	Returns: none.
  */
-
 static String
 StorePiecesInString(AsciiSrcObject src)
 {
@@ -929,9 +916,9 @@ StorePiecesInString(AsciiSrcObject src)
     result[src->ascii_src.length] = '\0';	/* NULL terminate this sucker. */
     string = result;
 
-/*
- * This will refill all pieces to capacity.
- */
+    /*
+     * This will refill all pieces to capacity.
+     */
 
     if (src->ascii_src.data_compression) {
 	FreeAllPieces(src);
@@ -946,7 +933,6 @@ StorePiecesInString(AsciiSrcObject src)
  *	Arguments: src - the AsciiSource.
  *	Returns: none - May exit though.
  */
-
 static FILE *
 InitStringOrFile(AsciiSrcObject src, Boolean newString)
 {
@@ -963,9 +949,7 @@ InitStringOrFile(AsciiSrcObject src, Boolean newString)
 	    src->ascii_src.string = XtNewString(src->ascii_src.string);
 	    src->ascii_src.allocated_string = True;
 	    src->ascii_src.length = (XawTextPosition) strlen(src->ascii_src.string);
-	}
-
-	if (src->ascii_src.use_string_in_place) {
+	} else {
 	    src->ascii_src.length = (XawTextPosition) strlen(src->ascii_src.string);
 	    /* In case the length resource is incorrectly set */
 	    if (src->ascii_src.length > src->ascii_src.ascii_length)
@@ -980,9 +964,9 @@ InitStringOrFile(AsciiSrcObject src, Boolean newString)
 	return (NULL);
     }
 
-/*
- * type is XawAsciiFile.
- */
+    /*
+     * type is XawAsciiFile.
+     */
 
     src->ascii_src.is_tempfile = FALSE;
 
@@ -1100,7 +1084,6 @@ LoadPieces(AsciiSrcObject src, FILE *file, char *string)
  *                 prev - the piece just before this one, or NULL.
  *	Returns: the allocated piece.
  */
-
 static Piece *
 AllocNewPiece(AsciiSrcObject src, Piece * prev)
 {
@@ -1126,19 +1109,20 @@ AllocNewPiece(AsciiSrcObject src, Piece * prev)
  *	Arguments: src - The AsciiSrc Widget.
  *	Returns: none.
  */
-
 static void
 FreeAllPieces(AsciiSrcObject src)
 {
     Piece *next, *first = src->ascii_src.first_piece;
 
-    if (first->prev != NULL)
-	(void) printf(LIBRARY_NAME
-		      " AsciiSrc Object: possible memory leak in FreeAllPieces().\n");
+    if (first != NULL) {
+	if (first->prev != NULL)
+	    (void) printf(LIBRARY_NAME
+			  " AsciiSrc Object: possible memory leak in FreeAllPieces().\n");
 
-    for (; first != NULL; first = next) {
-	next = first->next;
-	RemovePiece(src, first);
+	for (; first != NULL; first = next) {
+	    next = first->next;
+	    RemovePiece(src, first);
+	}
     }
 }
 
@@ -1148,7 +1132,6 @@ FreeAllPieces(AsciiSrcObject src)
  *                 piece - the piece to remove.
  *	Returns: none.
  */
-
 static void
 RemovePiece(AsciiSrcObject src, Piece * piece)
 {
@@ -1173,7 +1156,6 @@ RemovePiece(AsciiSrcObject src, Piece * piece)
  * RETURNED        first - the position of the first character in this piece.
  *	Returns: piece - the piece that contains this position.
  */
-
 static Piece *
 FindPiece(AsciiSrcObject src,
 	  XawTextPosition position,
@@ -1199,7 +1181,6 @@ FindPiece(AsciiSrcObject src,
  *                  n - the number of chars to copy.
  *	Returns: s1.
  */
-
 static String
 MyStrncpy(char *s1, char *s2, int n)
 {
@@ -1228,7 +1209,6 @@ MyStrncpy(char *s1, char *s2, int n)
  *                 piece - the piece to break.
  *	Returns: none.
  */
-
 #define HALF_PIECE (src->ascii_src.piece_size/2)
 
 static void
@@ -1303,7 +1283,6 @@ CvtStringToAsciiType(
  *                 args, num_args - the argument list.
  *	Returns: a pointer to the new text source.
  */
-
 Widget
 XawStringSourceCreate(parent, args, num_args)
      Widget parent;
@@ -1330,7 +1309,6 @@ XawStringSourceCreate(parent, args, num_args)
  *
  * Chris D. Peterson  8/31/89.
  */
-
 void
 XawTextSetLastPos(w, lastPos)
      Widget w;
@@ -1349,7 +1327,6 @@ XawTextSetLastPos(w, lastPos)
  *                 args, num_args - the argument list.
  *	Returns: a pointer to the new text source.
  */
-
 Widget
 XawDiskSourceCreate(
 		       Widget parent,

@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.5 2015/01/07 22:38:18 tom Exp $
+# $Id: Makefile.in,v 1.6 2015/01/18 19:54:06 tom Exp $
 ##############################################################################
 # Copyright 2015 Thomas E. Dickey                                            #
 #                                                                            #
@@ -33,6 +33,7 @@ VPATH		= @srcdir@
 DESTDIR=@DESTDIR@
 RPATH_LIST=@RPATH_LIST@
 TOP_MFLAGS = @cf_cv_makeflags@ DESTDIR="$(DESTDIR)" RPATH_LIST="$(RPATH_LIST)"
+RM	= rm -f
 
 @SET_MAKE@
 

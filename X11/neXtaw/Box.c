@@ -452,7 +452,8 @@ TryNewLayout(BoxWidget bbw)
     proposed_width = preferred_width;
     proposed_height = preferred_height;
     do {
-	switch (XtMakeResizeRequest((Widget) bbw, proposed_width, proposed_height,
+	switch (XtMakeResizeRequest((Widget) bbw,
+				    proposed_width, proposed_height,
 				    &proposed_width, &proposed_height)) {
 	case XtGeometryYes:
 	    return (TRUE);
@@ -492,6 +493,7 @@ TryNewLayout(BoxWidget bbw)
 		XtWidgetGeometry constraints, reply;
 		constraints.request_mode = CWHeight;
 		constraints.height = proposed_height;
+		constraints.width = preferred_width;
 		(void) PreferredSize((Widget) bbw, &constraints, &reply);
 		proposed_width = preferred_width;
 	    }

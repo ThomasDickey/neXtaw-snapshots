@@ -161,7 +161,7 @@ typedef struct _SubInfo {
 } SubInfoRec, *SubInfoPtr;
 
 /* #define New(t) (t *) malloc(sizeof (t)) */
-#define New(t)      (t *) XtCalloc(1,sizeof (t))
+#define New(t)      ((t *) ((void *) XtCalloc(1,sizeof (t))))
 #define Dispose(p)  XtFree((char *) p)
 #define Some(t,n)   (t*) XtMalloc(sizeof(t) * n)
 #define More(p,t,n) ((p)? (t *) XtRealloc((char *) p, sizeof(t)*n):Some(t,n)

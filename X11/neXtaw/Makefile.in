@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.12 2015/01/17 01:59:13 tom Exp $
+# $Id: Makefile.in,v 1.14 2015/01/18 20:02:32 tom Exp $
 # template makefile for neXtaw
 ##############################################################################
 # Copyright 2015 Thomas E. Dickey                                            #
@@ -270,14 +270,14 @@ laygram.h \
 laygram.c : laygram.y
 	$(RM) laygram.[ch]
 	$(YACC) -d laygram.y
-	sed 's/\<yy/LayYY/g' y.tab.c > laygram.c
-	sed 's/\<yy/LayYY/g' y.tab.h > laygram.h
+	sed 's/yy/LayYY/g' y.tab.c > laygram.c
+	sed 's/yy/LayYY/g' y.tab.h > laygram.h
 	$(RM) y.tab.c y.tab.h
 
 laylex.c : laylex.l
 	$(RM) laylex.c
 	$(LEX) laylex.l
-	sed 's/\<yy/LayYY/g' lex.yy.c > $@
+	sed 's/yy/LayYY/g' lex.yy.c > $@
 	$(RM) lex.yy.c
 
 $(OBJECTS) : $(HDRS)
@@ -289,8 +289,8 @@ clean	::
 	- $(RM) core *~ tags TAGS
 
 distclean :: clean
-	$(RM) laygram.[ch] laylex.c y.tab.[ch]
-	$(RM) Makefile
+	- $(RM) laygram.[ch] laylex.c y.tab.[ch]
+	- $(RM) Makefile
 
 install \
 install.libs :: $(INCLUDEDIR) $(LIB)

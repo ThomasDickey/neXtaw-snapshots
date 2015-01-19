@@ -978,25 +978,35 @@ MoveGripAdjustment(
      * to go beyond the min or max size allowed.
      */
 
-    if ((dir == ThisBorderOnly)) {
-	int old_add_size = add_size, old_sub_size;
+    if (dir == ThisBorderOnly) {
+	if (pw->paned.whichadd) {
+	    int old_add_size = add_size;
 
-	AssignMax(add_size, (int) PaneInfo(pw->paned.whichadd)->min);
-	AssignMin(add_size, (int) PaneInfo(pw->paned.whichadd)->max);
-	if (add_size != old_add_size)
-	    sub_size += old_add_size - add_size;
+	    AssignMax(add_size, (int) PaneInfo(pw->paned.whichadd)->min);
+	    AssignMin(add_size, (int) PaneInfo(pw->paned.whichadd)->max);
+	    if (add_size != old_add_size)
+		sub_size += old_add_size - add_size;
+	}
 
-	old_sub_size = sub_size;
-	AssignMax(sub_size, (int) PaneInfo(pw->paned.whichsub)->min);
-	AssignMin(sub_size, (int) PaneInfo(pw->paned.whichsub)->max);
-	if (sub_size != old_sub_size)
-	    return;		/* Abort to current sizes. */
+	if (pw->paned.whichsub) {
+	    int old_sub_size = sub_size;
+
+	    AssignMax(sub_size, (int) PaneInfo(pw->paned.whichsub)->min);
+	    AssignMin(sub_size, (int) PaneInfo(pw->paned.whichsub)->max);
+	    if (sub_size != old_sub_size)
+		return;		/* Abort to current sizes. */
+	}
     }
 
-    if (add_size != 0)
+    if (pw->paned.whichadd != NULL &&
+	add_size != 0) {
 	PaneInfo(pw->paned.whichadd)->size = add_size;
-    if (sub_size != 0)
+    }
+    if (pw->paned.whichsub != NULL &&
+	sub_size != 0) {
 	PaneInfo(pw->paned.whichsub)->size = sub_size;
+    }
+
     RefigureLocations(pw, PaneIndex(grip), dir);
     DrawTrackLines(pw);
 }
