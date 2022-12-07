@@ -1,6 +1,6 @@
 /***********************************************************
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2022 by Thomas E. Dickey
 Copyright (c) 1987, 1988, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -86,11 +86,11 @@ SOFTWARE.
 static XtResource resources[] =
 {
     {XtNforeground, XtCForeground, XtRPixel, sizeof(Pixel),
-     offset(label.foreground), XtRString, XtDefaultForeground},
+     offset(label.foreground), XtRString, DeConst(XtDefaultForeground)},
     {XtNfont, XtCFont, XtRFontStruct, sizeof(XFontStruct *),
-     offset(label.font), XtRString, XtDefaultFont},
+     offset(label.font), XtRString, DeConst(XtDefaultFont)},
     {XtNfontSet, XtCFontSet, XtRFontSet, sizeof(XFontSet),
-     offset(label.fontset), XtRString, XtDefaultFontSet},
+     offset(label.fontset), XtRString, DeConst(XtDefaultFontSet)},
     {XtNlabel, XtCLabel, XtRString, sizeof(String),
      offset(label.label), XtRString, NULL},
     {XtNencoding, XtCEncoding, XtRUnsignedChar, sizeof(unsigned char),

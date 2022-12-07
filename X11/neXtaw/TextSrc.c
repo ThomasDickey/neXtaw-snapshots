@@ -1,6 +1,6 @@
 /*
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2022 by Thomas E. Dickey
 Copyright (c) 1996 by Alfredo Kojima
 Copyright (c) 1989, 1994  X Consortium
 
@@ -62,7 +62,7 @@ other dealings in this Software without prior written authorization.
 static XtResource resources[] =
 {
     {XtNeditType, XtCEditType, XtREditMode, sizeof(XawTextEditType),
-     offset(edit_mode), XtRString, "read"},
+     offset(edit_mode), XtRString, DeConst("read")},
 };
 /* *INDENT-OFF* */
 static void ClassInitialize(void);

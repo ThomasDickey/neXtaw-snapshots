@@ -1,6 +1,6 @@
 /***********************************************************
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2022 by Thomas E. Dickey
 Copyright (c) 1996 by Alfredo Kojima
 Copyright (c) 1999 by Carlos A M dos Santos
 Copyright (c) 1987, 1988, 1994  X Consortium
@@ -117,7 +117,7 @@ static void GetCursorBounds(Widget w, XRectangle * rect);
 static XtResource resources[] =
 {
     {XtNfontSet, XtCFontSet, XtRFontSet, sizeof(XFontSet),
-     offset(fontset), XtRString, XtDefaultFontSet},
+     offset(fontset), XtRString, DeConst(XtDefaultFontSet)},
     {XtNecho, XtCOutput, XtRBoolean, sizeof(Boolean),
      offset(echo), XtRImmediate, (XtPointer) True},
     {XtNblinkInterval, XtCBlinkInterval, XtRDimension, sizeof(unsigned long),

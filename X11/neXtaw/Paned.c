@@ -1,6 +1,6 @@
 /***********************************************************
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2022 by Thomas E. Dickey
 Copyright (c) 1987, 1988, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -121,7 +121,7 @@ static XtResource resources[] =
 {
     {XtNinternalBorderColor, XtCBorderColor, XtRPixel, sizeof(Pixel),
      offset(internal_bp), XtRString,
-     (XtPointer) XtDefaultForeground},
+     (XtPointer) DeConst(XtDefaultForeground)},
     {XtNinternalBorderWidth, XtCBorderWidth, XtRDimension, sizeof(Dimension),
      offset(internal_bw), XtRImmediate, (XtPointer) 1},
     {XtNgripIndent, XtCGripIndent, XtRPosition, sizeof(Position),
@@ -141,25 +141,25 @@ static XtResource resources[] =
     {XtNgripCursor, XtCCursor, XtRCursor, sizeof(Cursor),
      offset(grip_cursor), XtRImmediate, None},
     {XtNverticalGripCursor, XtCCursor, XtRCursor, sizeof(Cursor),
-     offset(v_grip_cursor), XtRString, "sb_v_double_arrow"},
+     offset(v_grip_cursor), XtRString, DeConst("sb_v_double_arrow")},
     {XtNhorizontalGripCursor, XtCCursor, XtRCursor, sizeof(Cursor),
-     offset(h_grip_cursor), XtRString, "sb_h_double_arrow"},
+     offset(h_grip_cursor), XtRString, DeConst("sb_h_double_arrow")},
 
     {XtNbetweenCursor, XtCCursor, XtRCursor, sizeof(Cursor),
      offset(adjust_this_cursor), XtRString, None},
     {XtNverticalBetweenCursor, XtCCursor, XtRCursor, sizeof(Cursor),
-     offset(v_adjust_this_cursor), XtRString, "sb_left_arrow"},
+     offset(v_adjust_this_cursor), XtRString, DeConst("sb_left_arrow")},
     {XtNhorizontalBetweenCursor, XtCCursor, XtRCursor, sizeof(Cursor),
-     offset(h_adjust_this_cursor), XtRString, "sb_up_arrow"},
+     offset(h_adjust_this_cursor), XtRString, DeConst("sb_up_arrow")},
 
     {XtNupperCursor, XtCCursor, XtRCursor, sizeof(Cursor),
-     offset(adjust_upper_cursor), XtRString, "sb_up_arrow"},
+     offset(adjust_upper_cursor), XtRString, DeConst("sb_up_arrow")},
     {XtNlowerCursor, XtCCursor, XtRCursor, sizeof(Cursor),
-     offset(adjust_lower_cursor), XtRString, "sb_down_arrow"},
+     offset(adjust_lower_cursor), XtRString, DeConst("sb_down_arrow")},
     {XtNleftCursor, XtCCursor, XtRCursor, sizeof(Cursor),
-     offset(adjust_left_cursor), XtRString, "sb_left_arrow"},
+     offset(adjust_left_cursor), XtRString, DeConst("sb_left_arrow")},
     {XtNrightCursor, XtCCursor, XtRCursor, sizeof(Cursor),
-     offset(adjust_right_cursor), XtRString, "sb_right_arrow"},
+     offset(adjust_right_cursor), XtRString, DeConst("sb_right_arrow")},
 };
 
 #undef offset

@@ -1,8 +1,8 @@
 Summary: XawPlus widget set development package
 %define AppProgram neXtaw
 %define AppVersion 0.15.1
-%define AppRelease 20150118
-# $XTermId: neXtaw.spec,v 1.11 2015/01/18 19:59:55 tom Exp $
+%define AppRelease 20221207
+# $XTermId: neXtaw.spec,v 1.12 2022/12/07 08:33:42 tom Exp $
 Name: %{AppProgram}
 Version: %{AppVersion}
 Release: %{AppRelease}

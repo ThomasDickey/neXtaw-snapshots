@@ -1,6 +1,6 @@
 /***********************************************************
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2022 by Thomas E. Dickey
 Copyright 1999 by Carlos A M dos Santos
 Copyright (c) 1987, 1988  X Consortium
 
@@ -103,11 +103,11 @@ static XtResource resources[] =
     {XtNupdate, XtCInterval, XtRInt, sizeof(int),
      offset(update), XtRImmediate, (XtPointer) 60},
     {XtNforeground, XtCForeground, XtRPixel, sizeof(Pixel),
-     offset(fgpixel), XtRString, XtDefaultForeground},
+     offset(fgpixel), XtRString, DeConst(XtDefaultForeground)},
     {XtNhand, XtCForeground, XtRPixel, sizeof(Pixel),
-     offset(Hdpixel), XtRString, XtDefaultForeground},
+     offset(Hdpixel), XtRString, DeConst(XtDefaultForeground)},
     {XtNhighlight, XtCForeground, XtRPixel, sizeof(Pixel),
-     offset(Hipixel), XtRString, XtDefaultForeground},
+     offset(Hipixel), XtRString, DeConst(XtDefaultForeground)},
     {XtNanalog, XtCBoolean, XtRBoolean, sizeof(Boolean),
      offset(analog), XtRImmediate, (XtPointer) TRUE},
     {XtNchime, XtCBoolean, XtRBoolean, sizeof(Boolean),
@@ -115,9 +115,9 @@ static XtResource resources[] =
     {XtNpadding, XtCMargin, XtRInt, sizeof(int),
      offset(padding), XtRImmediate, (XtPointer) 8},
     {XtNfont, XtCFont, XtRFontStruct, sizeof(XFontStruct *),
-     offset(font), XtRString, XtDefaultFont},
+     offset(font), XtRString, DeConst(XtDefaultFont)},
     {XtNbackingStore, XtCBackingStore, XtRBackingStore, sizeof(int),
-     offset(backing_store), XtRString, "default"},
+     offset(backing_store), XtRString, DeConst("default")},
     /* Casantos, Jul 4 1999 */
     {XtNshadowWidth, XtCShadowWidth, XtRDimension, sizeof(Dimension),
      toffset(shadow_width), XtRImmediate, (XtPointer) 0},
@@ -213,7 +213,7 @@ Initialize(Widget request GCC_UNUSED,
     if (w->clock.font != NULL)
 	myXGCV.font = w->clock.font->fid;
     else
-	valuemask &= ~GCFont;	/* use server default font */
+	valuemask &= (XtGCMask) ~ GCFont;	/* use server default font */
 
     min_width = min_height = ANALOG_SIZE_DEFAULT;
     if (!w->clock.analog) {
@@ -245,7 +245,7 @@ Initialize(Widget request GCC_UNUSED,
     if (w->clock.font != NULL)
 	myXGCV.font = w->clock.font->fid;
     else
-	valuemask &= ~GCFont;	/* use server default font */
+	valuemask &= (XtGCMask) ~ GCFont;	/* use server default font */
     myXGCV.line_width = 0;
     w->clock.myGC = XtGetGC((Widget) w, valuemask, &myXGCV);
 

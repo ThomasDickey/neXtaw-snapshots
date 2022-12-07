@@ -1,6 +1,6 @@
 /***********************************************************
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2022 by Thomas E. Dickey
 Copyright (c) 1996 by Alfredo Kojima
 Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts,
 and the Massachusetts Institute of Technology, Cambridge, Massachusetts.
@@ -51,9 +51,9 @@ static XtResource resources[] =
     {XtNshadowWidth, XtCShadowWidth, XtRDimension, sizeof(Dimension),
      offset(sme_threeD.shadow_width), XtRImmediate, (XtPointer) 2},
     {XtNtopShadowPixel, XtCTopShadowPixel, XtRPixel, sizeof(Pixel),
-     offset(sme_threeD.top_shadow_pixel), XtRString, XtDefaultForeground},
+     offset(sme_threeD.top_shadow_pixel), XtRString, DeConst(XtDefaultForeground)},
     {XtNbottomShadowPixel, XtCBottomShadowPixel, XtRPixel, sizeof(Pixel),
-     offset(sme_threeD.bot_shadow_pixel), XtRString, XtDefaultForeground},
+     offset(sme_threeD.bot_shadow_pixel), XtRString, DeConst(XtDefaultForeground)},
     {XtNtopShadowPixmap, XtCTopShadowPixmap, XtRPixmap, sizeof(Pixmap),
      offset(sme_threeD.top_shadow_pxmap), XtRImmediate, (XtPointer) NULL},
     {XtNbottomShadowPixmap, XtCBottomShadowPixmap, XtRPixmap, sizeof(Pixmap),

@@ -1,6 +1,6 @@
 /*
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2022 by Thomas E. Dickey
 Copyright (c) 1989, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -73,9 +73,9 @@ in this Software without prior written authorization from the X Consortium.
 #define SEARCH_LABEL_2  ("Use ^q<Tab> for <Tab>.")
 #define DISMISS_NAME  ("cancel")
 #define DISMISS_NAME_LEN 6
-#define FORM_NAME     ("form")
-#define LABEL_NAME    ("label")
-#define TEXT_NAME     ("text")
+#define FORM_NAME     DeConst("form")
+#define LABEL_NAME    DeConst("label")
+#define TEXT_NAME     DeConst("text")
 
 #define R_OFFSET      1
 /* *INDENT-OFF* */
@@ -99,7 +99,7 @@ static String GetString(Widget);
 static String GetStringRaw(Widget);
 
 static void AddInsertFileChildren(Widget, Widget, char *);
-static Boolean InsertFileNamed(Widget, char *);
+static Boolean InsertFileNamed(Widget, const char *);
 static void AddSearchChildren(Widget, Widget, char *);
 /* *INDENT-ON* */
 
@@ -170,7 +170,7 @@ _XawTextInsertFile(
 		      Cardinal *num_params)
 {
     TextWidget ctx = (TextWidget) w;
-    char *ptr;
+    String ptr;
     XawTextEditType edit_mode;
     Arg args[1];
 
@@ -217,7 +217,7 @@ PopdownFileInsert(
 
     XtPopdown(ctx->text.file_insert);
     (void) SetResourceByName(ctx->text.file_insert, LABEL_NAME,
-			     XtNlabel, (XtArgVal) INSERT_FILE);
+			     DeConst(XtNlabel), (XtArgVal) INSERT_FILE);
 }
 
 /*	Function Name: DoInsert
@@ -250,7 +250,7 @@ DoInsert(
 	(void) sprintf(msg, "*** Error: %s ***", strerror(errno));
 
     (void) SetResourceByName(ctx->text.file_insert,
-			     LABEL_NAME, XtNlabel, (XtArgVal) msg);
+			     LABEL_NAME, DeConst(XtNlabel), (XtArgVal) msg);
     XBell(XtDisplay(w), 0);
 }
 
@@ -263,7 +263,7 @@ DoInsert(
 static Boolean
 InsertFileNamed(
 		   Widget tw,
-		   char *str)
+		   const char *str)
 {
     FILE *file;
     XawTextBlock text;
@@ -515,7 +515,8 @@ _XawTextSearch(
 {
     TextWidget ctx = (TextWidget) w;
     XawTextScanDirection dir;
-    char *ptr, buf[BUFSIZ];
+    char *ptr;
+    char buf[BUFSIZ];
     XawTextEditType edit_mode;
     Arg args[1];
 
@@ -595,17 +596,17 @@ InitializeSearchWidget(
 			  XawTextScanDirection dir,
 			  Boolean replace_active)
 {
-    SetResource(search->rep_one, XtNsensitive, (XtArgVal) replace_active);
-    SetResource(search->rep_all, XtNsensitive, (XtArgVal) replace_active);
-    SetResource(search->rep_label, XtNsensitive, (XtArgVal) replace_active);
-    SetResource(search->rep_text, XtNsensitive, (XtArgVal) replace_active);
+    SetResource(search->rep_one, DeConst(XtNsensitive), (XtArgVal) replace_active);
+    SetResource(search->rep_all, DeConst(XtNsensitive), (XtArgVal) replace_active);
+    SetResource(search->rep_label, DeConst(XtNsensitive), (XtArgVal) replace_active);
+    SetResource(search->rep_text, DeConst(XtNsensitive), (XtArgVal) replace_active);
 
     switch (dir) {
     case XawsdLeft:
-	SetResource(search->left_toggle, XtNstate, (XtArgVal) TRUE);
+	SetResource(search->left_toggle, DeConst(XtNstate), (XtArgVal) TRUE);
 	break;
     case XawsdRight:
-	SetResource(search->right_toggle, XtNstate, (XtArgVal) TRUE);
+	SetResource(search->right_toggle, DeConst(XtNstate), (XtArgVal) TRUE);
 	break;
     default:
 	break;
@@ -894,8 +895,8 @@ DoSearch(struct SearchAndReplace *search)
        GetString to get a tame version. */
 
     if (pos == XawTextSearchError) {
-	char *msg1 = "Could not find string ``";
-	char *msg2 = "''.";
+	const char *msg1 = "Could not find string ``";
+	const char *msg2 = "''.";
 	len = (int) (strlen(msg1) +
 		     strlen(msg2) +
 		     strlen(GetString(search->search_text)) + 1);
@@ -1048,8 +1049,8 @@ Replace(
 		    char msg[BUFSIZ];
 		    char *pmsg;
 		    int len;
-		    char *msg1 = "*** Error: Could not find string ``";
-		    char *msg2 = "''. ***";
+		    const char *msg1 = "*** Error: Could not find string ``";
+		    const char *msg2 = "''. ***";
 
 		    /* The Raw string in find.ptr may be WC I can't use here,
 		       so I call GetString to get a tame version. */
@@ -1091,8 +1092,8 @@ Replace(
 	    char msg[BUFSIZ];
 	    char *pmsg;
 	    int len;
-	    char *msg1 = "' with '";
-	    char *msg2 = "'. ***";
+	    const char *msg1 = "' with '";
+	    const char *msg2 = "'. ***";
 
 	    len = (int) (1 + strlen(msg1) +
 			 strlen(msg2) +
@@ -1153,8 +1154,8 @@ SetSearchLabels(
 		   String msg2,
 		   Boolean bell)
 {
-    (void) SetResource(search->label1, XtNlabel, (XtArgVal) msg1);
-    (void) SetResource(search->label2, XtNlabel, (XtArgVal) msg2);
+    (void) SetResource(search->label1, DeConst(XtNlabel), (XtArgVal) msg1);
+    (void) SetResource(search->label2, DeConst(XtNlabel), (XtArgVal) msg2);
     if (bell)
 	XBell(XtDisplay(search->search_popup), 0);
 }
@@ -1238,8 +1239,8 @@ _SetField(Widget new, Widget old)
     if (old_border != old_bg)	/* Colors are already correct, return. */
 	return;
 
-    SetResource(old, XtNborderColor, (XtArgVal) old_border);
-    SetResource(new, XtNborderColor, (XtArgVal) new_border);
+    SetResource(old, DeConst(XtNborderColor), (XtArgVal) old_border);
+    SetResource(new, DeConst(XtNborderColor), (XtArgVal) new_border);
 }
 
 /*	Function Name: SetResourceByName
@@ -1472,7 +1473,7 @@ InParams(
     return False;
 }
 
-static char *WM_DELETE_WINDOW = "WM_DELETE_WINDOW";
+static char *WM_DELETE_WINDOW = DeConst("WM_DELETE_WINDOW");
 
 static void
 WMProtocols(

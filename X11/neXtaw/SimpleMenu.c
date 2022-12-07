@@ -1,6 +1,6 @@
 /*
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2022 by Thomas E. Dickey
 Copyright (c) 1996 by Alfredo Kojima
 Copyright (c) 1989, 1994  X Consortium
 
@@ -734,7 +734,7 @@ PositionMenuAction(
 
     if ((menu = FindMenu(w, params[0])) == NULL) {
 	char error_buf[BUFSIZ];
-	char *err1 = "Xaw - SimpleMenuWidget: could not find menu named: ";
+	const char *err1 = "Xaw - SimpleMenuWidget: could not find menu named: ";
 	char *perr;
 	int len;
 

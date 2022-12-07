@@ -1,6 +1,6 @@
 /***********************************************************
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2022 by Thomas E. Dickey
 Copyright (c) 1987, 1988, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -72,9 +72,9 @@ static XtResource resources[] =
     {XtNminScale, XtCScale, XtRInt, sizeof(int),
      offset(strip_chart.min_scale), XtRImmediate, (XtPointer) 1},
     {XtNforeground, XtCForeground, XtRPixel, sizeof(Pixel),
-     offset(strip_chart.fgpixel), XtRString, XtDefaultForeground},
+     offset(strip_chart.fgpixel), XtRString, DeConst(XtDefaultForeground)},
     {XtNhighlight, XtCForeground, XtRPixel, sizeof(Pixel),
-     offset(strip_chart.hipixel), XtRString, XtDefaultForeground},
+     offset(strip_chart.hipixel), XtRString, DeConst(XtDefaultForeground)},
     {XtNgetValue, XtCCallback, XtRCallback, sizeof(XtPointer),
      offset(strip_chart.get_value), XtRImmediate, (XtPointer) NULL},
     {XtNjumpScroll, XtCJumpScroll, XtRInt, sizeof(int),

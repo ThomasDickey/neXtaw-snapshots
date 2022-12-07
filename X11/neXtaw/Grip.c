@@ -1,6 +1,6 @@
 /***********************************************************
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2022 by Thomas E. Dickey
 Copyright (c) 1987, 1988, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -68,7 +68,7 @@ static XtResource resources[] =
      (XtPointer) DEFAULT_GRIP_SIZE},
     {XtNforeground, XtCForeground, XtRPixel, sizeof(Pixel),
      XtOffsetOf(GripRec, core.background_pixel), XtRString,
-     XtDefaultForeground},
+     DeConst(XtDefaultForeground)},
     {XtNborderWidth, XtCBorderWidth, XtRDimension, sizeof(Dimension),
      XtOffsetOf(GripRec, core.border_width), XtRImmediate, (XtPointer) 0},
     {XtNcallback, XtCCallback, XtRCallback, sizeof(XtPointer),

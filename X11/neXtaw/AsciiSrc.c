@@ -1,6 +1,6 @@
 /*
 
-Copyright 2015, by Thomas E. Dickey
+Copyright 2015,2022 by Thomas E. Dickey
 Copyright (c) 1989, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -662,7 +662,7 @@ SetValues(
 	String string = StorePiecesInString(old_src);
 	FreeAllPieces(old_src);
 	LoadPieces(src, NULL, string);
-	XtFree(string);
+	XtFree(DeConst(string));
     }
 
     return (FALSE);
@@ -827,7 +827,7 @@ XawAsciiSaveAsFile(
     string = StorePiecesInString(src);
 
     ret = WriteToFile(string, name);
-    XtFree(string);
+    XtFree(DeConst(string));
     return (ret);
 }
 
@@ -936,7 +936,7 @@ StorePiecesInString(AsciiSrcObject src)
 static FILE *
 InitStringOrFile(AsciiSrcObject src, Boolean newString)
 {
-    char *open_mode = NULL;
+    const char *open_mode = NULL;
     FILE *file;
     char fileName[TMPSIZ];
 

@@ -2,6 +2,7 @@
 
 /*
 
+Copyright 2022  Thomas E. Dickey
 Copyright (c) 1991, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

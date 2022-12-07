@@ -1,6 +1,6 @@
 /*
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2022 by Thomas E. Dickey
 Copyright (c) 1989, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -87,13 +87,13 @@ static char defaultTranslations[] =
 static XtResource resources[] =
 {
     {XtNforeground, XtCForeground, XtRPixel, sizeof(Pixel),
-     offset(list.foreground), XtRString, XtDefaultForeground},
+     offset(list.foreground), XtRString, DeConst(XtDefaultForeground)},
     {XtNcursor, XtCCursor, XtRCursor, sizeof(Cursor),
-     offset(simple.cursor), XtRString, "left_ptr"},
+     offset(simple.cursor), XtRString, DeConst("left_ptr")},
     {XtNfont, XtCFont, XtRFontStruct, sizeof(XFontStruct *),
-     offset(list.font), XtRString, XtDefaultFont},
+     offset(list.font), XtRString, DeConst(XtDefaultFont)},
     {XtNfontSet, XtCFontSet, XtRFontSet, sizeof(XFontSet),
-     offset(list.fontset), XtRString, XtDefaultFontSet},
+     offset(list.fontset), XtRString, DeConst(XtDefaultFontSet)},
     {XtNlist, XtCList, XtRPointer, sizeof(char **),
      offset(list.list), XtRString, NULL},
     {XtNdefaultColumns, XtCColumns, XtRInt, sizeof(int),

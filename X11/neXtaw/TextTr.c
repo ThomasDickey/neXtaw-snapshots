@@ -2,6 +2,7 @@
 
 /*
 
+Copyright 2022  Thomas E. Dickey
 Copyright (c) 1991, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -43,10 +44,11 @@ The Japanese user typically hits their Kanji key when they want to do
 input.  This merely makes sure the input is connected. 
 */
 
+#include "private.h"
+
 #ifndef OBSOLETE_SELECTIONS
 /* modern stuff with PRIMARY and CLIPBOARD, but no CUT_BUFFER0 */
-char *_XawDefaultTextTranslations1 =
-"\
+char *_XawDefaultTextTranslations1 = DeConst("\
 Ctrl<Key>A:	beginning-of-line() \n\
 Ctrl<Key>B:	backward-character() \n\
 Ctrl<Key>C:	kill-selection() insert-selection(CLIPBOARD, CLIPBOARD) \n\
@@ -71,9 +73,9 @@ Ctrl<Key>W:	kill-selection() \n\
 Ctrl<Key>X:	kill-selection() \n\
 Ctrl<Key>Y:	insert-selection(SECONDARY) \n\
 Ctrl<Key>Z:	scroll-one-line-up() \n\
-";
+");
 
-char *_XawDefaultTextTranslations2 = "\
+char *_XawDefaultTextTranslations2 = DeConst("\
 Meta<Key>B:	backward-word() \n\
 Meta<Key>F:	forward-word() \n\
 Meta<Key>I:	insert-file() \n\
@@ -94,9 +96,9 @@ Meta<Key>Z:	scroll-one-line-down() \n\
  Shift Meta<Key>Delete:		backward-kill-word() \n\
 ~Shift Meta<Key>BackSpace:	delete-previous-word() \n\
  Shift Meta<Key>BackSpace:	backward-kill-word() \n\
-";
+");
 
-char *_XawDefaultTextTranslations3 = "\
+char *_XawDefaultTextTranslations3 = DeConst("\
 :Ctrl<Key>Home:	beginning-of-file() \n\
 <Key>Home:	beginning-of-line() \n\
 :<Key>KP_Home:	beginning-of-file() \n\
@@ -126,9 +128,9 @@ char *_XawDefaultTextTranslations3 = "\
 Ctrl<Key>backslash:	reconnect-im() \n\
 <Key>Kanji:	reconnect-im()\n\
 <Key>:		insert-char() \n\
-";
+");
 
-char *_XawDefaultTextTranslations4 = "\
+char *_XawDefaultTextTranslations4 = DeConst("\
 <EnterWindow>:	FocusEnterWindow() enter-window() \n\
 <LeaveWindow>:	FocusLeaveWindow() leave-window() \n\
 <FocusIn>:	focus-in() \n\
@@ -140,5 +142,5 @@ char *_XawDefaultTextTranslations4 = "\
 <Btn3Down>:	extend-start() \n\
 <Btn3Motion>:	extend-adjust() \n\
 <Btn3Up>:	extend-end(PRIMARY, CUT_BUFFER0) \
-";
+");
 #endif

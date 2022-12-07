@@ -1,6 +1,6 @@
 /*
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2022 by Thomas E. Dickey
 Copyright (c) 1990, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -89,7 +89,7 @@ static XtResource resources[] =
      XtOffsetOf(TreeRec, tree.vpad), XtRImmediate, (XtPointer) 0},
     {XtNforeground, XtCForeground, XtRPixel, sizeof(Pixel),
      XtOffsetOf(TreeRec, tree.foreground), XtRString,
-     XtDefaultForeground},
+     DeConst(XtDefaultForeground)},
     {XtNlineWidth, XtCLineWidth, XtRDimension, sizeof(Dimension),
      XtOffsetOf(TreeRec, tree.line_width), XtRImmediate, (XtPointer) 0},
     {XtNgravity, XtCGravity, XtRGravity, sizeof(XtGravity),

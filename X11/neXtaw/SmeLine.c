@@ -1,6 +1,6 @@
 /*
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2022 by Thomas E. Dickey
 Copyright (c) 1996 by Alfredo Kojima
 Copyright (c) 1989  X Consortium
 
@@ -56,7 +56,7 @@ static XtResource resources[] =
     {XtNstipple, XtCStipple, XtRBitmap, sizeof(Pixmap),
      offset(stipple), XtRImmediate, (XtPointer) XtUnspecifiedPixmap},
     {XtNforeground, XtCForeground, XtRPixel, sizeof(Pixel),
-     offset(foreground), XtRString, XtDefaultForeground},
+     offset(foreground), XtRString, DeConst(XtDefaultForeground)},
 };
 #undef offset
 

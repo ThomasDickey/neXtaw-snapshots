@@ -1,6 +1,6 @@
 /*
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2022 by Thomas E. Dickey
 Copyright (c) 1996,1997 by Alfredo Kojima
 Copyright (c) 1989, 1994  X Consortium
 
@@ -88,7 +88,7 @@ static char defaultTranslations[] =
 static XtResource resources[] =
 {
     {XtNstate, XtCState, XtRBoolean, sizeof(Boolean),
-     offset(command.set), XtRString, "off"},
+     offset(command.set), XtRString, DeConst("off")},
     {XtNradioGroup, XtCWidget, XtRWidget, sizeof(Widget),
      offset(toggle.widget), XtRWidget, (XtPointer) NULL},
     {XtNradioData, XtCRadioData, XtRPointer, sizeof(XtPointer),

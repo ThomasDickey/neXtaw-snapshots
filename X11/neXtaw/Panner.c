@@ -1,6 +1,6 @@
 /*
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2022 by Thomas E. Dickey
 Copyright (c) 1989, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -110,7 +110,7 @@ static XtResource resources[] =
     {XtNrubberBand, XtCRubberBand, XtRBoolean, sizeof(Boolean),
      poff(rubber_band), XtRImmediate, (XtPointer) FALSE},
     {XtNforeground, XtCForeground, XtRPixel, sizeof(Pixel),
-     poff(foreground), XtRString, (XtPointer) XtDefaultBackground},
+     poff(foreground), XtRString, (XtPointer) DeConst(XtDefaultBackground)},
     {XtNinternalSpace, XtCInternalSpace, XtRDimension, sizeof(Dimension),
      poff(internal_border), XtRImmediate, (XtPointer) 4},
     {XtNlineWidth, XtCLineWidth, XtRDimension, sizeof(Dimension),
@@ -128,7 +128,7 @@ static XtResource resources[] =
     {XtNsliderHeight, XtCSliderHeight, XtRDimension, sizeof(Dimension),
      poff(slider_height), XtRImmediate, (XtPointer) 0},
     {XtNshadowColor, XtCShadowColor, XtRPixel, sizeof(Pixel),
-     poff(shadow_color), XtRString, (XtPointer) XtDefaultForeground},
+     poff(shadow_color), XtRString, (XtPointer) DeConst(XtDefaultForeground)},
     {XtNshadowThickness, XtCShadowThickness, XtRDimension, sizeof(Dimension),
      poff(shadow_thickness), XtRImmediate, (XtPointer) 2},
     {XtNbackgroundStipple, XtCBackgroundStipple, XtRString, sizeof(String),
@@ -435,9 +435,9 @@ get_event_xy(PannerWidget pw, XEvent *event, int *x, int *y)
 }
 
 static int
-parse_page_string(char *s, int pagesize, int canvassize, Boolean *relative)
+parse_page_string(String s, int pagesize, int canvassize, Boolean *relative)
 {
-    char *cp;
+    String cp;
     double val = 1.0;
     Boolean rel = FALSE;
 
@@ -568,7 +568,7 @@ Realize(
 	if (PIXMAP_OKAY(pm)) {
 	    attr->background_pixmap = pm;
 	    *valuemaskp |= CWBackPixmap;
-	    *valuemaskp &= ~CWBackPixel;
+	    *valuemaskp &= (XtValueMask) ~ CWBackPixel;
 	    gotpm = TRUE;
 	}
     }

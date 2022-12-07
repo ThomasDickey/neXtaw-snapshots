@@ -1,6 +1,6 @@
 /*
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2022 by Thomas E. Dickey
 Copyright (c) 2002 by Ulric Eriksson
 Copyright (c) 1999 by Carlos A M dos Santos
 Copyright (c) 1996 by Alfredo Kojima
@@ -1270,7 +1270,7 @@ InsertNewLineAndIndent(
 	*ptr = '\0';
 	text.length = (int) strlen(text.ptr);
     }
-    XtFree(line_to_ip);
+    XtFree(DeConst(line_to_ip));
 
     if (_XawTextReplace(ctx, ctx->text.insertPos, ctx->text.insertPos, &text)) {
 	XBell(XtDisplay(ctx), 50);

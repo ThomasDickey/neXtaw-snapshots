@@ -1,6 +1,6 @@
 /*
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2022 by Thomas E. Dickey
 Copyright (c) 1996, 1997 by Alfredo Kojima	
 Copyright (c) 1989, 1994  X Consortium
 
@@ -88,7 +88,7 @@ static XtResource resources[] =
 {
     {
 	XtNmenuName, XtCMenuName, XtRString, sizeof(String),
-	offset(menu_button.menu_name), XtRString, (XtPointer) "menu"},
+	offset(menu_button.menu_name), XtRString, (XtPointer) DeConst("menu")},
 
     {XtNmenuButtonStyle, XtCMenuButtonStyle, XtRMenuButtonStyle,
      sizeof(XtMenuButtonStyle), offset(menu_button.menubutton_style),
@@ -325,7 +325,7 @@ PopupMenu(
 
     if (menu == NULL) {
 	char error_buf[BUFSIZ];
-	char *err1 = "MenuButton: Could not find menu widget named ";
+	const char *err1 = "MenuButton: Could not find menu widget named ";
 	char *perr;
 	int len;
 

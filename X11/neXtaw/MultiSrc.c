@@ -1,6 +1,6 @@
 /*
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2022 by Thomas E. Dickey
 Copyright (c) 1991, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -752,7 +752,7 @@ SetValues(
 	if (mb_string != 0) {
 	    FreeAllPieces(old_src);
 	    LoadPieces(src, NULL, mb_string);
-	    XtFree(mb_string);
+	    XtFree(DeConst(mb_string));
 	} else {
 	    /* If the buffer holds bad chars, don't touch it... */
 	    XtAppWarningMsg(app_con,
@@ -1028,7 +1028,7 @@ StorePiecesInString(MultiSrcObject src)
 static FILE *
 InitStringOrFile(MultiSrcObject src, Boolean newString)
 {
-    char *open_mode = NULL;
+    const char *open_mode = NULL;
     FILE *file;
     char fileName[TMPSIZ];
     Display *d = XtDisplayOfObject((Widget) src);

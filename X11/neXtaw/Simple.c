@@ -1,6 +1,6 @@
 /***********************************************************
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2022 by Thomas E. Dickey
 Copyright (c) 1987, 1988, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -67,9 +67,9 @@ static XtResource resources[] =
     {XtNinsensitiveBorder, XtCInsensitive, XtRPixmap, sizeof(Pixmap),
      offset(insensitive_border), XtRImmediate, (XtPointer) NULL},
     {XtNpointerColor, XtCForeground, XtRPixel, sizeof(Pixel),
-     offset(pointer_fg), XtRString, XtDefaultForeground},
+     offset(pointer_fg), XtRString, DeConst(XtDefaultForeground)},
     {XtNpointerColorBackground, XtCBackground, XtRPixel, sizeof(Pixel),
-     offset(pointer_bg), XtRString, XtDefaultBackground},
+     offset(pointer_bg), XtRString, DeConst(XtDefaultBackground)},
     {XtNcursorName, XtCCursor, XtRString, sizeof(String),
      offset(cursor_name), XtRString, NULL},
     {XtNinternational, XtCInternational, XtRBoolean, sizeof(Boolean),
@@ -149,8 +149,8 @@ ClassInitialize(void)
     {
 	{XtWidgetBaseOffset, (XtPointer) XtOffsetOf(WidgetRec, core.screen),
 	 sizeof(Screen *)},
-	{XtResourceString, (XtPointer) XtNpointerColor, sizeof(Pixel)},
-	{XtResourceString, (XtPointer) XtNpointerColorBackground,
+	{XtResourceString, (XtPointer) DeConst(XtNpointerColor), sizeof(Pixel)},
+	{XtResourceString, (XtPointer) DeConst(XtNpointerColorBackground),
 	 sizeof(Pixel)},
 	{XtWidgetBaseOffset, (XtPointer) XtOffsetOf(WidgetRec, core.colormap),
 	 sizeof(Colormap)}
@@ -171,7 +171,7 @@ ClassPartInitialize(WidgetClass class)
     if (c->simple_class.change_sensitive == NULL) {
 	char buf[BUFSIZ];
 	char *pbuf;
-	char *msg1 = " Widget: The Simple Widget class method 'change_sensitive' is undefined.\nA function must be defined or inherited.";
+	const char *msg1 = " Widget: The Simple Widget class method 'change_sensitive' is undefined.\nA function must be defined or inherited.";
 	int len;
 
 	len = (int) (strlen(msg1) + strlen(c->core_class.class_name) + 1);
@@ -209,7 +209,7 @@ Realize(
 	    w->core.border_pixmap = ((SimpleWidget) w)->simple.insensitive_border;
 
 	*valueMask |= CWBorderPixmap;
-	*valueMask &= ~CWBorderPixel;
+	*valueMask &= (Mask) ~ CWBorderPixel;
     }
 
     ConvertCursor(w);
@@ -239,7 +239,7 @@ ConvertCursor(Widget w)
     if (simple->simple.cursor_name == NULL)
 	return;
 
-    from.addr = (XPointer) simple->simple.cursor_name;
+    from.addr = (XPointer) DeConst(simple->simple.cursor_name);
     from.size = (unsigned) strlen((char *) from.addr) + 1;
 
     to.size = sizeof(Cursor);

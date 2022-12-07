@@ -1,6 +1,6 @@
 /*
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2022 by Thomas E. Dickey
 Copyright (c) 1996 by Alfredo Kojima
 Copyright (c) 1989, 1994  X Consortium
 
@@ -76,11 +76,11 @@ static XtResource resources[] =
     {XtNrightMargin, XtCHorizontalMargins, XtRDimension, sizeof(Dimension),
      offset(right_margin), XtRImmediate, (XtPointer) 4},
     {XtNforeground, XtCForeground, XtRPixel, sizeof(Pixel),
-     offset(foreground), XtRString, XtDefaultForeground},
+     offset(foreground), XtRString, DeConst(XtDefaultForeground)},
     {XtNfont, XtCFont, XtRFontStruct, sizeof(XFontStruct *),
-     offset(font), XtRString, XtDefaultFont},
+     offset(font), XtRString, DeConst(XtDefaultFont)},
     {XtNfontSet, XtCFontSet, XtRFontSet, sizeof(XFontSet),
-     offset(fontset), XtRString, XtDefaultFontSet},
+     offset(fontset), XtRString, DeConst(XtDefaultFontSet)},
 };
 #undef offset
 /* *INDENT-OFF* */
@@ -223,7 +223,7 @@ Destroy(Widget w)
 
     DestroyGCs(w);
     if (entry->sme_bsb.label != XtName(w))
-	XtFree(entry->sme_bsb.label);
+	XtFree(DeConst(entry->sme_bsb.label));
 }
 
 /*      Function Name: Redisplay
@@ -274,7 +274,7 @@ Redisplay(
 
     if (entry->sme_bsb.label != NULL) {
 	int len = (int) strlen(entry->sme_bsb.label);
-	char *label = entry->sme_bsb.label;
+	String label = entry->sme_bsb.label;
 
 	x_loc += entry->sme_bsb.left_margin;
 	switch (entry->sme_bsb.justify) {
@@ -351,7 +351,7 @@ SetValues(
 
     if (old_entry->sme_bsb.label != entry->sme_bsb.label) {
 	if (old_entry->sme_bsb.label != XtName(new))
-	    XtFree((char *) old_entry->sme_bsb.label);
+	    XtFree(DeConst(old_entry->sme_bsb.label));
 
 	if (entry->sme_bsb.label != XtName(new))
 	    entry->sme_bsb.label = XtNewString(entry->sme_bsb.label);
@@ -600,7 +600,7 @@ GetBitmapInfo(Widget w, Boolean is_left)
 	    if (!XGetGeometry(XtDisplayOfObject(w),
 			      entry->sme_bsb.left_bitmap, &root,
 			      &x, &y, &width, &height, &bw, &depth)) {
-		char *err1 = "Xaw SmeBSB Object: Could not get Left Bitmap geometry information for menu entry ";
+		const char *err1 = "Xaw SmeBSB Object: Could not get Left Bitmap geometry information for menu entry ";
 		len = (int) (strlen(err1) + strlen(XtName(w)) + 3 + 1);
 		pbuf = XtStackAlloc(len, buf);
 		if (pbuf == NULL)
@@ -610,8 +610,8 @@ GetBitmapInfo(Widget w, Boolean is_left)
 		XtStackFree(pbuf, buf);
 	    }
 	    if (depth != 1) {
-		char *err1 = "Xaw SmeBSB Object: Left Bitmap of entry ";
-		char *err2 = " is not one bit deep.";
+		const char *err1 = "Xaw SmeBSB Object: Left Bitmap of entry ";
+		const char *err2 = " is not one bit deep.";
 		len = (int) (strlen(err1)
 			     + strlen(err2)
 			     + strlen(XtName(w)) + 2 + 1);
@@ -629,7 +629,7 @@ GetBitmapInfo(Widget w, Boolean is_left)
 	if (!XGetGeometry(XtDisplayOfObject(w),
 			  entry->sme_bsb.right_bitmap, &root,
 			  &x, &y, &width, &height, &bw, &depth)) {
-	    char *err1 = "Xaw SmeBSB Object: Could not get Right Bitmap geometry information for menu entry ";
+	    const char *err1 = "Xaw SmeBSB Object: Could not get Right Bitmap geometry information for menu entry ";
 	    len = (int) (strlen(err1) + strlen(XtName(w)) + 3 + 1);
 	    pbuf = XtStackAlloc(len, buf);
 	    if (pbuf == NULL)
@@ -639,8 +639,8 @@ GetBitmapInfo(Widget w, Boolean is_left)
 	    XtStackFree(pbuf, buf);
 	}
 	if (depth != 1) {
-	    char *err1 = "Xaw SmeBSB Object: Right Bitmap of entry ";
-	    char *err2 = " is not one bit deep.";
+	    const char *err1 = "Xaw SmeBSB Object: Right Bitmap of entry ";
+	    const char *err2 = " is not one bit deep.";
 	    len = (int) (strlen(err1)
 			 + strlen(err2)
 			 + strlen(XtName(w)) + 2 + 1);

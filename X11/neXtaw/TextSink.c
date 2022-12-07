@@ -1,6 +1,6 @@
 /*
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2022 by Thomas E. Dickey
 Copyright (c) 1989, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -74,9 +74,9 @@ static void GetCursorBounds(Widget, XRectangle *);
 static XtResource resources[] =
 {
     {XtNforeground, XtCForeground, XtRPixel, sizeof(Pixel),
-     offset(foreground), XtRString, XtDefaultForeground},
+     offset(foreground), XtRString, DeConst(XtDefaultForeground)},
     {XtNbackground, XtCBackground, XtRPixel, sizeof(Pixel),
-     offset(background), XtRString, XtDefaultBackground},
+     offset(background), XtRString, DeConst(XtDefaultBackground)},
 };
 #undef offset
 

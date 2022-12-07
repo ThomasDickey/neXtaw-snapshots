@@ -1,6 +1,6 @@
 /***********************************************************
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2022 by Thomas E. Dickey
 Copyright (c) 1996, 1997 by Alfredo Kojima
 Copyright 1992 by Mitch Trachtenberg
 Copyright (c) 1987, 1988, 1994  X Consortium
@@ -122,7 +122,7 @@ static XtResource resources[] =
     {XtNthumb, XtCThumb, XtRBitmap, sizeof(Pixmap),
      Offset(thumb), XtRImmediate, (XtPointer) XtUnspecifiedPixmap},
     {XtNforeground, XtCForeground, XtRPixel, sizeof(Pixel),
-     Offset(foreground), XtRString, XtDefaultForeground},
+     Offset(foreground), XtRString, DeConst(XtDefaultForeground)},
     {XtNshown, XtCShown, XtRFloat, sizeof(float),
      Offset(shown), XtRFloat, (XtPointer) &floatZero},
     {XtNtopOfThumb, XtCTopOfThumb, XtRFloat, sizeof(float),
@@ -846,7 +846,7 @@ Realize(
     if (sbw->simple.cursor_name == NULL)
 	XtVaSetValues(w, XtNcursorName, "top_left_arrow", NULL);
     /* dont set the cursor of the window to anything */
-    *valueMask &= ~CWCursor;
+    *valueMask &= (Mask) ~ CWCursor;
     /*
      * The Simple widget actually stuffs the value in the valuemask.
      */

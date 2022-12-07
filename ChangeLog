@@ -1,4 +1,10 @@
--- $XTermId: ChangeLog,v 1.25 2015/01/18 20:00:04 tom Exp $
+-- $XTermId: ChangeLog,v 1.28 2022/12/07 23:29:44 tom Exp $
+
+20221207
+	+ build-fixes for test-packages.
+	+ compiler-warning fixes.
+	+ update configure checks, e.g., compiler warnings.
+	+ updated config.guess, config.sub, install-sh
 
 20150118
 	+ update copyright notices.

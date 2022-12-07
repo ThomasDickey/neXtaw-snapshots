@@ -1,6 +1,6 @@
 /***********************************************************
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2022 by Thomas E. Dickey
 Copyright (c) 1987, 1988, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -176,7 +176,7 @@ static XtResource ext_resources[] =
      XtRString, (XtPointer) NULL},
     {XtNpreeditType, XtCPreeditType, XtRString, sizeof(String),
      XtOffsetOf(XawVendorShellExtRec, vendor_ext.im.preedit_type),
-     XtRString, (XtPointer) "OverTheSpot,OffTheSpot,Root"},
+     XtRString, (XtPointer) DeConst("OverTheSpot,OffTheSpot,Root")},
     {XtNopenIm, XtCOpenIm, XtRBoolean, sizeof(Boolean),
      XtOffsetOf(XawVendorShellExtRec, vendor_ext.im.open_im),
      XtRImmediate, (XtPointer) TRUE},

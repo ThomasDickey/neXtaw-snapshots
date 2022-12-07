@@ -1,6 +1,6 @@
 /***********************************************************
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2022 by Thomas E. Dickey
 Copyright 1999 by Carlos A M dos Santos
 Copyright (c) 1987, 1988, 1994  X Consortium
 
@@ -154,7 +154,7 @@ static XtResource resources[] =
     {XtNwidth, XtCWidth, XtRDimension, sizeof(Dimension),
      offset(core.width), XtRDimension, (XtPointer) &defWidth},
     {XtNcursor, XtCCursor, XtRCursor, sizeof(Cursor),
-     offset(simple.cursor), XtRString, "xterm"},
+     offset(simple.cursor), XtRString, DeConst("xterm")},
     {XtNheight, XtCHeight, XtRDimension, sizeof(Dimension),
      offset(core.height), XtRDimension, (XtPointer) &defHeight},
     {XtNdisplayPosition, XtCTextPosition, XtRInt, sizeof(XawTextPosition),
@@ -584,9 +584,9 @@ Initialize(
     if (ctx->text.scroll_vert != XawtextScrollNever) {
 	if ((ctx->text.resize == XawtextResizeHeight) ||
 	    (ctx->text.resize == XawtextResizeBoth)) {
-	    char *err1 = "Xaw Text Widget ";
-	    char *err2 = ":\nVertical scrolling not allowed with height resize.\n";
-	    char *err3 = "Vertical scrolling has been DEACTIVATED.";
+	    const char *err1 = "Xaw Text Widget ";
+	    const char *err2 = ":\nVertical scrolling not allowed with height resize.\n";
+	    const char *err3 = "Vertical scrolling has been DEACTIVATED.";
 	    len = (int) (strlen(err1) + strlen(err2) + strlen(err3) +
 			 strlen(ctx->core.name) + 1);
 	    perr = XtStackAlloc(len, error_buf);
@@ -602,9 +602,9 @@ Initialize(
 
     if (ctx->text.scroll_horiz != XawtextScrollNever) {
 	if (ctx->text.wrap != XawtextWrapNever) {
-	    char *err1 = "Xaw Text Widget ";
-	    char *err2 = ":\nHorizontal scrolling not allowed with wrapping active.";
-	    char *err3 = "\nHorizontal scrolling has been DEACTIVATED.";
+	    const char *err1 = "Xaw Text Widget ";
+	    const char *err2 = ":\nHorizontal scrolling not allowed with wrapping active.";
+	    const char *err3 = "\nHorizontal scrolling has been DEACTIVATED.";
 	    len = (int) (strlen(err1) + strlen(err2) + strlen(err3) +
 			 strlen(ctx->core.name) + 1);
 	    perr = XtStackAlloc(len, error_buf);
@@ -616,9 +616,9 @@ Initialize(
 	    ctx->text.scroll_horiz = XawtextScrollNever;
 	} else if ((ctx->text.resize == XawtextResizeWidth) ||
 		   (ctx->text.resize == XawtextResizeBoth)) {
-	    char *err1 = "Xaw Text Widget ";
-	    char *err2 = ":\nHorizontal scrolling not allowed with width resize.\n";
-	    char *err3 = "Horizontal scrolling has been DEACTIVATED.";
+	    const char *err1 = "Xaw Text Widget ";
+	    const char *err2 = ":\nHorizontal scrolling not allowed with width resize.\n";
+	    const char *err3 = "Horizontal scrolling has been DEACTIVATED.";
 	    len = (int) (strlen(err1) + strlen(err2) + strlen(err3) +
 			 strlen(ctx->core.name) + 1);
 	    perr = XtStackAlloc(len, error_buf);

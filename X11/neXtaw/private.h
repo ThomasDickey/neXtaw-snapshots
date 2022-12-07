@@ -1,5 +1,5 @@
 /****************************************************************************
- * Copyright 2015 by Thomas E. Dickey                                       *
+ * Copyright 2015,2022 by Thomas E. Dickey                                  *
  *                                                                          *
  * Permission is hereby granted, free of charge, to any person obtaining a  *
  * copy of this software and associated documentation files (the            *
@@ -42,5 +42,7 @@
 #define LIBRARY_NAME	"neXtaw"
 
 #define SetPT(n,X,Y) pt[n].x = (short)(X); pt[n].y = (short)(Y)
+
+#define DeConst(name) (char *)(intptr_t)(name)
 
 #endif /* _private_h */
