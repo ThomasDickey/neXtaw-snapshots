@@ -1,4 +1,7 @@
--- $XTermId: ChangeLog,v 1.28 2022/12/07 23:29:44 tom Exp $
+-- $XTermId: ChangeLog,v 1.30 2022/12/13 12:19:54 tom Exp $
+
+20221213
+	+ build-fixes for test-packages.
 
 20221207
 	+ build-fixes for test-packages.
