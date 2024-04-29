@@ -1,6 +1,8 @@
+/* $XTermId: Scrollbar.c,v 1.10 2024/04/29 14:52:41 tom Exp $ */
+
 /***********************************************************
 
-Copyright 2015,2022 by Thomas E. Dickey
+Copyright 2015-2022,2024 by Thomas E. Dickey
 Copyright (c) 1996, 1997 by Alfredo Kojima
 Copyright 1992 by Mitch Trachtenberg
 Copyright (c) 1987, 1988, 1994  X Consortium
@@ -1413,6 +1415,10 @@ NotifyThumb(
 	       Cardinal *num_params GCC_UNUSED)
 {
     register ScrollbarWidget sbw = (ScrollbarWidget) w;
+    union {
+	XtPointer xtp;
+	float xtf;
+    } xtpf;
     float top = sbw->scrollbar.top;
 
     if (LookAhead(w, event))
@@ -1437,8 +1443,9 @@ NotifyThumb(
        integer number of pixels the thumb must be moved in order to scroll
        to the next line/column. */
     top += (float) 0.0001;
+    xtpf.xtf = top;
 
-    XtCallCallbacks(w, XtNthumbProc, *(XtPointer *) &top);
+    XtCallCallbacks(w, XtNthumbProc, xtpf.xtp);
     XtCallCallbacks(w, XtNjumpProc, (XtPointer) &top);
 }
 

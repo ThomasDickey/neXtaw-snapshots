@@ -1,6 +1,8 @@
+/* $XTermId: TextAction.c,v 1.15 2024/04/29 14:57:43 tom Exp $ */
+
 /*
 
-Copyright 2015,2022 by Thomas E. Dickey
+Copyright 2015-2022,2024 by Thomas E. Dickey
 Copyright (c) 2002 by Ulric Eriksson
 Copyright (c) 1999 by Carlos A M dos Santos
 Copyright (c) 1996 by Alfredo Kojima
@@ -1221,7 +1223,7 @@ InsertNewLineAndIndent(
     XawTextPosition pos1;
     int length;
     TextWidget ctx = (TextWidget) w;
-    String line_to_ip;
+    char *line_to_ip;
 
     StartAction(ctx, event);
     pos1 = SrcScan(ctx->text.source, ctx->text.insertPos,
@@ -1242,7 +1244,7 @@ InsertNewLineAndIndent(
 	wcscpy((wchar_t *) ++ptr, (wchar_t *) line_to_ip);
 
 	length = (int) wcslen((wchar_t *) text.ptr);
-	while (length && (iswspace(*ptr) || (*ptr == _Xaw_atowc(XawTAB))))
+	while (length && (iswspace((wint_t) *ptr) || (*ptr == _Xaw_atowc(XawTAB))))
 	    ptr++, length--;
 	*ptr = (wchar_t) 0;
 	text.length = (int) wcslen((wchar_t *) text.ptr);
@@ -1771,7 +1773,7 @@ InsertString(
     StartAction(ctx, event);
     for (i = (int) *num_params; i; i--, params++) {	/* DO FOR EACH PARAMETER */
 
-	text.ptr = IfHexConvertHexElseReturnParam(*params, &text.length);
+	text.ptr = IfHexConvertHexElseReturnParam(DeConst(*params), &text.length);
 
 	if (text.length == 0)
 	    continue;
@@ -1852,7 +1854,7 @@ DisplayCaret(
 
     if (*num_params > 0) {	/* default arg is "True" */
 	XrmValue from, to;
-	from.size = (unsigned) strlen(from.addr = params[0]);
+	from.size = (unsigned) strlen(from.addr = DeConst(params[0]));
 	XtConvert(w, XtRString, &from, XtRBoolean, &to);
 
 	if (to.addr != NULL)
@@ -1997,7 +1999,7 @@ StripOutOldCRs(
 
 	    for (i = 1; i < len; i++)
 		if (text.format == XawFmtWide) {
-		    if (!iswspace(((wchar_t *) buf)[i]) ||
+		    if (!iswspace(((wint_t *) buf)[i]) ||
 			((periodPos + i) >= to)) {
 			break;
 		    }
@@ -2081,7 +2083,7 @@ InsertNewCRs(
 	buf = _XawTextGetText(ctx, eol, space);
 	for (i = 0; i < len; i++)
 	    if (text.format == XawFmtWide) {
-		if (!iswspace(((wchar_t *) buf)[i]))
+		if (!iswspace(((wint_t *) buf)[i]))
 		    break;
 	    } else if (!isspace(buf[i]))
 		break;

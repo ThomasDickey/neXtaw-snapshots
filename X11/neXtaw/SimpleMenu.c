@@ -1,6 +1,8 @@
+/* $XTermId: SimpleMenu.c,v 1.10 2024/04/29 14:39:08 tom Exp $ */
+
 /*
 
-Copyright 2015,2022 by Thomas E. Dickey
+Copyright 2015-2022,2024 by Thomas E. Dickey
 Copyright (c) 1996 by Alfredo Kojima
 Copyright (c) 1989, 1994  X Consortium
 
@@ -471,7 +473,7 @@ Realize(
 	*mask |= CWBackingStore;
 	attrs->backing_store = smw->simple_menu.backing_store;
     } else
-	*mask &= ~CWBackingStore;
+	*mask &= (XtValueMask) ~ CWBackingStore;
     /* check if the menu is too big */
     if (smw->core.height >= HeightOfScreen(XtScreen(w))) {
 	smw->simple_menu.too_tall = True;

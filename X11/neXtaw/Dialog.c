@@ -1,6 +1,8 @@
+/* $XTermId: Dialog.c,v 1.6 2024/04/29 14:32:49 tom Exp $ */
+
 /***********************************************************
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2024 by Thomas E. Dickey
 Copyright (c) 1987, 1988, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -352,7 +354,7 @@ GetValuesHook(
 		 Cardinal *num_args)
 {
     Arg a[1];
-    String s;
+    char *s;
     DialogWidget src = (DialogWidget) w;
     int i;
 

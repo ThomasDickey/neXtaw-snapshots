@@ -1,6 +1,8 @@
+/* $XTermId: Text.c,v 1.14 2024/04/29 14:41:11 tom Exp $ */
+
 /***********************************************************
 
-Copyright 2015,2022 by Thomas E. Dickey
+Copyright 2015-2022,2024 by Thomas E. Dickey
 Copyright 1999 by Carlos A M dos Santos
 Copyright (c) 1987, 1988, 1994  X Consortium
 
@@ -2626,7 +2628,7 @@ _XawTextSetSelection(
     if (nelems == 1 && !strcmp(list[0], "none"))
 	return;
     if (nelems == 0) {
-	String defaultSel = "PRIMARY";
+	static String defaultSel = "PRIMARY";
 	list = &defaultSel;
 	nelems = 1;
     }

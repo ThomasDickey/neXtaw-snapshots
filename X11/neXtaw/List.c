@@ -1,6 +1,8 @@
+/* $XTermId: List.c,v 1.9 2024/04/29 15:14:34 tom Exp $ */
+
 /*
 
-Copyright 2015,2022 by Thomas E. Dickey
+Copyright 2015-2022,2024 by Thomas E. Dickey
 Copyright (c) 1989, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -646,7 +648,7 @@ PaintItemName(
     x += lw->list.column_space / 2;
     str_y += lw->list.row_space / 2;
 
-    str = lw->list.list[item];	/* draw it */
+    str = DeConst(lw->list.list[item]);		/* draw it */
 
     ClipToShadowInteriorAndLongest(lw, &gc, (Dimension) x);
 

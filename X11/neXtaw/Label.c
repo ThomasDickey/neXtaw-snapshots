@@ -1,6 +1,8 @@
+/* $XTermId: Label.c,v 1.8 2024/04/29 15:00:22 tom Exp $ */
+
 /***********************************************************
 
-Copyright 2015,2022 by Thomas E. Dickey
+Copyright 2015-2022,2024 by Thomas E. Dickey
 Copyright (c) 1987, 1988, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -766,7 +768,7 @@ SetValues(Widget current,
     }
 
     if (newlw->label.label == NULL) {
-	newlw->label.label = newlw->core.name;
+	newlw->label.label = DeConst(newlw->core.name);
     }
 
     /*

@@ -1,6 +1,8 @@
+/* $XTermId: TextPop.c,v 1.10 2024/04/29 15:08:51 tom Exp $ */
+
 /*
 
-Copyright 2015,2022 by Thomas E. Dickey
+Copyright 2015-2022,2024 by Thomas E. Dickey
 Copyright (c) 1989, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -88,7 +90,7 @@ static void SetResource(Widget, char *, XtArgVal);
 static void SetSearchLabels(struct SearchAndReplace *, String, String, Boolean);
 static void DoReplaceOne(Widget, XtPointer, XtPointer);
 static void DoReplaceAll(Widget, XtPointer, XtPointer);
-static Widget CreateDialog(Widget, String, String, void (*)(Widget, Widget, char *));
+static Widget CreateDialog(Widget, char *, String, void (*)(Widget, Widget, char *));
 static Widget GetShell(Widget);
 static void SetWMProtocolTranslations(Widget);
 static Boolean DoSearch(struct SearchAndReplace *);
@@ -96,7 +98,7 @@ static Boolean SetResourceByName(Widget, char *, char *, XtArgVal);
 static Boolean Replace(struct SearchAndReplace *, Boolean, Boolean);
 static String GetString(Widget);
 
-static String GetStringRaw(Widget);
+static char * GetStringRaw(Widget);
 
 static void AddInsertFileChildren(Widget, Widget, char *);
 static Boolean InsertFileNamed(Widget, const char *);
@@ -188,7 +190,7 @@ _XawTextInsertFile(
 	ptr = params[0];
 
     if (!ctx->text.file_insert) {
-	ctx->text.file_insert = CreateDialog(w, ptr, "insertFile",
+	ctx->text.file_insert = CreateDialog(w, DeConst(ptr), "insertFile",
 					     AddInsertFileChildren);
 	XtRealizeWidget(ctx->text.file_insert);
 	SetWMProtocolTranslations(ctx->text.file_insert);
@@ -536,7 +538,7 @@ _XawTextSearch(
     }
 
     if (*num_params == 2)
-	ptr = params[1];
+	ptr = DeConst(params[1]);
     else if (_XawTextFormat(ctx) == (XrmQuark) XawFmtWide) {
 	/*This just does the equivalent of ptr = ""L, a waste because params[1] isnt W aligned. */
 	ptr = (char *) XtMalloc(sizeof(wchar_t));
@@ -1317,7 +1319,7 @@ GetString(Widget text)
     return (string);
 }
 
-static String
+static char *
 GetStringRaw(Widget tw)
 {
     TextWidget ctx = (TextWidget) tw;
@@ -1415,7 +1417,7 @@ CenterWidgetOnPoint(
 static Widget
 CreateDialog(
 		Widget parent,
-		String ptr,
+		char *ptr,
 		String name,
 		void (*func) (Widget, Widget, char *))
 {

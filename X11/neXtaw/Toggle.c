@@ -1,6 +1,8 @@
+/* $XTermId: Toggle.c,v 1.9 2024/04/29 15:10:07 tom Exp $ */
+
 /*
 
-Copyright 2015,2022 by Thomas E. Dickey
+Copyright 2015-2022,2024 by Thomas E. Dickey
 Copyright (c) 1996,1997 by Alfredo Kojima
 Copyright (c) 1989, 1994  X Consortium
 
@@ -298,7 +300,7 @@ Initialize(Widget request,
     tw->toggle.radio_group = NULL;
 
     if (tw->toggle.radio_data == NULL)
-	tw->toggle.radio_data = (XtPointer) new->core.name;
+	tw->toggle.radio_data = (XtPointer) DeConst(new->core.name);
 
     if (tw->toggle.widget != NULL) {
 	if (GetRadioGroup(tw->toggle.widget) == NULL)

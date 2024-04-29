@@ -1,6 +1,8 @@
+/* $XTermId: MultiSrc.c,v 1.9 2024/04/29 14:36:40 tom Exp $ */
+
 /*
 
-Copyright 2015,2022 by Thomas E. Dickey
+Copyright 2015-2022,2024 by Thomas E. Dickey
 Copyright (c) 1991, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -136,7 +138,7 @@ static void ClassInitialize(void);
 static void Initialize(Widget, Widget, ArgList, Cardinal *);
 static void Destroy(Widget);
 static void GetValuesHook(Widget, ArgList, Cardinal *);
-static String StorePiecesInString(MultiSrcObject);
+static char *StorePiecesInString(MultiSrcObject);
 static Boolean SetValues(Widget, Widget, Widget, ArgList, Cardinal *);
 static Boolean WriteToFile(char *, _Xconst char *);
 
@@ -521,7 +523,7 @@ Scan(
 		position += inc;
 
 		if (type == XawstWhiteSpace) {
-		    if (iswspace(c)) {
+		    if (iswspace((wint_t) c)) {
 			if (non_space)
 			    break;
 		    } else
@@ -537,7 +539,7 @@ Scan(
 			}
 		    } else if (c == _Xaw_atowc(XawLF))
 			break;
-		    else if (!iswspace(c))
+		    else if (!iswspace((wint_t) c))
 			first_eol = TRUE;
 		}
 
@@ -747,7 +749,7 @@ SetValues(
 
     if (!total_reset && (old_src->multi_src.piece_size
 			 != src->multi_src.piece_size)) {
-	String mb_string = StorePiecesInString(old_src);
+	char *mb_string = StorePiecesInString(old_src);
 
 	if (mb_string != 0) {
 	    FreeAllPieces(old_src);
@@ -983,7 +985,7 @@ WriteToFile(char *string, _Xconst char *name)
  *	Returns:       char *mb_string.     Caller must free.
  *                  or 0: conversion error. Caller must panic!
  */
-static String
+static char *
 StorePiecesInString(MultiSrcObject src)
 {
     wchar_t *wc_string;
@@ -1040,7 +1042,7 @@ InitStringOrFile(MultiSrcObject src, Boolean newString)
 
 	else if (!src->multi_src.use_string_in_place) {
 	    int length;
-	    String temp = XtNewString(src->multi_src.string);
+	    char *temp = XtNewString(src->multi_src.string);
 	    if (src->multi_src.allocated_string)
 		XtFree(src->multi_src.string);
 	    src->multi_src.allocated_string = True;

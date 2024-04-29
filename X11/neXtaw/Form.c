@@ -1,6 +1,8 @@
+/* $XTermId: Form.c,v 1.7 2024/04/29 15:13:14 tom Exp $ */
+
 /***********************************************************
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2024 by Thomas E. Dickey
 Copyright (c) 1987, 1988, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -636,7 +638,8 @@ GeometryManager(
     XtWidgetGeometry allowed;
     XtGeometryResult ret_val;
 
-    if ((request->request_mode & ~(XtCWQueryOnly | CWWidth | CWHeight)) ||
+    if ((request->request_mode & (XtGeometryMask) ~ (XtCWQueryOnly | CWWidth
+						     | CWHeight)) ||
 	!form->form.allow_resize) {
 
 	/* If GeometryManager is invoked during a SetValues call on a child

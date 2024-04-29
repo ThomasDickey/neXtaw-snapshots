@@ -1,6 +1,8 @@
+/* $XTermId: XawIm.c,v 1.13 2024/04/29 14:16:50 tom Exp $ */
+
 /*
 
-Copyright 2022 by Thomas E. Dickey
+Copyright 2022,2024 by Thomas E. Dickey
 Copyright (c) 1999 by Carlos A M dos Santos
 Copyright (c) 1996 by Alfredo Kojima
 Copyright (c) 1994  X Consortium
@@ -100,23 +102,28 @@ static XtResource resources[] =
 {
     {
 	XtNfontSet, XtCFontSet, XtRFontSet, sizeof(XFontSet),
-	Offset(font_set), XtRString, DeConst(XtDefaultFontSet)
+	Offset(font_set), XtRString,
+	DeConst(XtDefaultFontSet)
     },
     {
 	XtNforeground, XtCForeground, XtRPixel, sizeof(Pixel),
-	Offset(foreground), XtRString, (XtPointer) DeConst("XtDefaultForeground")
+	Offset(foreground), XtRString,
+	(XtPointer) DeConst("XtDefaultForeground")
     },
     {
 	XtNbackground, XtCBackground, XtRPixel, sizeof(Pixel),
-	Offset(background), XtRString, (XtPointer) DeConst("XtDefaultBackground")
+	Offset(background), XtRString,
+	(XtPointer) DeConst("XtDefaultBackground")
     },
     {
 	XtNbackgroundPixmap, XtCPixmap, XtRPixmap, sizeof(Pixmap),
-	Offset(bg_pixmap), XtRImmediate, (XtPointer) XtUnspecifiedPixmap
+	Offset(bg_pixmap), XtRImmediate,
+	(XtPointer) XtUnspecifiedPixmap
     },
     {
 	XtNinsertPosition, XtCTextPosition, XtRInt, sizeof(XawTextPosition),
-	Offset(cursor_position), XtRImmediate, (XtPointer) 0
+	Offset(cursor_position), XtRImmediate,
+	(XtPointer) 0
     }
 };
 #undef Offset
@@ -180,6 +187,14 @@ IsSharedIC(XawVendorShellExtPart * ve)
     return (ve->ic.shared_ic);
 }
 
+static void
+XawVendorStructureNotifyHandler(Widget w, XtPointer closure _X_UNUSED, XEvent
+				*event _X_UNUSED,
+				Boolean *continue_to_dispatch _X_UNUSED)
+{
+    XawVendorShellExtResize(w);
+}
+
 static XawIcTableList
 GetIcTableShared(
 		    Widget w,
@@ -227,7 +242,8 @@ static void
 ConfigureCB(
 	       Widget w,
 	       XtPointer closure GCC_UNUSED,
-	       XEvent *event)
+	       XEvent *event,
+	       Boolean *continue_to_dispatch GCC_UNUSED)
 {
     XawIcTableList p;
     XawVendorShellExtPart *ve;
@@ -408,7 +424,10 @@ static void
 OpenIM(XawVendorShellExtPart * ve)
 {
     int i;
-    char *p, *s, *ns, *end, *pbuf, buf[32];
+    const char *end;
+    const char *ns;
+    const char *s;
+    char *p, *pbuf, buf[32];
     XIM xim = NULL;
     XIMStyles *xim_styles;
     XIMStyle input_style = 0;
@@ -984,12 +1003,13 @@ CreateIC(
 
     SizeNegotiation(p, ve->parent->core.width, ve->parent->core.height);
 
-    p->flg &= ~(CIFontSet | CIFg | CIBg | CIBgPixmap | CICursorP | CILineS);
+    p->flg &= (unsigned long) ~(CIFontSet | CIFg | CIBg | CIBgPixmap |
+				CICursorP | CILineS);
 
     if (!IsSharedIC(ve)) {
 	if (p->input_style & XIMPreeditPosition) {
 	    XtAddEventHandler(w, (EventMask) StructureNotifyMask, FALSE,
-			      (XtEventHandler) ConfigureCB, (Opaque) NULL);
+			      ConfigureCB, (Opaque) NULL);
 	}
     }
 }
@@ -1165,7 +1185,8 @@ SetICValues(
     if (IsSharedIC(ve) && p->flg & CIFontSet)
 	SizeNegotiation(p, ve->parent->core.width, ve->parent->core.height);
 
-    p->flg &= ~(CIFontSet | CIFg | CIBg | CIBgPixmap | CICursorP | CILineS);
+    p->flg &= (unsigned long) ~(CIFontSet | CIFg | CIBg | CIBgPixmap |
+				CICursorP | CILineS);
 }
 
 static void
@@ -1213,7 +1234,7 @@ SetICFocus(
 	p->ic_focused = TRUE;
 	XSetICFocus(p->xic);
     }
-    p->flg &= ~CIICFocus;
+    p->flg &= (unsigned long) ~CIICFocus;
 }
 
 static void
@@ -1374,9 +1395,9 @@ UnsetFocus(Widget inwidg)
 	if ((p = GetIcTableShared(inwidg, ve)) == NULL)
 	    return;
 	if (p->flg & CIICFocus) {
-	    p->flg &= ~CIICFocus;
+	    p->flg &= (unsigned long) ~CIICFocus;
 	}
-	p->prev_flg &= ~CIICFocus;
+	p->prev_flg &= (unsigned long) ~CIICFocus;
 	if (ve->im.xim && XtIsRealized((Widget) vw) && p->xic) {
 	    UnsetICFocus(inwidg, ve);
 	}
@@ -1612,7 +1633,7 @@ _XawImRealize(
 	return;
     if ((ve = GetExtPart((VendorShellWidget) w))) {
 	XtAddEventHandler(w, (EventMask) StructureNotifyMask, FALSE,
-			  XawVendorShellExtResize, (XtPointer) NULL);
+			  XawVendorStructureNotifyHandler, (XtPointer) NULL);
 	AllCreateIC(ve);
     }
 }

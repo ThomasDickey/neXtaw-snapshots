@@ -1,6 +1,8 @@
+/* $XTermId: Paned.c,v 1.8 2024/04/29 15:13:14 tom Exp $ */
+
 /***********************************************************
 
-Copyright 2015,2022 by Thomas E. Dickey
+Copyright 2015-2022,2024 by Thomas E. Dickey
 Copyright (c) 1987, 1988, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -1067,7 +1069,7 @@ HandleGrip(
 	XtError("Paned GripAction has been passed incorrect parameters.");
 
     if (islower(action_type))
-	action_type = toupper(action_type);
+	action_type = (char) toupper(action_type);
 
     loc = GetEventLocation(pw, (XEvent *) (call_data->event));
 
@@ -1451,7 +1453,7 @@ GeometryManager(
 
     if ((XtIsRealized((Widget) pw) && !pane->allow_resize) ||
 	!(mask & ((vert) ? CWHeight : CWWidth)) ||
-	(mask & ~(CWWidth | CWHeight)) ||
+	(mask & (XtGeometryMask) ~ (CWWidth | CWHeight)) ||
 	(GetRequestInfo(request, vert) == PaneSize(w, vert))) {
 	return XtGeometryNo;
     }

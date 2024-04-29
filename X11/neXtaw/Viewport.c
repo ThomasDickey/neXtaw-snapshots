@@ -1,6 +1,8 @@
+/* $XTermId: Viewport.c,v 1.8 2024/04/29 15:13:14 tom Exp $ */
+
 /***********************************************************
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2024 by Thomas E. Dickey
 Copyright (c) 1996 by Alfredo Kojima
 Copyright (c) 1987, 1988, 1994  X Consortium
 
@@ -952,8 +954,8 @@ GeometryManager(
 	return QueryGeometry(w, request, reply);
 
     if (child != w->viewport.child
-	|| request->request_mode & ~(CWWidth | CWHeight
-				     | CWBorderWidth)
+	|| request->request_mode & (XtGeometryMask) ~ (CWWidth | CWHeight
+						       | CWBorderWidth)
 	|| ((request->request_mode & CWBorderWidth)
 	    && request->border_width > 0))
 	return XtGeometryNo;

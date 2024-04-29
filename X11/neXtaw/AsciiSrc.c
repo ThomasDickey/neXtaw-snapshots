@@ -1,6 +1,8 @@
+/* $XTermId: AsciiSrc.c,v 1.8 2024/04/29 14:29:29 tom Exp $ */
+
 /*
 
-Copyright 2015,2022 by Thomas E. Dickey
+Copyright 2015-2022,2024 by Thomas E. Dickey
 Copyright (c) 1989, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -107,7 +109,7 @@ static void Initialize(Widget, Widget, ArgList, Cardinal *);
 static void Destroy(Widget);
 static void GetValuesHook(Widget, ArgList, Cardinal *);
 static String MyStrncpy(char * s1, char * s2, int n);
-static String StorePiecesInString(AsciiSrcObject);
+static char * StorePiecesInString(AsciiSrcObject);
 static Boolean SetValues(Widget, Widget, Widget, ArgList, Cardinal *);
 static Boolean WriteToFile(String, String);
 /* *INDENT-ON* */
@@ -659,10 +661,10 @@ SetValues(
 
     if (!total_reset &&
 	(old_src->ascii_src.piece_size != src->ascii_src.piece_size)) {
-	String string = StorePiecesInString(old_src);
+	char *string = StorePiecesInString(old_src);
 	FreeAllPieces(old_src);
 	LoadPieces(src, NULL, string);
-	XtFree(DeConst(string));
+	XtFree(string);
     }
 
     return (FALSE);
@@ -897,10 +899,10 @@ WriteToFile(String string, String name)
  *	Arguments: data - the ascii pointer data.
  *	Returns: none.
  */
-static String
+static char *
 StorePiecesInString(AsciiSrcObject src)
 {
-    String string;
+    char *string;
     XawTextPosition first;
     Piece *piece;
     char *result;
