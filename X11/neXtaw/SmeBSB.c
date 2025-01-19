@@ -1,6 +1,6 @@
 /*
 
-Copyright 2015,2022 by Thomas E. Dickey
+Copyright 2015-2022,2025 by Thomas E. Dickey
 Copyright (c) 1996 by Alfredo Kojima
 Copyright (c) 1989, 1994  X Consortium
 
@@ -32,7 +32,7 @@ in this Software without prior written authorization from the X Consortium.
  * Date:    September 26, 1989
  *
  * By:      Chris D. Peterson
- *          MIT X Consortium 
+ *          MIT X Consortium
  *          kit@expo.lcs.mit.edu
  */
 
@@ -85,7 +85,7 @@ static XtResource resources[] =
 #undef offset
 /* *INDENT-OFF* */
 /*
- * Semi Public function definitions. 
+ * Semi Public function definitions.
  */
 static void Redisplay(Widget, XEvent *, Region);
 static void Destroy(Widget);
@@ -95,7 +95,7 @@ static void ClassInitialize(void);
 static Boolean SetValues(Widget, Widget, Widget, ArgList, Cardinal *);
 static XtGeometryResult QueryGeometry(Widget, XtWidgetGeometry *, XtWidgetGeometry *);
 
-/* 
+/*
  * Private Function Definitions.
  */
 static void GetDefaultSize(Widget, Dimension *, Dimension * );
@@ -164,7 +164,7 @@ WidgetClass smeBSBObjectClass = (WidgetClass) & smeBSBClassRec;
  ************************************************************/
 
 /*	Function Name: ClassInitialize
- *	Description: Initializes the SmeBSBObject. 
+ *	Description: Initializes the SmeBSBObject.
  *	Arguments: none.
  *	Returns: none.
  */
@@ -230,7 +230,7 @@ Destroy(Widget w)
  *      Description: Redisplays the contents of the widget.
  *      Arguments: w - the simple menu widget.
  *                 event - the X event that caused this redisplay.
- *                 region - the region the needs to be repainted. 
+ *                 region - the region the needs to be repainted.
  *      Returns: none.
  */
 
@@ -400,7 +400,7 @@ SetValues(
  *	Returns: A Geometry Result.
  *
  * See the Intrinsics manual for details on what this function is for.
- * 
+ *
  * I just return the height and width of the label plus the margins.
  */
 

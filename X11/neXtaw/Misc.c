@@ -1,5 +1,5 @@
 /*
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2025 by Thomas E. Dickey
 Copyright (c) 1996 Alfedo K. Kojima
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,7 +21,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Except as contained in this notice, the name(s) of the above copyright holders
 shall not be used in advertising or otherwise to promote the sale, use or
-other dealings in this Software without prior written authorization. 
+other dealings in this Software without prior written authorization.
  */
 
 #include "private.h"
@@ -45,7 +45,7 @@ neXtawDrawShadowBox(
     XPoint pt[6];
     Dimension s = tdw->threeD.shadow_width;
 
-    /* 
+    /*
      * Draw the shadows using the core part width and height, and the threeD
      * part shadow_width.
      *

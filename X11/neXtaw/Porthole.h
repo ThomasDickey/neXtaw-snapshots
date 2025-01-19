@@ -1,6 +1,8 @@
 /*
+ * $XTermId: Porthole.h,v 1.3 2025/01/19 16:41:31 tom Exp $
  * $XConsortium: Porthole.h,v 1.2 94/04/17 20:12:35 jim Exp $
  *
+Copyright 2025  Thomas E. Dickey
 Copyright (c) 1990  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,17 +35,17 @@ in this Software without prior written authorization from the X Consortium.
 #include <X11/neXtaw/Reports.h>
 
 /*****************************************************************************
- * 
+ *
  * Porthole Widget (subclass of Composite)
- * 
+ *
  * This widget is similar to a viewport without scrollbars.  Child movement
  * is done by external panners or scrollbars.
- * 
+ *
  * Parameters:
- * 
+ *
  *  Name		Class		Type		Default
  *  ----		-----		----		-------
- * 
+ *
  *  background		Background	Pixel		XtDefaultBackground
  *  border	        BorderColor	Pixel		XtDefaultForeground
  *  borderWidth		BorderWidth	Dimension	1
@@ -52,7 +54,7 @@ in this Software without prior written authorization from the X Consortium.
  *  width		Width		Dimension	0
  *  x 			Position	Position	0
  *  y			Position	Position	0
- * 
+ *
  *****************************************************************************/
 
 					/* external declarations */

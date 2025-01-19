@@ -1,4 +1,7 @@
+/* $XTermId: LayoutP.h,v 1.5 2025/01/19 11:02:34 tom Exp $ */
+
 /*
+ * Copyright 2015-2024,2025 by Thomas E. Dickey
  * Copyright 1991 Massachusetts Institute of Technology
  *
  * Permission to use, copy, modify, distribute, and sell this software and its
@@ -69,7 +72,7 @@
 			    } \
 			}
 
-#define ZeroGlue(g)	((g).value = 0, (g).order = 0, (g).expr = 0)
+#define ZeroGlue(g)	((g).value = 0, (g).order = 0, (g).expr = NULL)
 #define IsZeroGlue(g)	((g).value == 0)
 
 #define QuarkToWidget(l,q)  XtNameToWidget((Widget) l, \

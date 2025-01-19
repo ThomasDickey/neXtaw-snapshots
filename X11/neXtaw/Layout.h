@@ -1,6 +1,8 @@
 /*
+ * $XTermId: Layout.h,v 1.3 2025/01/19 16:34:45 tom Exp $
  * $XConsortium: Layout.h,v 1.2 92/01/22 18:03:05 keith Exp $
  *
+ * Copyright 2025  Thomas E. Dickey
  * Copyright 1991 Massachusetts Institute of Technology
  *
  * Permission to use, copy, modify, distribute, and sell this software and its
@@ -17,7 +19,7 @@
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL M.I.T.
  * BE LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
  * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
- * OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN 
+ * OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * Author:  Keith Packard, MIT X Consortium
@@ -77,7 +79,7 @@
  * be set 10 pixels from the right edge, and take up half of the remaining
  * space to 10 pixels from the right edge of label-1.
  */
- 
+
 /* New Fields */
 #define XtNlayout "layout"
 #define XtCLayout "Layout"

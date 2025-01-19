@@ -1,6 +1,8 @@
 /*
+ * $XTermId: SmeLineP.h,v 1.3 2025/01/19 17:21:56 tom Exp $
  * $XConsortium: SmeLineP.h,v 1.4 94/04/17 20:12:54 kit Exp $
  *
+Copyright 2025  Thomas E. Dickey
 Copyright (c) 1989  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,9 +29,9 @@ in this Software without prior written authorization from the X Consortium.
  * Author:  Chris D. Peterson, MIT X Consortium
  */
 
-/* 
+/*
  * SmeLineP.h - Private definitions for SmeLine widget
- * 
+ *
  */
 
 #ifndef _XawSmeLineP_h

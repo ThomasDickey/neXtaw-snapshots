@@ -1,5 +1,7 @@
 /*
- * $Id: TraversalP.h,v 1.4 2015/01/09 10:18:49 tom Exp $
+ * $XTermId: TraversalP.h,v 1.5 2015/01/09 10:18:49 tom Exp $
+ *
+ * Copyright 2015  Thomas E. Dickey
  */
 
 /*

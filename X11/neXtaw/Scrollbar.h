@@ -1,4 +1,9 @@
-/* $XConsortium: Scrollbar.h,v 1.7 91/07/26 21:59:31 converse Exp $ */
+/*
+ * $XTermId: Scrollbar.h,v 1.5 2025/01/19 17:13:45 tom Exp $
+ * $XConsortium: Scrollbar.h,v 1.7 91/07/26 21:59:31 converse Exp $
+ *
+ * Copyright 2025  Thomas E. Dickey
+ */
 
 /***********************************************************
 
@@ -111,8 +116,8 @@ SOFTWARE.
 
 */
 
-/* 
- * Most things we need are in StringDefs.h 
+/*
+ * Most things we need are in StringDefs.h
  */
 
 #define XtCMinimumThumb "MinimumThumb"

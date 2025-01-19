@@ -1,6 +1,8 @@
 /*
+ * $XTermId: Repeater.h,v 1.3 2025/01/19 17:13:45 tom Exp $
  * $XConsortium: Repeater.h,v 1.4 94/04/17 20:12:38 jim Exp $
  *
+Copyright 2025  Thomas E. Dickey
 Copyright (c) 1989  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,16 +35,16 @@ in this Software without prior written authorization from the X Consortium.
 #include <X11/neXtaw/Command.h>
 
 /*****************************************************************************
- * 
+ *
  * Repeater Widget (subclass of Command)
- * 
+ *
  * This widget is a push button that repeatedly fires when held down.
- * 
+ *
  * Parameters:
- * 
+ *
  *  Name		Class		Type		Default
  *  ----		-----		----		-------
- * 
+ *
  *  decay		Decay		int		5 milliseconds
  *  flash		Boolean		Boolean		FALSE
  *  initialDelay	Delay		int		200 milliseconds
@@ -50,7 +52,7 @@ in this Software without prior written authorization from the X Consortium.
  *  repeatDelay		Delay		int		50 milliseconds
  *  startCallback	StartCallback	XtCallbackList	NULL
  *  stopCallback	StopCallback	XtCallbackList	NULL
- * 
+ *
  *****************************************************************************/
 
 					/* new instance and class names */

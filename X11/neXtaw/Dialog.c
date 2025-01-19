@@ -1,8 +1,8 @@
-/* $XTermId: Dialog.c,v 1.6 2024/04/29 14:32:49 tom Exp $ */
+/* $XTermId: Dialog.c,v 1.8 2025/01/19 10:54:46 tom Exp $ */
 
 /***********************************************************
 
-Copyright 2015,2024 by Thomas E. Dickey
+Copyright 2015-2024,2025 by Thomas E. Dickey
 Copyright (c) 1987, 1988, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,19 +24,19 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Except as contained in this notice, the name(s) of the above copyright holders
 shall not be used in advertising or otherwise to promote the sale, use or
-other dealings in this Software without prior written authorization. 
+other dealings in this Software without prior written authorization.
 
 Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the name of Digital not be
 used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  
+software without specific, written prior permission.
 
 DIGITAL DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
 ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -83,7 +83,7 @@ static XtResource resources[] =
     {XtNvalue, XtCValue, XtRString, sizeof(String),
      XtOffsetOf(DialogRec, dialog.value), XtRString, NULL},
     {XtNicon, XtCIcon, XtRBitmap, sizeof(Pixmap),
-     XtOffsetOf(DialogRec, dialog.icon), XtRImmediate, 0},
+     XtOffsetOf(DialogRec, dialog.icon), XtRImmediate, NULL},
 };
 
 static void Initialize(Widget, Widget, ArgList, Cardinal *);
@@ -423,7 +423,7 @@ CreateDialogValueWidget(Widget w)
     }
     XtManageChild(dw->dialog.valueW);
 
-/* 
+/*
  * Value widget gets the keyboard focus.
  */
 

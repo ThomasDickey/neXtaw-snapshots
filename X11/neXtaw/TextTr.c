@@ -2,7 +2,7 @@
 
 /*
 
-Copyright 2022  Thomas E. Dickey
+Copyright 2022,2025  Thomas E. Dickey
 Copyright (c) 1991, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -41,7 +41,7 @@ so I am adding one more translation:
 	<Key>Kanji:		reconnect-im()
 
 The Japanese user typically hits their Kanji key when they want to do
-input.  This merely makes sure the input is connected. 
+input.  This merely makes sure the input is connected.
 */
 
 #include "private.h"

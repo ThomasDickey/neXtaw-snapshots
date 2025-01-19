@@ -1,6 +1,6 @@
 /***********************************************************
 
-Copyright 2015,2022 by Thomas E. Dickey
+Copyright 2015-2022,2025 by Thomas E. Dickey
 Copyright (c) 1996 by Alfredo Kojima
 Copyright (c) 1999 by Carlos A M dos Santos
 Copyright (c) 1987, 1988, 1994  X Consortium
@@ -24,7 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Except as contained in this notice, the name(s) of the above copyright holders
 shall not be used in advertising or otherwise to promote the sale, use or
-other dealings in this Software without prior written authorization. 
+other dealings in this Software without prior written authorization.
 
 Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 

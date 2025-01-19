@@ -1,8 +1,8 @@
-/* $XTermId: AsciiSrc.c,v 1.8 2024/04/29 14:29:29 tom Exp $ */
+/* $XTermId: AsciiSrc.c,v 1.12 2025/01/19 20:37:58 tom Exp $ */
 
 /*
 
-Copyright 2015-2022,2024 by Thomas E. Dickey
+Copyright 2015-2024,2025 by Thomas E. Dickey
 Copyright (c) 1989, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,7 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Except as contained in this notice, the name(s) of the above copyright holders
 shall not be used in advertising or otherwise to promote the sale, use or
-other dealings in this Software without prior written authorization. 
+other dealings in this Software without prior written authorization.
 
 */
 
@@ -977,14 +977,17 @@ InitStringOrFile(AsciiSrcObject src, Boolean newString)
 	if (src->ascii_src.string == NULL)
 	    XtErrorMsg("NoFile", "asciiSourceCreate", "XawError",
 		       "Creating a read only disk widget and no file specified.",
-		       NULL, 0);
+		       NULL, NULL);
 	open_mode = "r";
 	break;
     case XawtextAppend:
     case XawtextEdit:
 	if (src->ascii_src.string == NULL) {
 	    src->ascii_src.string = fileName;
-	    (void) tmpnam(src->ascii_src.string);
+	    if (tmpnam(src->ascii_src.string) == NULL)
+		XtErrorMsg("NoFile", "asciiSourceCreate", "XawError",
+			   "Creating a temporary file.",
+			   NULL, NULL);
 	    src->ascii_src.is_tempfile = TRUE;
 	    open_mode = "w";
 	} else
@@ -1007,7 +1010,7 @@ InitStringOrFile(AsciiSrcObject src, Boolean newString)
     }
 
     if (!src->ascii_src.is_tempfile) {
-	if ((file = fopen(src->ascii_src.string, open_mode)) != 0) {
+	if ((file = fopen(src->ascii_src.string, open_mode)) != NULL) {
 	    (void) fseek(file, (off_t) 0, 2);
 	    src->ascii_src.length = (XawTextPosition) ftell(file);
 	    return file;
@@ -1173,6 +1176,7 @@ FindPiece(AsciiSrcObject src,
 	if ((temp + piece->used) > position)
 	    return (piece);
     }
+    *first = position;
     return (old_piece);		/* if we run off the end the return the last piece */
 }
 

@@ -1,4 +1,10 @@
 /*
+ * $XTermId: XawInit.c,v 1.5 2025/01/19 17:31:08 tom Exp $
+ *
+ * Copyright 2025  Thomas E. Dickey
+ */
+
+/*
 
 Copyright (c) 1989  X Consortium
 
@@ -22,10 +28,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 Except as contained in this notice, the name of the X Consortium shall not be
 used in advertising or otherwise to promote the sale, use or other dealings
 in this Software without prior written authorization from the X Consortium.
- * 
- * 
+ *
+ *
  * 			    XawInitializeWidgetSet
- * 
+ *
  * This routine forces a reference to vendor shell so that the one in this
  * widget is installed.  Any other cross-widget set initialization should be
  * done here as well.  All Athena widgets should include "XawInit.h" and

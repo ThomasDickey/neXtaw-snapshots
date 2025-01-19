@@ -1,8 +1,8 @@
-/* $XTermId: SimpleMenu.c,v 1.10 2024/04/29 14:39:08 tom Exp $ */
+/* $XTermId: SimpleMenu.c,v 1.11 2025/01/19 11:02:04 tom Exp $ */
 
 /*
 
-Copyright 2015-2022,2024 by Thomas E. Dickey
+Copyright 2015-2024,2025 by Thomas E. Dickey
 Copyright (c) 1996 by Alfredo Kojima
 Copyright (c) 1989, 1994  X Consortium
 
@@ -1394,13 +1394,13 @@ GetEventEntry(
     if (smw->simple_menu.too_tall) {
 	if (pos.y >= smw->simple_menu.last_y && smw->simple_menu.didnt_fit) {
 	    smw->simple_menu.current_first++;
-	    Unhighlight(w, NULL, NULL, 0);
+	    Unhighlight(w, NULL, NULL, NULL);
 	    Redisplay(w, (XEvent *) NULL, (Region) NULL);
 	    return NULL;	/* *&* */
 	} else if ((pos.y <= s + 8)
 		   && (smw->simple_menu.first_entry != smw->simple_menu.current_first)) {
 	    smw->simple_menu.current_first--;
-	    Unhighlight(w, NULL, NULL, 0);
+	    Unhighlight(w, NULL, NULL, NULL);
 	    Redisplay(w, (XEvent *) NULL, (Region) NULL);
 	    return NULL;
 	}

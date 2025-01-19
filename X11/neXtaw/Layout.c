@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 by Thomas E. Dickey
+ * Copyright 2015,2025 by Thomas E. Dickey
  * Copyright 1991 Massachusetts Institute of Technology
  *
  * Permission to use, copy, modify, distribute, and sell this software and its
@@ -16,7 +16,7 @@
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL M.I.T.
  * BE LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
  * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
- * OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN 
+ * OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  *
  * Author:  Keith Packard, MIT X Consortium
@@ -200,7 +200,7 @@ WidgetClass layoutWidgetClass = (WidgetClass) & layoutClassRec;
 
 /************************************************************
  *
- * Semi-public routines. 
+ * Semi-public routines.
  *
  ************************************************************/
 
@@ -520,7 +520,7 @@ LookupVariable(BoxPtr child, XrmQuark quark)
 	}
 	child = parent;
     }
-    DBUG_RETURN("failure -> %d", 0);
+    DBUG_RETURN("failure -> %d", NULL);
 }
 
 static double
@@ -552,6 +552,7 @@ Evaluate(LayoutWidget l,
 	case Percent:
 	    return right * left / 100.0;
 	}
+	/* FALLTHRU */
     case Unary:
 	down = Evaluate(l, box, expr->u.unary.down, natural);
 	switch (expr->u.unary.op) {
@@ -564,6 +565,7 @@ Evaluate(LayoutWidget l,
 	case Divide:
 	    break;
 	}
+	/* FALLTHRU */
     case Width:
 	widget = QuarkToWidget(l, expr->u.width);
 	if (!widget)
@@ -578,8 +580,8 @@ Evaluate(LayoutWidget l,
 	return info->naturalSize[LayoutVertical];
     case Variable:
 	{
-	    /* in the original code there was no nexpr, 
-	       expr was overwritten by LookupVariable and 
+	    /* in the original code there was no nexpr,
+	       expr was overwritten by LookupVariable and
 	       the expression "expr->u.variable" to obtain the
 	       variable name for the errormessage cause a segmentation
 	       violation */

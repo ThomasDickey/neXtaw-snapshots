@@ -1,6 +1,9 @@
 /*
-* $KK: ThreeD.h,v 0.3 92/11/04 xx:xx:xx keithley Exp $
-*/
+ * $XTermId: ThreeD.h,v 1.5 2025/01/19 17:27:08 tom Exp $
+ * $KK: ThreeD.h,v 0.3 92/11/04 xx:xx:xx keithley Exp $
+ *
+ * Copyright 2025  Thomas E. Dickey
+ */
 
 /***********************************************************
 Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts,
@@ -9,13 +12,13 @@ Copyright 1992 by Kaleb Keithley
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the names of Digital, MIT, or Kaleb
-Keithley not be used in advertising or publicity pertaining to distribution 
-of the software without specific, written prior permission.  
+Keithley not be used in advertising or publicity pertaining to distribution
+of the software without specific, written prior permission.
 
 DIGITAL DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
 ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -78,8 +81,8 @@ typedef enum {
       XtReliefFlat,
       XtReliefRaised,
       XtReliefSunken,
-      XtReliefRidge, 
-      XtReliefGroove 
+      XtReliefRidge,
+      XtReliefGroove
 } XtRelief;
 
 typedef enum {

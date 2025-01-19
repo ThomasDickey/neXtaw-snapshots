@@ -1,8 +1,8 @@
-/* $XTermId: Text.c,v 1.14 2024/04/29 14:41:11 tom Exp $ */
+/* $XTermId: Text.c,v 1.15 2025/01/19 11:02:56 tom Exp $ */
 
 /***********************************************************
 
-Copyright 2015-2022,2024 by Thomas E. Dickey
+Copyright 2015,2025 by Thomas E. Dickey
 Copyright 1999 by Carlos A M dos Santos
 Copyright (c) 1987, 1988, 1994  X Consortium
 
@@ -1843,7 +1843,7 @@ LoseSelection(
     if (ctx->text.old_insert >= 0)	/* Update in progress. */
 	_XawTextExecuteUpdate(ctx);
 
-    prevSalt = 0;
+    prevSalt = NULL;
     for (salt = ctx->text.salt; salt; salt = nextSalt) {
 	atomP = salt->s.selections;
 	nextSalt = salt->next;

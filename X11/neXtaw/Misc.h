@@ -1,7 +1,7 @@
-/* 
- * Misc. functions for neXtaw 
- * 
- * Copyright 2015 by Thomas E. Dickey
+/*
+ * Misc. functions for neXtaw
+ *
+ * Copyright 2015,2025 by Thomas E. Dickey
  * Copyright (c) 1996 Alfedo K. Kojima
  */
 

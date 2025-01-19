@@ -1,6 +1,6 @@
 /*
 
-Copyright 2015,2022 Thomas E. Dickey
+Copyright 2015-2022,2025 Thomas E. Dickey
 Copyright 1999 Carlos A M dos Santos
 Copyright (c) 1991, 1994  X Consortium
 
@@ -23,7 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Except as contained in this notice, the name(s) of the above copyright holders
 shall not be used in advertising or otherwise to promote the sale, use or
-other dealings in this Software without prior written authorization. 
+other dealings in this Software without prior written authorization.
 
 */
 
@@ -77,7 +77,7 @@ extern WidgetClass vendorShellWidgetClass;
 extern WidgetClass viewportWidgetClass;
 extern WidgetClass wmShellWidgetClass;
 
-#define EMPTY_OBJECT(name, class) { DeConst(name), &(class), 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+#define EMPTY_OBJECT(name, class) { DeConst(name), &(class), NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, 0, NULL, NULL, 0, NULL }
 #define OBJECT_CLASS(name) EMPTY_OBJECT(#name, name ## ObjectClass)
 #define WIDGET_CLASS(name) EMPTY_OBJECT(#name, name ## WidgetClass)
 

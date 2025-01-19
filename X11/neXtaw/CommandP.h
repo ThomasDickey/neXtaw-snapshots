@@ -1,7 +1,9 @@
 /*
-* $XConsortium: CommandP.h,v 1.31 94/04/17 20:12:01 rws Exp $
-*/
-
+ * $XTermId: CommandP.h,v 1.4 2025/01/19 16:31:29 tom Exp $
+ * $XConsortium: CommandP.h,v 1.31 94/04/17 20:12:01 rws Exp $
+ *
+ * Copyright 2025  Thomas E. Dickey
+ */
 
 /***********************************************************
 
@@ -33,13 +35,13 @@ Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the name of Digital not be
 used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  
+software without specific, written prior permission.
 
 DIGITAL DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
 ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -51,9 +53,9 @@ SOFTWARE.
 
 ******************************************************************/
 
-/* 
+/*
  * CommandP.h - Private definitions for Command widget
- * 
+ *
  */
 
 #ifndef _XawCommandP_h
@@ -71,7 +73,7 @@ SOFTWARE.
 typedef enum {
   HighlightNone,		/* Do not highlight. */
   HighlightWhenUnset,		/* Highlight only when unset, this is
-				   to preserve current command widget 
+				   to preserve current command widget
 				   functionality. */
   HighlightAlways		/* Always highlight, lets the toggle widget
 				   and other subclasses do the right thing. */
@@ -85,7 +87,7 @@ typedef enum {
 
 
    /* New fields for the Command widget class record */
-typedef struct _CommandClass 
+typedef struct _CommandClass
   {
     int makes_compiler_happy;  /* not used */
   } CommandClassPart;
@@ -103,7 +105,7 @@ extern CommandClassRec commandClassRec;
 
 /***************************************
  *
- *  Instance (widget) structure 
+ *  Instance (widget) structure
  *
  **************************************/
 
@@ -121,7 +123,7 @@ typedef struct {
     XtCommandHighlight	highlighted;
     Boolean		was_set;
     /* more resources */
-    int			shape_style;    
+    int			shape_style;
     Dimension		corner_round;
 } CommandPart;
 

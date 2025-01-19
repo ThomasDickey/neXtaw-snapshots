@@ -1,6 +1,8 @@
 /*
+ * $XTermId: SmeLine.h,v 1.3 2025/01/19 17:21:56 tom Exp $
  * $XConsortium: SmeLine.h,v 1.4 94/04/17 20:12:53 kit Exp $
  *
+Copyright 2025  Thomas E. Dickey
 Copyright (c) 1989  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -30,12 +32,12 @@ in this Software without prior written authorization from the X Consortium.
  * SmeLine.h - Public Header file for SmeLine object.
  *
  * This is the public header file for the Athena SmeLine object.
- * It is intended to be used with the simple menu widget.  
+ * It is intended to be used with the simple menu widget.
  *
  * Date:    April 3, 1989
  *
  * By:      Chris D. Peterson
- *          MIT X Consortium 
+ *          MIT X Consortium
  *          kit@expo.lcs.mit.edu
  */
 

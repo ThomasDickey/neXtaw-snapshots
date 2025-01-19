@@ -1,5 +1,10 @@
-/* $XConsortium: MenuButtoP.h,v 1.8 94/04/17 20:12:18 converse Exp $
+/*
+ * $XTermId: MenuButtoP.h,v 1.3 2025/01/19 16:36:40 tom Exp $
+ * $XConsortium: MenuButtoP.h,v 1.8 94/04/17 20:12:18 converse Exp
+ *
+ * Copyright 2025  Thomas E. Dickey
  */
+
 /* MODIFIED FOR N*XTSTEP LOOK	 				*/
 /* Modifications Copyright (c) 1996, 1997 by Alfredo Kojima	*/
 
@@ -43,7 +48,7 @@ in this Software without prior written authorization from the X Consortium.
  * Date:    May 2, 1989
  *
  * By:      Chris D. Peterson
- *          MIT X Consortium 
+ *          MIT X Consortium
  *          kit@expo.lcs.mit.edu
  */
 
@@ -63,7 +68,7 @@ in this Software without prior written authorization from the X Consortium.
 
 
    /* New fields for the MenuButton widget class record */
-typedef struct _MenuButtonClass 
+typedef struct _MenuButtonClass
 {
   int makes_compiler_happy;  /* not used */
 } MenuButtonClassPart;
@@ -82,7 +87,7 @@ extern MenuButtonClassRec menuButtonClassRec;
 
 /***************************************
  *
- *  Instance (widget) structure 
+ *  Instance (widget) structure
  *
  **************************************/
 
@@ -90,7 +95,7 @@ extern MenuButtonClassRec menuButtonClassRec;
 typedef struct {
   /* resources */
   String menu_name;
-  XtMenuButtonStyle menubutton_style;  
+  XtMenuButtonStyle menubutton_style;
 } MenuButtonPart;
 
    /* Full widget declaration */

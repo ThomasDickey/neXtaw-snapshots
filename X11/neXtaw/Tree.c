@@ -1,6 +1,6 @@
 /*
 
-Copyright 2015,2022 by Thomas E. Dickey
+Copyright 2015-2022,2025 by Thomas E. Dickey
 Copyright (c) 1990, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,7 +22,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Except as contained in this notice, the name(s) of the above copyright holders
 shall not be used in advertising or otherwise to promote the sale, use or
-other dealings in this Software without prior written authorization. 
+other dealings in this Software without prior written authorization.
 
  * Copyright 1989 Prentice Hall
  *
@@ -30,7 +30,7 @@ other dealings in this Software without prior written authorization.
  * purpose and without fee is hereby granted, provided that the above
  * copyright notice appear in all copies and that both the copyright notice
  * and this permission notice appear in supporting documentation.
- * 
+ *
  * Prentice Hall and the authors disclaim all warranties with regard
  * to this software, including all implied warranties of merchantability and
  * fitness.  In no event shall Prentice Hall or the authors be liable
@@ -38,12 +38,12 @@ other dealings in this Software without prior written authorization.
  * resulting from loss of use, data or profits, whether in an action of
  * contract, negligence or other tortious action, arising out of or in
  * connection with the use or performance of this software.
- * 
+ *
  * Authors:  Jim Fulton, MIT X Consortium,
  *           based on a version by Douglas Young, Prentice Hall
- * 
+ *
  * This widget is based on the Tree widget described on pages 397-419 of
- * Douglas Young's book "The X Window System, Programming and Applications 
+ * Douglas Young's book "The X Window System, Programming and Applications
  * with Xt OSF/Motif Edition."  The layout code has been rewritten to use
  * additional blank space to make the structure of the graph easier to see
  * as well as to support vertical trees.
@@ -235,7 +235,7 @@ insert_node(Widget parent,
 	return;
 
     /*
-     * If there isn't more room in the children array, 
+     * If there isn't more room in the children array,
      * allocate additional space.
      */
     pc = TREE_CONSTRAINT(parent);
@@ -250,7 +250,7 @@ insert_node(Widget parent,
     }
 
     /*
-     * Add the sub_node in the next available slot and 
+     * Add the sub_node in the next available slot and
      * increment the counter.
      */
     pc->tree.children[nindex] = node;
@@ -294,7 +294,7 @@ delete_node(Widget parent,
     for (i = pos; i < pc->tree.n_children; i++)
 	pc->tree.children[i] = pc->tree.children[i + 1];
 
-    pc->tree.children[pc->tree.n_children] = 0;
+    pc->tree.children[pc->tree.n_children] = NULL;
 }
 
 static void
@@ -339,7 +339,7 @@ Initialize(
     Arg arglist[2];
 
     /*
-     * Make sure the widget's width and height are 
+     * Make sure the widget's width and height are
      * greater than zero.
      */
     if (request->core.width <= 0)
@@ -410,8 +410,8 @@ ConstraintInitialize(
     tc->tree.bbsubheight = 0;
 
     /*
-     * If this widget has a super-node, add it to that 
-     * widget' sub-nodes list. Otherwise make it a sub-node of 
+     * If this widget has a super-node, add it to that
+     * widget' sub-nodes list. Otherwise make it a sub-node of
      * the tree_root widget.
      */
     if (tc->tree.parent)
@@ -495,7 +495,7 @@ ConstraintSetValues(
 	    insert_node(newc->tree.parent, new);
 
 	/*
-	 * If the Tree widget has been realized, 
+	 * If the Tree widget has been realized,
 	 * compute new layout.
 	 */
 	if (XtIsRealized((Widget) tw))
@@ -511,7 +511,7 @@ ConstraintDestroy(Widget w)
     TreeWidget tw = (TreeWidget) XtParent(w);
     int i;
 
-    /* 
+    /*
      * Remove the widget from its parent's sub-nodes list and
      * make all this widget's sub-nodes sub-nodes of the parent.
      */
@@ -744,8 +744,8 @@ compute_bounding_box_subtree(TreeWidget tree,
 	return;
 
     /*
-     * Figure the size of the opposite dimension (vertical if tree is 
-     * horizontal, else vice versa).  The other dimension will be set 
+     * Figure the size of the opposite dimension (vertical if tree is
+     * horizontal, else vice versa).  The other dimension will be set
      * in the second pass once we know the maximum dimensions.
      */
     newwidth = 0;

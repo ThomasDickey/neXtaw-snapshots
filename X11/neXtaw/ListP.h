@@ -1,4 +1,9 @@
-/* $XConsortium: ListP.h,v 1.14 94/04/17 20:12:17 kaleb Exp $ */
+/*
+ * $XTermId: ListP.h,v 1.3 2025/01/19 16:34:45 tom Exp $
+ * $XConsortium: ListP.h,v 1.14 94/04/17 20:12:17 kaleb Exp $
+ *
+ * Copyright 2025  Thomas E. Dickey
+ */
 
 /*
 Copyright (c) 1989, 1994  X Consortium
@@ -26,9 +31,9 @@ in this Software without prior written authorization from the X Consortium.
 */
 
 
-/* 
+/*
  * ListP.h - Private definitions for List widget
- * 
+ *
  * This is a List widget.  It allows the user to select an item in a list and
  * notifies the application through a callback function.
  *

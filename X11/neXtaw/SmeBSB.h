@@ -1,6 +1,8 @@
 /*
+ * $XTermId: SmeBSB.h,v 1.3 2025/01/19 17:21:56 tom Exp $
  * $XConsortium: SmeBSB.h,v 1.7 94/04/17 20:12:49 kaleb Exp $
  *
+Copyright 2025  Thomas E. Dickey
 Copyright (c) 1989, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -35,7 +37,7 @@ in this Software without prior written authorization from the X Consortium.
  * Date:    April 3, 1989
  *
  * By:      Chris D. Peterson
- *          MIT X Consortium 
+ *          MIT X Consortium
  *          kit@expo.lcs.mit.edu
  */
 

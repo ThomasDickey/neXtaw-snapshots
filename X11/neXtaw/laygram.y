@@ -32,7 +32,7 @@ static LayoutPtr *dest;
 %type	<pval>	    bothparams oneparams
 %type	<gval>	    glue opStretch opShrink
 %type	<lval>	    orientation
-%type	<eval>	    signedExpr simpleExpr expr 
+%type	<eval>	    signedExpr simpleExpr expr
 
 %token		    OC CC OA CA OP CP
 %token	<qval>	    NAME
@@ -55,7 +55,7 @@ layout		:   compositebox
 box		:   NAME bothparams
 		    {
 			BoxPtr	box = New(LBoxRec);
-			box->nextSibling = 0;
+			box->nextSibling = NULL;
 			box->type = WidgetBox;
 			box->params = *$2;
 			Dispose ($2);
@@ -65,7 +65,7 @@ box		:   NAME bothparams
 		|   signedExpr oneparams
 		    {
 			BoxPtr	box = New(LBoxRec);
-			box->nextSibling = 0;
+			box->nextSibling = NULL;
 			box->type = GlueBox;
 			box->params = *$2;
 			Dispose ($2);
@@ -75,7 +75,7 @@ box		:   NAME bothparams
 		|   NAME EQUAL signedExpr
 		    {
 			BoxPtr	box = New(LBoxRec);
-			box->nextSibling = 0;
+			box->nextSibling = NULL;
 			box->type = VariableBox;
 			box->u.variable.quark = $1;
 			box->u.variable.expr = $3;
@@ -91,17 +91,17 @@ compositebox	:   orientation OC boxes CC
 			BoxPtr	box = New(LBoxRec);
 			BoxPtr	child;
 
-			box->nextSibling = 0;
-			box->parent = 0;
+			box->nextSibling = NULL;
+			box->parent = NULL;
 			box->type = BoxBox;
 			box->u.box.dir = $1;
 			box->u.box.firstChild = $3;
-			for (child = $3; child; child = child->nextSibling) 
+			for (child = $3; child; child = child->nextSibling)
 			{
-			    if (child->type == GlueBox) 
+			    if (child->type == GlueBox)
 			    {
-				child->params.stretch[!$1].expr = 0;
-				child->params.shrink[!$1].expr = 0;
+				child->params.stretch[!$1].expr = NULL;
+				child->params.shrink[!$1].expr = NULL;
 				child->params.stretch[!$1].order = 100000;
 				child->params.shrink[!$1].order = 100000;
 				child->params.stretch[!$1].value = 1;
@@ -113,7 +113,7 @@ compositebox	:   orientation OC boxes CC
 		    }
 		;
 boxes		:   box boxes
-		    { 
+		    {
 			$1->nextSibling = $2;
 			$$ = $1;
 		    }
@@ -121,9 +121,9 @@ boxes		:   box boxes
 		    {	$$ = $1; }
 		;
 bothparams	:   OA opStretch opShrink TIMES opStretch opShrink CA
-		    {	
+		    {
 			BoxParamsPtr	p = New(BoxParamsRec);
-			
+
 			p->stretch[LayoutHorizontal] = $2;
 			p->shrink[LayoutHorizontal] = $3;
 			p->stretch[LayoutVertical] = $5;
@@ -131,9 +131,9 @@ bothparams	:   OA opStretch opShrink TIMES opStretch opShrink CA
 			$$ = p;
 		    }
 		|
-		    {	
+		    {
 			BoxParamsPtr	p = New(BoxParamsRec);
-			
+
 			ZeroGlue (p->stretch[LayoutHorizontal]);
 			ZeroGlue (p->shrink[LayoutHorizontal]);
 			ZeroGlue (p->stretch[LayoutVertical]);
@@ -142,9 +142,9 @@ bothparams	:   OA opStretch opShrink TIMES opStretch opShrink CA
 		    }
 		;
 oneparams 	:   OA opStretch opShrink CA
-		    {	
+		    {
 			BoxParamsPtr	p = New(BoxParamsRec);
-			
+
 			p->stretch[LayoutHorizontal] = $2;
 			p->shrink[LayoutHorizontal] = $3;
 			p->stretch[LayoutVertical] = $2;
@@ -152,9 +152,9 @@ oneparams 	:   OA opStretch opShrink CA
 			$$ = p;
 		    }
 		|
-		    {	
+		    {
 			BoxParamsPtr	p = New(BoxParamsRec);
-			
+
 			ZeroGlue (p->stretch[LayoutHorizontal]);
 			ZeroGlue (p->shrink[LayoutHorizontal]);
 			ZeroGlue (p->stretch[LayoutVertical]);
@@ -177,7 +177,7 @@ glue		:   simpleExpr INFINITY
 		|   simpleExpr
 		    { $$.order = 0; $$.expr = $1; }
 		|   INFINITY
-		    { $$.order = $1; $$.expr = 0; $$.value = 1; }
+		    { $$.order = $1; $$.expr = NULL; $$.value = 1; }
 		;
 signedExpr	:   MINUS simpleExpr	    %prec UMINUS
 		    {

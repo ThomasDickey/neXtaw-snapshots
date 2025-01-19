@@ -1,9 +1,9 @@
-dnl $XTermId: configure.in,v 1.12 2015/01/17 02:03:31 tom Exp $
+dnl $XTermId: configure.in,v 1.13 2025/01/19 10:12:20 tom Exp $
 dnl
 dnl -----------------------------------------------------------------------------
 dnl this file is part of neXtaw
 dnl
-dnl Copyright 2015 by Thomas E. Dickey
+dnl Copyright 2015,2025 by Thomas E. Dickey
 dnl 
 dnl                         All Rights Reserved
 dnl 
@@ -38,6 +38,8 @@ AC_INIT
 AC_CONFIG_SRCDIR(README)
 AC_CONFIG_HEADER(config.h:config_h.in)
 CF_CHECK_CACHE
+
+CF_WITH_SYSTYPE
 
 CF_PROG_AR
 CF_PROG_CC
@@ -134,6 +136,7 @@ CF_MAKE_TAGS
 
 CF_ENABLE_RPATH
 CF_WITH_SHARED_OR_LIBTOOL(XAWPLUS,${VERSION_MAJOR}.${VERSION_MINOR},`echo "$VERSION" |sed -e 's/:/./g'`)
+CF_WITH_VERSIONED_SYMS 
 CF_DISABLE_RPATH_HACK
 
 CF__DEFINE_SHLIB_VARS

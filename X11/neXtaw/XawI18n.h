@@ -1,3 +1,9 @@
+/*
+ * $XTermId: XawI18n.h,v 1.8 2025/01/19 17:30:27 tom Exp $
+ *
+ * Copyright 2025  Thomas E. Dickey
+ */
+
 /************************************************************
 
 Copyright (c) 1993, 1994  X Consortium
@@ -44,7 +50,7 @@ in this Software without prior written authorization from the X Consortium.
 #ifdef WSNCPY
 #define wcsncpy(d,s,l) wsncpy(d,s,l)
 #endif
-#endif 
+#endif
 #endif
 
 #ifdef AIXV3

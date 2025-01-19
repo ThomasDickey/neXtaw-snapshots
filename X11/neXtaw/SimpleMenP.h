@@ -1,6 +1,8 @@
 /*
+ * $XTermId: SimpleMenP.h,v 1.3 2025/01/19 17:21:56 tom Exp $
  * $XConsortium: SimpleMenP.h,v 1.14 94/04/17 20:12:44 kaleb Exp $
  *
+Copyright 2025  Thomas E. Dickey
 Copyright (c) 1989, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -84,7 +86,7 @@ typedef struct _SimpleMenuPart {
   /* private state */
   Boolean recursive_set_values;	/* contain a possible infinite loop. */
 
-  Boolean menu_width;		/* If true then force width to remain 
+  Boolean menu_width;		/* If true then force width to remain
 				   core.width */
   Boolean menu_height;		/* Just like menu_width, but for height. */
 
@@ -93,8 +95,8 @@ typedef struct _SimpleMenuPart {
   Widget threeD;		/* 3d drawing stuff */
   Boolean too_tall;		/* menu doesn't fit on screen */
   SmeObject *first_entry;	/* the first entry */
-  SmeObject *current_first;	/* the first entry displayed */    
-  Dimension last_y; 
+  SmeObject *current_first;	/* the first entry displayed */
+  Dimension last_y;
   Dimension first_y;
   Boolean didnt_fit;  		/* if some entry didn't fit in the menu */
 } SimpleMenuPart;

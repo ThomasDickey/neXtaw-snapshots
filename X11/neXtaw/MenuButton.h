@@ -1,6 +1,10 @@
 /*
+ * $XTermId: MenuButton.h,v 1.3 2025/01/19 16:36:40 tom Exp $
  * $XConsortium: MenuButton.h,v 1.9 94/04/17 20:12:21 kaleb Exp $
+ *
+ * Copyright 2025  Thomas E. Dickey
  */
+
 /* MODIFIED FOR N*XTSTEP LOOK	 				*/
 /* Modifications Copyright (c) 1996, 1997 by Alfredo Kojima	*/
 
@@ -44,7 +48,7 @@ in this Software without prior written authorization from the X Consortium.
  * Date:    May 2, 1989
  *
  * By:      Chris D. Peterson
- *          MIT X Consortium 
+ *          MIT X Consortium
  *          kit@expo.lcs.mit.edu
  */
 

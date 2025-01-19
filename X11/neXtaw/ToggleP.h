@@ -1,4 +1,10 @@
-/* $XConsortium: ToggleP.h,v 1.9 94/04/17 20:13:19 converse Exp $ */
+/*
+ * $XTermId: ToggleP.h,v 1.3 2025/01/19 17:27:08 tom Exp $
+ * $XConsortium: ToggleP.h,v 1.9 94/04/17 20:13:19 converse Exp $
+ *
+ * Copyright 2025  Thomas E. Dickey
+ */
+
 /* MODIFIED FOR N*XTSTEP LOOK	 				*/
 /* Modifications Copyright (c) 1996 by Alfredo Kojima		*/
 
@@ -29,13 +35,13 @@ in this Software without prior written authorization from the X Consortium.
 
 */
 
-/* 
+/*
  * ToggleP.h - Private definitions for Toggle widget
- * 
+ *
  * Author: Chris D. Peterson
  *         MIT X Consortium
  *         kit@expo.lcs.mit.edu
- *  
+ *
  * Date:   January 12, 1989
  *
  */
@@ -87,7 +93,7 @@ extern ToggleClassRec toggleClassRec;
 
 /***************************************
  *
- *  Instance (widget) structure 
+ *  Instance (widget) structure
  *
  **************************************/
 
@@ -96,8 +102,8 @@ typedef struct {
     /* resources */
     Widget      widget;
     XtPointer   radio_data;
-    XtToggleStyle toggle_style; 
-    
+    XtToggleStyle toggle_style;
+
     /* private data */
     RadioGroup * radio_group;
 } TogglePart;

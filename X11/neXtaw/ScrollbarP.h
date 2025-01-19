@@ -1,3 +1,8 @@
+/*
+ * $XTermId: ScrollbarP.h,v 1.4 2025/01/19 17:21:56 tom Exp $
+ * Copyright 2025  Thomas E. Dickey
+ */
+
 /* MODIFIED ATHENA SCROLLBAR (USING ARROWHEADS AT ENDS OF TRAVEL) */
 /* Modifications Copyright 1992 by Mitch Trachtenberg             */
 /* Rights, permissions, and disclaimer of warranty are as in the  */
@@ -84,7 +89,7 @@ typedef struct {
     XtIntervalId  timer_id;     /* autorepeat timer; remove on destruction */
     char	  scroll_mode;	/* 0:none 1:up/back 2:track 3:down/forward */
     Pixmap	  bump;		/* bump pixmap for the thumb */
-    Pixmap	  stipple;	/* stipple for the background of sbar */    
+    Pixmap	  stipple;	/* stipple for the background of sbar */
     GC		  gc;		/* a (shared) gc for foreground*/
     GC		  bgc;		/* a (shared) gc for background*/
     GC		  copygc;	/* used with copyarea */

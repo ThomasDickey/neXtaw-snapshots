@@ -1,6 +1,8 @@
 /*
+ * $XTermId: SimpleMenu.h,v 1.4 2025/01/19 17:21:56 tom Exp $
  * $XConsortium: SimpleMenu.h,v 1.22 94/04/17 20:12:47 kaleb Exp $
  *
+Copyright 2025  Thomas E. Dickey
 Copyright (c) 1989, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -40,7 +42,7 @@ in this Software without prior written authorization from the X Consortium.
  * Date:    April 3, 1989
  *
  * By:      Chris D. Peterson
- *          MIT X Consortium 
+ *          MIT X Consortium
  *          kit@expo.lcs.mit.edu
  */
 
@@ -120,7 +122,7 @@ _XFUNCPROTOBEGIN
 extern void XawSimpleMenuAddGlobalActions(
     XtAppContext	/* app_con */
 );
- 
+
 /*	Function Name: XawSimpleMenuGetActiveEntry
  *	Description: Gets the currently active (set) entry.
  *	Arguments: w - the smw widget.

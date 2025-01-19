@@ -1,5 +1,8 @@
-/* $XConsortium: XawInit.h,v 1.6 94/04/17 20:13:33 kaleb Exp $
+/*
+ * $XTermId: XawInit.h,v 1.3 2015/01/09 01:39:40 tom Exp $
+ * $XConsortium: XawInit.h,v 1.6 94/04/17 20:13:33 kaleb Exp $
  *
+Copyright 2015  Thomas E. Dickey
 Copyright (c) 1989, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

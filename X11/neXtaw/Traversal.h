@@ -1,3 +1,8 @@
+/*
+ * $XTermId: Traversal.h,v 1.3 2015/01/08 02:18:33 tom Exp $
+ *
+ * Copyright 2015  Thomas E. Dickey
+ */
 
 /*
 

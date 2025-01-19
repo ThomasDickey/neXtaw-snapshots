@@ -1,8 +1,8 @@
-/* $XTermId: Viewport.c,v 1.8 2024/04/29 15:13:14 tom Exp $ */
+/* $XTermId: Viewport.c,v 1.9 2025/01/19 10:45:48 tom Exp $ */
 
 /***********************************************************
 
-Copyright 2015,2024 by Thomas E. Dickey
+Copyright 2015-2024,2025 by Thomas E. Dickey
 Copyright (c) 1996 by Alfredo Kojima
 Copyright (c) 1987, 1988, 1994  X Consortium
 
@@ -25,7 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Except as contained in this notice, the name(s) of the above copyright holders
 shall not be used in advertising or otherwise to promote the sale, use or
-other dealings in this Software without prior written authorization. 
+other dealings in this Software without prior written authorization.
 
 Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 

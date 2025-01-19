@@ -1,6 +1,6 @@
 /*
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2025 by Thomas E. Dickey
 Copyright (c) 1990, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,7 +25,7 @@ shall not be used in advertising or otherwise to promote the sale, use or
 other dealings in this Software without prior written authorization.
  *
  * Author:  Jim Fulton, MIT X Consortium
- * 
+ *
  * This widget is a trivial clipping widget.  It is typically used with a
  * panner or scrollbar to navigate.
  */

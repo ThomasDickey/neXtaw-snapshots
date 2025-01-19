@@ -1,4 +1,10 @@
-/* $XConsortium: XawImP.h,v 1.4 95/06/06 20:50:30 kaleb Exp $ */
+/*
+ * $XTermId: XawImP.h,v 1.4 2025/01/19 17:30:51 tom Exp $
+ * $XConsortium: XawImP.h,v 1.4 95/06/06 20:50:30 kaleb Exp $
+ *
+ * Copyright 2025  Thomas E. Dickey
+ */
+
 /* MODIFIED FOR N*XTSTEP LOOK	 				*/
 /* Modifications Copyright (c) 1996 by Alfredo Kojima		*/
 /* Modifications Copyright (c) 1999 by Carlos A M dos Santos	*/
@@ -22,12 +28,12 @@
  * ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
  * WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTUOUS ACTION,
  * ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
- * SOFTWARE. 
+ * SOFTWARE.
  *
  *	Author:	Seiji Kuwari	OMRON Corporation
  *				kuwa@omron.co.jp
  *				kuwa%omron.co.jp@uunet.uu.net
- */				
+ */
 
 /*
 
@@ -129,48 +135,48 @@ typedef	struct _contextErrDataRec
     XIM			xim;
 } contextErrDataRec;
 
-void _XawImResizeVendorShell( 
+void _XawImResizeVendorShell(
     Widget /* w */
 );
 
-Dimension _XawImGetShellHeight( 
+Dimension _XawImGetShellHeight(
     Widget /* w */
 );
 
-void _XawImRealize( 
+void _XawImRealize(
     Widget /* w */
 );
 
-void _XawImInitialize( 
+void _XawImInitialize(
     Widget, /* w */
     Widget  /* ext */
 );
 
-void _XawImReconnect( 
+void _XawImReconnect(
     Widget  /* w */
 );
 
-void _XawImRegister( 
+void _XawImRegister(
     Widget  /* w */
 );
 
-void _XawImUnregister( 
+void _XawImUnregister(
     Widget  /* w */
 );
 
-void _XawImSetValues( 
+void _XawImSetValues(
     Widget,  /* w */
     ArgList, /* args */
     Cardinal /* num_args */
 );
 
-void _XawImSetFocusValues( 
+void _XawImSetFocusValues(
     Widget,  /* w */
     ArgList, /* args */
     Cardinal /* num_args */
 );
 
-void _XawImUnsetFocus( 
+void _XawImUnsetFocus(
     Widget  /* w */
 );
 
@@ -186,7 +192,7 @@ _XawImMbLookupString(		/* Casantos, Jun 27 1999 */
 );
 
 #define XAW_IM_WCLOOKUPSTRING
-int  _XawImWcLookupString( 
+int  _XawImWcLookupString(
     Widget,   /* w */
     XKeyPressedEvent*, /* event */
     wchar_t*, /* buffer_return */
@@ -195,15 +201,15 @@ int  _XawImWcLookupString(
     Status*   /* status return */
 );
 
-int  _XawImGetImAreaHeight( 
+int  _XawImGetImAreaHeight(
     Widget  /* w */
 );
 
-void _XawImCallVendorShellExtResize( 
+void _XawImCallVendorShellExtResize(
     Widget  /* w */
 );
 
-void _XawImDestroy( 
+void _XawImDestroy(
     Widget,  /* w */
     Widget   /* ext */
 );

@@ -1,8 +1,8 @@
-/* $XTermId: Paned.c,v 1.8 2024/04/29 15:13:14 tom Exp $ */
+/* $XTermId: Paned.c,v 1.9 2025/01/19 11:02:04 tom Exp $ */
 
 /***********************************************************
 
-Copyright 2015-2022,2024 by Thomas E. Dickey
+Copyright 2015-2024,2025 by Thomas E. Dickey
 Copyright (c) 1987, 1988, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -139,16 +139,16 @@ static XtResource resources[] =
     /* Cursors - both horiz and vertical have to work. */
 
     {XtNcursor, XtCCursor, XtRCursor, sizeof(Cursor),
-     offset(cursor), XtRImmediate, None},
+     offset(cursor), XtRImmediate, NULL},
     {XtNgripCursor, XtCCursor, XtRCursor, sizeof(Cursor),
-     offset(grip_cursor), XtRImmediate, None},
+     offset(grip_cursor), XtRImmediate, NULL},
     {XtNverticalGripCursor, XtCCursor, XtRCursor, sizeof(Cursor),
      offset(v_grip_cursor), XtRString, DeConst("sb_v_double_arrow")},
     {XtNhorizontalGripCursor, XtCCursor, XtRCursor, sizeof(Cursor),
      offset(h_grip_cursor), XtRString, DeConst("sb_h_double_arrow")},
 
     {XtNbetweenCursor, XtCCursor, XtRCursor, sizeof(Cursor),
-     offset(adjust_this_cursor), XtRString, None},
+     offset(adjust_this_cursor), XtRString, NULL},
     {XtNverticalBetweenCursor, XtCCursor, XtRCursor, sizeof(Cursor),
      offset(v_adjust_this_cursor), XtRString, DeConst("sb_left_arrow")},
     {XtNhorizontalBetweenCursor, XtCCursor, XtRCursor, sizeof(Cursor),

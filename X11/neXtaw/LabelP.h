@@ -1,7 +1,9 @@
 /*
-* $XConsortium: LabelP.h,v 1.29 94/04/17 20:12:14 kaleb Exp $
-*/
-
+ * $XTermId: LabelP.h,v 1.4 2025/01/19 16:34:45 tom Exp $
+ * $XConsortium: LabelP.h,v 1.29 94/04/17 20:12:14 kaleb Exp $
+ *
+ * Copyright 2025  Thomas E. Dickey
+ */
 
 /***********************************************************
 
@@ -33,13 +35,13 @@ Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the name of Digital not be
 used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  
+software without specific, written prior permission.
 
 DIGITAL DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
 ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -51,9 +53,9 @@ SOFTWARE.
 
 ******************************************************************/
 
-/* 
+/*
  * LabelP.h - Private definitions for Label widget
- * 
+ *
  */
 
 #ifndef _XawLabelP_h

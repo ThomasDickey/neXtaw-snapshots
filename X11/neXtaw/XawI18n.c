@@ -1,4 +1,10 @@
 /*
+ * $XTermId: XawI18n.c,v 1.7 2025/01/19 17:29:44 tom Exp $
+ *
+ * Copyright 2025  Thomas E. Dickey
+ */
+
+/*
 
 Copyright (c) 1991, 1994  X Consortium
 
@@ -21,7 +27,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Except as contained in this notice, the name(s) of the above copyright holders
 shall not be used in advertising or otherwise to promote the sale, use or
-other dealings in this Software without prior written authorization. 
+other dealings in this Software without prior written authorization.
 
 */
 
@@ -45,7 +51,7 @@ other dealings in this Software without prior written authorization.
  * OMRON, NTT SOFTWARE, AND NTT, DISCLAIM ALL WARRANTIES WITH REGARD
  * TO THIS SOFTWARE, INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
  * AND FITNESS, IN NO EVENT SHALL OMRON, NTT SOFTWARE, OR NTT BE
- * LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES 
+ * LIABLE FOR ANY SPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
  * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.

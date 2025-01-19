@@ -1,7 +1,7 @@
 /*
 
-Copyright 2015,2022 by Thomas E. Dickey
-Copyright (c) 1996, 1997 by Alfredo Kojima	
+Copyright 2015-2022,2025 by Thomas E. Dickey
+Copyright (c) 1996, 1997 by Alfredo Kojima
 Copyright (c) 1989, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,7 +23,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Except as contained in this notice, the name(s) of the above copyright holders
 shall not be used in advertising or otherwise to promote the sale, use or
-other dealings in this Software without prior written authorization. 
+other dealings in this Software without prior written authorization.
  *
  */
 
@@ -42,7 +42,7 @@ other dealings in this Software without prior written authorization.
  * Date:    May 2, 1989
  *
  * By:      Chris D. Peterson
- *          MIT X Consortium 
+ *          MIT X Consortium
  *          kit@expo.lcs.mit.edu
  */
 

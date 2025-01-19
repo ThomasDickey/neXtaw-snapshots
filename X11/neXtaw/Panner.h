@@ -1,6 +1,8 @@
 /*
+ * $XTermId: Panner.h,v 1.3 2025/01/19 16:41:31 tom Exp $
  * $XConsortium: Panner.h,v 1.22 94/04/17 20:12:32 rws Exp $
  *
+Copyright 2025  Thomas E. Dickey
 Copyright (c) 1989  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,16 +35,16 @@ in this Software without prior written authorization from the X Consortium.
 #include <X11/neXtaw/Reports.h>
 
 /*****************************************************************************
- * 
+ *
  * Panner Widget (subclass of Simple)
- * 
+ *
  * This widget is used to represent navigation in a 2d coordinate system.
- * 
+ *
  * Parameters:
- * 
+ *
  *  Name		Class		Type		Default
  *  ----		-----		----		-------
- * 
+ *
  *  allowOff		AllowOff	Boolean		FALSE
  *  background		Background	Pixel		XtDefaultBackground
  *  backgroundStipple	BackgroundStipple	String	NULL
@@ -61,7 +63,7 @@ in this Software without prior written authorization from the X Consortium.
  *  sliderY		SliderY		Position	0
  *  sliderWidth		SliderWidth	Dimension	0
  *  sliderHeight	SliderHeight	Dimension	0
- * 
+ *
  *****************************************************************************/
 
 					/* new instance and class names */

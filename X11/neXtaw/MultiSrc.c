@@ -1,8 +1,8 @@
-/* $XTermId: MultiSrc.c,v 1.9 2024/04/29 14:36:40 tom Exp $ */
+/* $XTermId: MultiSrc.c,v 1.13 2025/01/19 20:38:26 tom Exp $ */
 
 /*
 
-Copyright 2015-2022,2024 by Thomas E. Dickey
+Copyright 2015-2024,2025 by Thomas E. Dickey
 Copyright (c) 1991, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,7 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Except as contained in this notice, the name(s) of the above copyright holders
 shall not be used in advertising or otherwise to promote the sale, use or
-other dealings in this Software without prior written authorization. 
+other dealings in this Software without prior written authorization.
 
 */
 
@@ -751,7 +751,7 @@ SetValues(
 			 != src->multi_src.piece_size)) {
 	char *mb_string = StorePiecesInString(old_src);
 
-	if (mb_string != 0) {
+	if (mb_string != NULL) {
 	    FreeAllPieces(old_src);
 	    LoadPieces(src, NULL, mb_string);
 	    XtFree(DeConst(mb_string));
@@ -866,7 +866,7 @@ _XawMultiSave(Widget w)
 
 	mb_string = StorePiecesInString(src);
 
-	if (mb_string != 0) {
+	if (mb_string != NULL) {
 	    if (WriteToFile(mb_string, src->multi_src.string) == FALSE) {
 		XtFree(mb_string);
 		return (FALSE);
@@ -889,7 +889,7 @@ _XawMultiSave(Widget w)
 
 	mb_string = StorePiecesInString(src);
 
-	if (mb_string == 0) {
+	if (mb_string == NULL) {
 	    /* If the buffer holds bad chars, don't touch it... */
 	    XtAppWarningMsg(app_con,
 			    "convertError", "multiSource", "XawError",
@@ -926,7 +926,7 @@ _XawMultiSaveAsFile(Widget w, _Xconst char *name)
 
     mb_string = StorePiecesInString(src);
 
-    if (mb_string != 0) {
+    if (mb_string != NULL) {
 	ret = WriteToFile(mb_string, name);
 	XtFree(mb_string);
 	return (ret);
@@ -1080,7 +1080,7 @@ InitStringOrFile(MultiSrcObject src, Boolean newString)
 	if (src->multi_src.string == NULL)
 	    XtErrorMsg("NoFile", "multiSourceCreate", "XawError",
 		       "Creating a read only disk widget and no file specified.",
-		       NULL, 0);
+		       NULL, NULL);
 	open_mode = "r";
 	break;
     case XawtextAppend:
@@ -1089,7 +1089,10 @@ InitStringOrFile(MultiSrcObject src, Boolean newString)
 	    src->multi_src.allocated_string = False;
 	    src->multi_src.string = fileName;
 
-	    (void) tmpnam(src->multi_src.string);
+	    if (tmpnam(src->multi_src.string) == NULL)
+		XtErrorMsg("NoFile", "multiSourceCreate", "XawError",
+			   "Creating a temporary file.",
+			   NULL, NULL);
 	    src->multi_src.is_tempfile = TRUE;
 	    open_mode = "w";
 	} else
@@ -1112,7 +1115,7 @@ InitStringOrFile(MultiSrcObject src, Boolean newString)
     }
 
     if (!src->multi_src.is_tempfile) {
-	if ((file = fopen(src->multi_src.string, open_mode)) != 0) {
+	if ((file = fopen(src->multi_src.string, open_mode)) != NULL) {
 	    (void) fseek(file, (off_t) 0, 2);
 	    src->multi_src.length = ftell(file);
 	    return file;
@@ -1191,7 +1194,7 @@ LoadPieces(MultiSrcObject src, FILE *file, char *string)
 	    local_str = _XawTextMBToWC(d, temp_mb_holder, &local_length);
 	    src->multi_src.length = local_length;
 
-	    if (local_str == 0) {
+	    if (local_str == NULL) {
 		String params[2];
 		Cardinal num_params;
 		static char err_text[] =
@@ -1340,6 +1343,7 @@ FindPiece(
 	if ((temp + piece->used) > position)
 	    return (piece);
     }
+    *first = position;
     return (old_piece);		/* if we run off the end the return the last piece */
 }
 

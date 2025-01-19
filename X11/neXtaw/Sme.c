@@ -1,6 +1,6 @@
 /*
 
-Copyright 2015 by Thomas E. Dickey
+Copyright 2015,2025 by Thomas E. Dickey
 Copyright (c) 1996 by Alfredo Kojima
 Copyright (c) 1989, 1994  X Consortium
 
@@ -32,7 +32,7 @@ other dealings in this Software without prior written authorization.
  * Date:    September 26, 1989
  *
  * By:      Chris D. Peterson
- *          MIT X Consortium 
+ *          MIT X Consortium
  *          kit@expo.lcs.mit.edu
  */
 
@@ -57,7 +57,7 @@ static XtResource resources[] =
 #undef offset
 
 /*
- * Semi Public function definitions. 
+ * Semi Public function definitions.
  */
 
 static void Unhighlight(Widget);
@@ -138,7 +138,7 @@ ClassPartInitialize(WidgetClass class)
     m_ent = (SmeObjectClass) class;
     superC = (SmeObjectClass) m_ent->rect_class.superclass;
 
-/* 
+/*
  * We don't need to check for null super since we'll get to TextSink
  * eventually.
  */
@@ -159,7 +159,7 @@ ClassPartInitialize(WidgetClass class)
  *                 new     - the new widget with both resource and non
  *                           resource values.
  *      Returns: none.
- * 
+ *
  * MENU ENTRIES CANNOT HAVE BORDERS.
  */
 
@@ -221,7 +221,7 @@ Notify(Widget w)
  *	Returns: A Geometry Result.
  *
  * See the Intrinsics manual for details on what this function is for.
- * 
+ *
  * I just return the height and a width of 1.
  */
 

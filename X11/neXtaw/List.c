@@ -1,8 +1,8 @@
-/* $XTermId: List.c,v 1.9 2024/04/29 15:14:34 tom Exp $ */
+/* $XTermId: List.c,v 1.10 2025/01/19 10:20:34 tom Exp $ */
 
 /*
 
-Copyright 2015-2022,2024 by Thomas E. Dickey
+Copyright 2015-2024,2025 by Thomas E. Dickey
 Copyright (c) 1989, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,7 +24,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Except as contained in this notice, the name(s) of the above copyright holders
 shall not be used in advertising or otherwise to promote the sale, use or
-other dealings in this Software without prior written authorization. 
+other dealings in this Software without prior written authorization.
 */
 
 /*
@@ -64,7 +64,7 @@ I also added the freedoms member of the list widget part. */
 #define WidthFree( w )   !(((ListWidget)(w))->list.freedoms & WidthLock )
 #define LongestFree( w ) !(((ListWidget)(w))->list.freedoms & LongestLock )
 
-/* 
+/*
  * Default Translation table.
  */
 
@@ -380,7 +380,7 @@ Initialize(
 {
     ListWidget lw = (ListWidget) new;
 
-/* 
+/*
  * Initialize all private resources.
  */
 
@@ -770,7 +770,7 @@ Resize(Widget w)
  * width, height- the is the current width and height that we are going
  *                we are going to layout the list widget to,
  *                depending on xfree and yfree of course.
- *                               
+ *
  * RETURNS: TRUE if width or height have been changed. */
 
 static Boolean
@@ -784,7 +784,7 @@ Layout(
     ListWidget lw = (ListWidget) w;
     Boolean change = FALSE;
 
-    /* 
+    /*
      * If force columns is set, then always use number of columns specified
      * by default_cols.
      */
@@ -830,7 +830,7 @@ Layout(
 			       + 2 * lw->list.internal_height);
 	change = TRUE;
     }
-    /* 
+    /*
      * If the width is fixed then use it to determine the number of columns.
      * If the height is free to move (width still fixed) then resize the height
      * of the widget to fit the current list exactly.
@@ -847,7 +847,7 @@ Layout(
 	    change = TRUE;
 	}
     }
-    /* 
+    /*
      * The last case is xfree and !yfree we use the height to determine
      * the number of rows and then set the width to just fit the resulting
      * number of columns.
@@ -883,9 +883,9 @@ Notify(
     int item, item_len;
     XawListReturnStruct ret_value;
 
-    /* 
-     * Find item, and if out of range then unhighlight and return. 
-     * 
+    /*
+     * Find item, and if out of range then unhighlight and return.
+     *
      * If the current item is unhighlighted, then the user has aborted the
      * notify, so unhighlight and return.
      */
@@ -901,7 +901,7 @@ Notify(
     if (lw->list.paste)		/* if XtNpasteBuffer set then paste it. */
 	XStoreBytes(XtDisplay(w), lw->list.list[item], item_len);
 
-    /* 
+    /*
      * Call Callback function.
      */
 

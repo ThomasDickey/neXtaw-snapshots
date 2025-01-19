@@ -1,8 +1,8 @@
-/* $XTermId: Toggle.c,v 1.9 2024/04/29 15:10:07 tom Exp $ */
+/* $XTermId: Toggle.c,v 1.10 2025/01/19 11:02:04 tom Exp $ */
 
 /*
 
-Copyright 2015-2022,2024 by Thomas E. Dickey
+Copyright 2015-2024,2025 by Thomas E. Dickey
 Copyright (c) 1996,1997 by Alfredo Kojima
 Copyright (c) 1989, 1994  X Consortium
 
@@ -491,7 +491,7 @@ ToggleSet(Widget w,
     ToggleWidgetClass class = (ToggleWidgetClass) w->core.widget_class;
 
     TurnOffRadioSiblings(w);
-    class->toggle_class.Set(w, event, NULL, 0);
+    class->toggle_class.Set(w, event, NULL, NULL);
     if (((ToggleWidget) w)->toggle.toggle_style == XtToggleCheck) {
 	DisplayCheckBox(w);
     } else if (((ToggleWidget) w)->toggle.toggle_style == XtToggleRadio) {
@@ -563,7 +563,7 @@ Toggle(Widget w,
     ToggleWidgetClass class = (ToggleWidgetClass) w->core.widget_class;
 
     if (tw->command.set) {
-	class->toggle_class.Unset(w, event, NULL, 0);
+	class->toggle_class.Unset(w, event, NULL, NULL);
 	if (tw->toggle.toggle_style == XtToggleCheck) {
 	    DisplayCheckBox(w);
 	} else if (tw->toggle.toggle_style == XtToggleRadio) {
@@ -732,7 +732,7 @@ TurnOffRadioSiblings(Widget w)
     while (group != NULL) {
 	ToggleWidget local_tog = (ToggleWidget) group->widget;
 	if (local_tog->command.set) {
-	    class->toggle_class.Unset(group->widget, NULL, NULL, 0);
+	    class->toggle_class.Unset(group->widget, NULL, NULL, NULL);
 
 	    if (local_tog->toggle.toggle_style == XtToggleCheck) {
 		DisplayCheckBox((Widget) local_tog);
@@ -903,7 +903,7 @@ XawToggleUnsetCurrent(Widget radio_group)
 
     if (local_tog->command.set) {
 	class = (ToggleWidgetClass) local_tog->core.widget_class;
-	class->toggle_class.Unset(radio_group, NULL, NULL, 0);
+	class->toggle_class.Unset(radio_group, NULL, NULL, NULL);
 	Notify(radio_group, (XEvent *) NULL, (String *) NULL, (Cardinal *) 0);
     }
     if (GetRadioGroup(radio_group) == NULL)

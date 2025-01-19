@@ -1,7 +1,7 @@
-# $Id: Makefile.in,v 1.15 2022/12/07 23:38:49 tom Exp $
+# $Id: Makefile.in,v 1.20 2025/01/19 20:19:04 tom Exp $
 # template makefile for neXtaw
 ##############################################################################
-# Copyright 2015,2022 Thomas E. Dickey                                       #
+# Copyright 2015-2022,2025 Thomas E. Dickey                                  #
 #                                                                            #
 # Permission is hereby granted, free of charge, to any person obtaining a    #
 # copy of this software and associated documentation files (the "Software"), #
@@ -58,7 +58,12 @@ VERSION_MINOR	= @VERSION_MINOR@
 VERSION		= $(VERSION_MAJOR).$(VERSION_MINOR)
 REL_VERSION	= @REL_VERSION@
 ABI_VERSION	= @ABI_VERSION@
-LIB_ROOTNAME	= @LIB_ROOTNAME@
+
+RPATH_LIST	= @RPATH_LIST@
+RESULTING_SYMS	= @RESULTING_SYMS@
+VERSIONED_SYMS	= @VERSIONED_SYMS@
+MK_SHARED_LIB	= @MK_SHARED_LIB@
+
 @SET_SHLIB_VARS@
 
 includedir	= @includedir@/X11/@PACKAGE@
@@ -281,7 +286,7 @@ laylex.c : laylex.l
 	sed 's/yy/LayYY/g' lex.yy.c > $@
 	$(RM) lex.yy.c
 
-$(OBJECTS) : $(HDRS)
+$(OBJECTS) : $(HDRS) laylex.c laygram.c
 
 clean	::
 	@- $(RM) -r autom4te.cache

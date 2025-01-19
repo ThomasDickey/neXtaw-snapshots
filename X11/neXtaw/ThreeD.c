@@ -1,6 +1,6 @@
 /***********************************************************
 
-Copyright 2015,2022 by Thomas E. Dickey
+Copyright 2015-2022,2025 by Thomas E. Dickey
 Copyright 1996 by Alfredo Kojima
 Copyright 1992 by Kaleb Keithley
 Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts,
@@ -718,7 +718,7 @@ SetValues(
     Boolean alloc_bot_pxmap = FALSE;
 
     (*threeDWidgetClass->core_class.superclass->core_class.set_values)
-	(gcurrent, grequest, gnew, NULL, 0);
+	(gcurrent, grequest, gnew, NULL, NULL);
     if (new->threeD.shadow_width != current->threeD.shadow_width)
 	redisplay = TRUE;
     if (new->threeD.be_nice_to_cmap != current->threeD.be_nice_to_cmap) {

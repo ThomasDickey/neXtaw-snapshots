@@ -1,6 +1,10 @@
 /*
+ * $XTermId: SmeBSBP.h,v 1.3 2025/01/19 17:21:56 tom Exp $
  * $XConsortium: SmeBSBP.h,v 1.8 94/04/17 21:44:11 rws Exp $
+ *
+ * Copyright 2025  Thomas E. Dickey
  */
+
 /* MODIFIED FOR N*XTSTEP LOOK	 				*/
 /* Modifications Copyright (c) 1996 by Alfredo Kojima		*/
 
@@ -31,9 +35,9 @@ in this Software without prior written authorization from the X Consortium.
  * Author:  Chris D. Peterson, MIT X Consortium
  */
 
-/* 
+/*
  * SmeP.h - Private definitions for Sme object
- * 
+ *
  */
 
 #ifndef _XawSmeBSBP_h

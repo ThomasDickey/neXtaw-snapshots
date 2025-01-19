@@ -1,6 +1,6 @@
 /***********************************************************
 
-Copyright (c) 2015,2022 by Thomas E. Dickey
+Copyright (c) 2015-2022,2025 by Thomas E. Dickey
 Copyright (c) 1999 by Carlos A M dos Santos
 Copyright (c) 1996 by Alfredo Kojima
 Copyright (c) 1987, 1988, 1994  X Consortium
@@ -24,19 +24,19 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 Except as contained in this notice, the name(s) of the above copyright holders
 shall not be used in advertising or otherwise to promote the sale, use or
-other dealings in this Software without prior written authorization. 
+other dealings in this Software without prior written authorization.
 
 Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the name of Digital not be
 used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  
+software without specific, written prior permission.
 
 DIGITAL DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
 ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -561,7 +561,7 @@ Initialize(
 }
 
 /*	Function Name: Destroy
- *	Description: This function cleans up when the object is 
+ *	Description: This function cleans up when the object is
  *                   destroyed.
  *	Arguments: w - the AsciiSink Object.
  *	Returns: none.
@@ -640,7 +640,7 @@ MaxLines(
 }
 
 /*	Function Name: MaxHeight
- *	Description: Finds the Minium height that will contain a given number 
+ *	Description: Finds the Minium height that will contain a given number
  *                   lines.
  *	Arguments: w - the AsciiSink Object.
  *                 lines - the number of lines.

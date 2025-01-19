@@ -1,4 +1,9 @@
-/* $XConsortium: MultiSrc.h,v 1.2 94/04/17 20:12:26 kaleb Exp $ */
+/*
+ * $XTermId: MultiSrc.h,v 1.4 2025/01/19 16:41:31 tom Exp $
+ * $XConsortium: MultiSrc.h,v 1.2 94/04/17 20:12:26 kaleb Exp $
+ *
+ * Copyright 2025  Thomas E. Dickey
+ */
 
 /*
  * Copyright 1991 by OMRON Corporation
@@ -76,7 +81,7 @@ in this Software without prior written authorization from the X Consortium.
  useStringInPlace    UseStringInPlace	Boolean		False
 
 */
- 
+
 /* Class record constants */
 
 extern WidgetClass multiSrcObjectClass;

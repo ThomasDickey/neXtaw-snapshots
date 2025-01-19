@@ -1,6 +1,6 @@
 /***********************************************************
 
-Copyright 2015,2022 by Thomas E. Dickey
+Copyright 2015-2022,2025 by Thomas E. Dickey
 Copyright (c) 1987, 1988, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -28,13 +28,13 @@ Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts.
 
                         All Rights Reserved
 
-Permission to use, copy, modify, and distribute this software and its 
-documentation for any purpose and without fee is hereby granted, 
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
 provided that the above copyright notice appear in all copies and that
-both that copyright notice and this permission notice appear in 
+both that copyright notice and this permission notice appear in
 supporting documentation, and that the name of Digital not be
 used in advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.  
+software without specific, written prior permission.
 
 DIGITAL DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE, INCLUDING
 ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO EVENT SHALL
@@ -230,7 +230,7 @@ Destroy(Widget gw)
 }
 
 /*
- * NOTE: This function really needs to recieve graphics exposure 
+ * NOTE: This function really needs to recieve graphics exposure
  *       events, but since this is not easily supported until R4 I am
  *       going to hold off until then.
  */
@@ -295,9 +295,9 @@ draw_it(
 
     XtCallCallbacks((Widget) w, XtNgetValue, (XtPointer) &value);
 
-    /* 
-     * Keep w->strip_chart.max_value up to date, and if this data 
-     * point is off the graph, change the scale to make it fit. 
+    /*
+     * Keep w->strip_chart.max_value up to date, and if this data
+     * point is off the graph, change the scale to make it fit.
      */
 
     if (value > w->strip_chart.max_value) {
@@ -456,8 +456,8 @@ MoveChart(
     next = w->strip_chart.interval = j;
 
     /*
-     * Since we just lost some data, recompute the 
-     * w->strip_chart.max_value. 
+     * Since we just lost some data, recompute the
+     * w->strip_chart.max_value.
      */
 
     old_max = w->strip_chart.max_value;

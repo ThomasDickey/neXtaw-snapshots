@@ -1,4 +1,10 @@
 /*
+ * $XTermId: VendorEP.h,v 1.4 2025/01/19 17:28:26 tom Exp $
+ *
+ * Copyright 2025  Thomas E. Dickey
+ */
+
+/*
 
 Copyright (c) 1994  X Consortium
 
@@ -44,7 +50,7 @@ in this Software without prior written authorization from the X Consortium.
  * ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
  * WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTUOUS ACTION,
  * ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS
- * SOFTWARE. 
+ * SOFTWARE.
  *
  *	Author:	Seiji Kuwari	OMRON Corporation
  *				kuwa@omron.co.jp

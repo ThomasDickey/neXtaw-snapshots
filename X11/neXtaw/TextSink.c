@@ -1,6 +1,6 @@
 /*
 
-Copyright 2015,2022 by Thomas E. Dickey
+Copyright 2015-2022,2025 by Thomas E. Dickey
 Copyright (c) 1989, 1994  X Consortium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -555,12 +555,8 @@ XawTextSinkInsertCursor(Widget w,
 /* ARGSUSED */
 void
 XawTextSinkClearToBackground(Widget w,
-#if NeedWidePrototypes
-			     int x, int y, int width, int height)
-#else
 			     Position x, Position y,
 			     Dimension width, Dimension height)
-#endif
 {
     TextSinkObjectClass class = (TextSinkObjectClass) w->core.widget_class;
 
@@ -638,7 +634,7 @@ XawTextSinkResolve(Widget w,
 {
     TextSinkObjectClass class = (TextSinkObjectClass) w->core.widget_class;
 
-    (*class->text_sink_class.Resolve) (w, pos, fromx, width, resPos, 0);
+    (*class->text_sink_class.Resolve) (w, pos, fromx, width, resPos, NULL);
 }
 
 /*	Function Name: XawTextSinkMaxLines

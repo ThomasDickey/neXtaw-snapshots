@@ -1,6 +1,6 @@
 /*
 
-Copyright 2015,2022 by Thomas E. Dickey
+Copyright 2015-2022,2025 by Thomas E. Dickey
 Copyright (c) 1996 by Alfredo Kojima
 Copyright (c) 1989, 1994  X Consortium
 
@@ -526,10 +526,10 @@ _XawTextFormat(TextWidget tw)
  *              As Out, length of returned string.
  */
 char *
-_XawTextWCToMB(d, wstr, len_in_out)
-     Display *d;
-     wchar_t *wstr;
-     int *len_in_out;
+_XawTextWCToMB(
+     Display *d,
+     wchar_t *wstr,
+     int *len_in_out)
 
 {
     XTextProperty textprop;
@@ -554,10 +554,10 @@ _XawTextWCToMB(d, wstr, len_in_out)
  *              As Out, it is length of returned string, measured in wchar.
  */
 wchar_t *
-_XawTextMBToWC(d, str, len_in_out)
-     Display *d;
-     char *str;
-     int *len_in_out;
+_XawTextMBToWC(
+     Display *d,
+     char *str,
+     int *len_in_out)
 {
     if (*len_in_out == 0) {
 	return (NULL);

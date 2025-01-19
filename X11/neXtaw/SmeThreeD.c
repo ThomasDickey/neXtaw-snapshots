@@ -1,6 +1,6 @@
 /***********************************************************
 
-Copyright 2015,2022 by Thomas E. Dickey
+Copyright 2015-2022,2025 by Thomas E. Dickey
 Copyright (c) 1996 by Alfredo Kojima
 Copyright 1987, 1988 by Digital Equipment Corporation, Maynard, Massachusetts,
 and the Massachusetts Institute of Technology, Cambridge, Massachusetts.
@@ -310,9 +310,9 @@ AllocBotShadowPixmap(Widget new)
 
 /* ARGSUSED */
 void
-XawSme3dComputeTopShadowRGB(new, xcol_out)
-     Widget new;
-     XColor *xcol_out;
+XawSme3dComputeTopShadowRGB(
+     Widget new,
+     XColor *xcol_out)
 {
     if (XtIsSubclass(new, smeThreeDObjectClass)) {
 	SmeThreeDObject tdo = (SmeThreeDObject) new;
@@ -360,9 +360,9 @@ AllocTopShadowPixel(Widget new)
 
 /* ARGSUSED */
 void
-XawSme3dComputeBottomShadowRGB(new, xcol_out)
-     Widget new;
-     XColor *xcol_out;
+XawSme3dComputeBottomShadowRGB(
+     Widget new,
+     XColor *xcol_out)
 {
     if (XtIsSubclass(new, smeThreeDObjectClass)) {
 	SmeThreeDObject tdo = (SmeThreeDObject) new;

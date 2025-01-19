@@ -1,4 +1,10 @@
--- $XTermId: ChangeLog,v 1.32 2024/04/29 15:15:04 tom Exp $
+-- $XTermId: ChangeLog,v 1.35 2025/01/19 17:57:02 tom Exp $
+
+20250120
+	+ improve debian test-package.
+	+ compiler-warning fixes.
+	+ update configure checks, e.g., compiler warnings.
+	+ updated config.guess, config.sub
 
 20240429
 	+ compiler-warning fixes.
